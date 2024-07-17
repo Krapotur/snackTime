@@ -10,6 +10,19 @@ const positionSchema = new Schema({
     imgSrc: {
         type: String,
         default: '',
+    },
+    composition: {
+        type: String,
+        default: ''
+    },
+    weight: {
+        type: Number,
+        require: true,
+        default: 100,
+    },
+    caloric: {
+        type: Number,
+        default: 100
     }
 })
 
