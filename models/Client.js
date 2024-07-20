@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
+const clientSchema = new Schema({
     status: {
         type: Boolean,
         default: true
@@ -32,15 +32,10 @@ const userSchema = new Schema({
         type: String,
         unique: true
     },
-    group: {
-        ref: 'groups',
-        type: Schema.Types.ObjectId,
-        default: 'Клиент'
+    points: {
+        type: Number,
+        default: 0
     },
-    restaurant: {
-        ref: 'restaurants',
-        type: Schema.Types.ObjectId
-    }
 })
 
-module.exports = mongoose.model('users', userSchema);
+module.exports = mongoose.model('clients', clientSchema);
