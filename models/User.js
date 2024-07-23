@@ -30,17 +30,19 @@ const userSchema = new Schema({
     },
     email: {
         type: String,
-        unique: true
+        unique: true,
+        default: ''
     },
-    group: {
-        ref: 'groups',
-        type: Schema.Types.ObjectId,
-        default: 'Клиент'
-    },
-    restaurant: {
-        ref: 'restaurants',
-        type: Schema.Types.ObjectId
-    }
+    // group: {
+    //     ref: 'groups',
+    //     type: Schema.Types.ObjectId,
+    //     default: 'Клиент'
+    // },
+    // restaurant: {
+    //     ref: 'restaurants',
+    //     type: Schema.Types.ObjectId,
+    //     default: 'Оазис'
+    // }
 })
 
 module.exports = mongoose.model('users', userSchema);

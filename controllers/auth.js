@@ -1,8 +1,13 @@
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
+
 const User = require('../models/User')
+const errorHandler = require('../utils/errorHandler')
+const keys = require('../config/keys')
 
 module.exports.login = async function (req,res){
     const candidate = await User.findOne({login: req.body.login})
-
+console.log(req.body)
     try {
         if (candidate && candidate.status) {
             const passwordResult = bcrypt.compareSync(req.body.password, candidate.password)
@@ -14,7 +19,6 @@ module.exports.login = async function (req,res){
 
                 const userToken = {
                     token: `Bearer ${token}`,
-                    post: candidate.post,
                     user: candidate.lastName + ' ' + candidate.firstName
                 }
                 res.status(200).json(userToken)

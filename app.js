@@ -6,6 +6,8 @@ const cors = require('cors');
 const morgan = require('morgan');
 
 const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/user');
+const clientRoutes = require('./routes/client');
 const groupRoutes = require('./routes/group');
 const categoryRoutes = require('./routes/category');
 const kitchenRoutes = require('./routes/kitchen');
@@ -25,11 +27,14 @@ app.use(passport.initialize());
 require('./middleware/passport')(passport);
 
 app.use(morgan('dev'));
+app.use('/uploads', express.static('uploads'))
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(cors());
 
 app.use('/api/auth', authRoutes);
+app.use('/api/user', userRoutes);
+app.use('/api/client', clientRoutes);
 app.use('/api/group', groupRoutes);
 app.use('/api/category', categoryRoutes);
 app.use('/api/kitchen', kitchenRoutes);
