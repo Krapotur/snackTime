@@ -1,0 +1,90 @@
+$lora: 'Source Sans Pro', Lora, Arial, sans-serif;
+
+* {
+  font-family: $lora;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.login_page {
+  margin: auto;
+  width: fit-content;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.form_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.login_form {
+  position: absolute;
+  top: 30%;
+  left: 41%;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 320px;
+  padding: 40px 30px 50px 30px;
+  border-radius: 3px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
+  background-color: rgba(255, 255, 255, 0.93);
+}
+
+.form_container h2 {
+  margin: 0;
+  font-size: 22px;
+  color: #F57C23;
+  text-align: center;
+  font-family: 'Lora', serif;
+  user-select: none;
+}
+
+.input-block {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding-top: 30px;
+
+  .row {
+    margin: 0;
+
+    .input-field {
+      width: 100%;
+      margin-bottom: 0;
+    }
+
+    label {
+      border-bottom: #F57C23;
+    }
+  }
+
+  span {
+    margin-left: 20px;
+    color: red;
+    font-size: 13px;
+  }
+
+  .btn {
+    margin-top: 30px;
+    height: 40px;
+    width: 180px;
+    color: white;
+    border-radius: 2px;
+    background-color: #F57C23;
+  }
+
+  a {
+    cursor: pointer;
+    padding-top: 10px;
+  }
+}
+

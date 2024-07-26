@@ -1,1 +1,43 @@
-<p>login-page works!</p>
+<div class="login_page" xmlns="http://www.w3.org/1999/html">
+  <div class="form_container">
+    <div class="login_form">
+      <form
+        [formGroup]="form"
+        (ngSubmit)="onSubmit()"
+      >
+        <h2>Авторизация</h2>
+
+        <div class="input-block">
+          <div class="row">
+            <div class="input-field col s6">
+              <input id="login" type="text" formControlName="login">
+              <label class="active" for="login">Логин</label>
+            </div>
+          </div>
+            <span *ngIf="form.get['login'].invalid && form['login'].touched">
+          *Введите логин
+          </span>
+
+          <div class="row">
+            <div class="input-field col s6">
+              <input id="password" type="password" formControlName="password">
+              <label class="active" for="password">Пароль</label>
+            </div>
+          </div>
+          <span  *ngIf="form['password'].invalid && form['password'].touched"
+            >*Введите пароль
+          </span>
+
+          <button
+            class="btn" extended="" mat-fab
+            type="submit"
+          >
+            Войти
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
