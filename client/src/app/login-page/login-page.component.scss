@@ -68,7 +68,6 @@ body {
   }
 
   span {
-    margin-left: 20px;
     color: red;
     font-size: 13px;
   }
@@ -79,6 +78,7 @@ body {
     width: 180px;
     color: white;
     border-radius: 2px;
+    font-family: $lora;
     background-color: #F57C23;
   }
 

@@ -14,7 +14,7 @@
               <label class="active" for="login">Логин</label>
             </div>
           </div>
-            <span *ngIf="form.get['login'].invalid && form['login'].touched">
+          <span *ngIf="login.invalid && login.touched">
           *Введите логин
           </span>
 
@@ -24,13 +24,17 @@
               <label class="active" for="password">Пароль</label>
             </div>
           </div>
-          <span  *ngIf="form['password'].invalid && form['password'].touched"
-            >*Введите пароль
+          <span *ngIf="password.hasError('required') && password.touched"
+          >*Введите пароль
+          </span>
+          <span *ngIf="password.hasError('minlength')"
+          >*Не менее 6 символов
           </span>
 
           <button
             class="btn" extended="" mat-fab
             type="submit"
+            [disabled]="form.invalid"
           >
             Войти
           </button>
