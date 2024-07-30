@@ -1,14 +1,15 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatInputModule} from "@angular/material/input";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatButtonModule} from "@angular/material/button";
 import {MatTooltipModule} from "@angular/material/tooltip";
-import {NgIf, NgOptimizedImage} from "@angular/common";
+import {NgClass, NgIf, NgOptimizedImage} from "@angular/common";
 import {MatIconModule} from "@angular/material/icon";
-import {RouterLink} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {AuthService} from "../shared/services/auth.service";
-import {AuthToken, Login} from "../shared/interfaces";
+import {AuthToken} from "../shared/interfaces";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-login-page',
@@ -23,16 +24,20 @@ import {AuthToken, Login} from "../shared/interfaces";
     NgIf,
     MatIconModule,
     RouterLink,
-    NgOptimizedImage
+    NgOptimizedImage,
+    NgClass
   ],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.scss'
 })
-export class LoginPageComponent implements OnInit {
+export class LoginPageComponent implements OnInit, OnDestroy {
   form: FormGroup
+  aSub: Subscription
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
   }
 
@@ -41,6 +46,10 @@ export class LoginPageComponent implements OnInit {
       login: new FormControl(null, [Validators.required]),
       password: new FormControl(null, [Validators.required, Validators.minLength(6)])
     })
+  }
+
+  ngOnDestroy(): void {
+    if (this.aSub) this.aSub.unsubscribe()
   }
 
   get login() {
@@ -52,15 +61,14 @@ export class LoginPageComponent implements OnInit {
   }
 
   onSubmit() {
-    const login: Login = {
-      login: this.login.value,
-      password: this.password.value
-    }
+    this.form.disable()
 
-    this.authService.login(login).subscribe({
-        next: (authToken: AuthToken) =>
-          authToken ? this.form.disable() : console.log('sss'),
-        error: error => console.log('error: ' + error.error.message)
+    this.aSub = this.authService.login(this.form.value).subscribe({
+        next: (authToken: AuthToken) => this.router.navigate(['/overview']),
+        error: error => {
+          console.log('error: ' + error.error.message)
+          this.form.enable()
+        }
       }
     )
   }

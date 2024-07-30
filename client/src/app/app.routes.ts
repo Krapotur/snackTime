@@ -6,6 +6,7 @@ import {SiteLayoutComponent} from "./shared/layouts/site-layout/site-layout.comp
 export const routes: Routes = [
   {
     path: '', component: AuthLayoutComponent, children: [
+      {path: '', redirectTo: '/login', pathMatch: 'full'},
       {path: 'login', component: LoginPageComponent}
     ]
   },

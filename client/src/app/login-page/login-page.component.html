@@ -10,31 +10,36 @@
         <div class="input-block">
           <div class="row">
             <div class="input-field col s6">
-              <input id="login" type="text" formControlName="login">
+              <input id="login" type="text" formControlName="login"
+                     [ngClass]="{'invalid' : login.invalid && login.touched}"
+              >
               <label class="active" for="login">Логин</label>
             </div>
           </div>
           <span *ngIf="login.invalid && login.touched">
-          *Введите логин
+            <span *ngIf="login.hasError('required')"> *Введите логин</span>
           </span>
 
           <div class="row">
             <div class="input-field col s6">
-              <input id="password" type="password" formControlName="password">
+              <input id="password" type="password" formControlName="password"
+                     [ngClass]="{'invalid' : password.invalid && password.touched}"
+              >
               <label class="active" for="password">Пароль</label>
             </div>
           </div>
-          <span *ngIf="password.hasError('required') && password.touched"
-          >*Введите пароль
+          <span *ngIf="password.invalid && password.touched">
+              <span *ngIf="password.hasError('required')">
+                *Введите пароль
+              </span>
+              <span *ngIf="password.hasError('minlength')">
+                *Не менее 6 символов
+              </span>
           </span>
-          <span *ngIf="password.hasError('minlength')"
-          >*Не менее 6 символов
-          </span>
-
           <button
             class="btn" extended="" mat-fab
             type="submit"
-            [disabled]="form.invalid"
+            [disabled]="form.invalid || form.disabled"
           >
             Войти
           </button>
