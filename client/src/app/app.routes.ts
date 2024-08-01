@@ -2,6 +2,9 @@ import {Routes} from '@angular/router';
 import {AuthLayoutComponent} from "./shared/layouts/auth-layout/auth-layout.component";
 import {LoginPageComponent} from "./login-page/login-page.component";
 import {SiteLayoutComponent} from "./shared/layouts/site-layout/site-layout.component";
+import {isAuthGuard} from "./shared/classes/auth.guard";
+import {DashboardPageComponent} from "./admin-pages/dashboard-page/dashboard-page.component";
+import {OverviewPageComponent} from "./restaurateur-pages/overview-page/overview-page.component";
 
 export const routes: Routes = [
   {
@@ -11,6 +14,9 @@ export const routes: Routes = [
     ]
   },
   {
-    path: '', component: SiteLayoutComponent, children: []
+    path: '', component: SiteLayoutComponent, canActivate: [isAuthGuard], children: [
+      {path: 'dashboard', component: DashboardPageComponent},
+      {path: 'overview', component: OverviewPageComponent}
+    ]
   }
 ];
