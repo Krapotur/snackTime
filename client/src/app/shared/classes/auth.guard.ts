@@ -20,9 +20,7 @@ export class AuthGuard {
 
   canActivate(route: ActivatedRouteSnapshot,
               state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    console.log('token: ', this.auth.getToken())
     if (this.auth.isAuthenticated()) {
-      console.log('isAuth? - ', this.auth.isAuthenticated())
       return of(true)
     } else {
       this.router.navigate(['/login'], {
@@ -31,7 +29,6 @@ export class AuthGuard {
         }
       }).then()
     }
-    console.log('do not working')
     return of(false);
   }
 

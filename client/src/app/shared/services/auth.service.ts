@@ -1,14 +1,15 @@
 import {Injectable} from "@angular/core";
 import {AuthToken, Login} from "../interfaces";
 import {HttpClient} from "@angular/common/http";
-import {Observable } from "rxjs";
-import { tap} from "rxjs/operators";
+import {Observable} from "rxjs";
+import {tap} from "rxjs/operators";
 
 @Injectable({
   providedIn: "root"
 })
 export class AuthService {
   private token = null
+  private status = null
 
   constructor(private http: HttpClient) {
   }
@@ -19,8 +20,6 @@ export class AuthService {
         tap((authToken) => {
           this.setToken(authToken.token)
           localStorage.setItem('auth-token', authToken.token)
-          // localStorage['user'] = JSON.stringify(authToken)
-          // localStorage.setItem('post', authToken.post)
         })
       )
   }
@@ -29,16 +28,25 @@ export class AuthService {
     this.token = token
   }
 
-  getToken(): string{
+  getToken(): string {
     return this.token
   }
 
-  isAuthenticated(): boolean{
+  isAuthenticated(): boolean {
     return !!this.token
   }
 
-  logout(){
+  logout() {
     this.setToken(null)
     localStorage.clear()
   }
+
+  setStatus(status: number) {
+    this.status = status
+  }
+
+  getStatus() {
+    return this.status
+  }
+
 }

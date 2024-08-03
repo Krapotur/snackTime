@@ -8,7 +8,6 @@ import {NgClass, NgIf, NgOptimizedImage} from "@angular/common";
 import {MatIconModule} from "@angular/material/icon";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {AuthService} from "../shared/services/auth.service";
-import {AuthToken} from "../shared/interfaces";
 import {Subscription} from "rxjs";
 
 @Component({
@@ -72,7 +71,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     this.form.disable()
 
     this.aSub = this.authService.login(this.form.value).subscribe({
-        next: (authToken: AuthToken) => this.router.navigate(['/overview']),
+        next: () => this.router.navigate(['/users']),
         error: error => {
           console.log('error: ' + error.error.message)
           this.form.enable()

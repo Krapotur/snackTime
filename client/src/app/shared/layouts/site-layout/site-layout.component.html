@@ -1,1 +1,57 @@
-<p>site-layout works!</p>
+<div class="container-main">
+  <div class="sidebar-left" role="banner">
+    <div class="new_container">
+
+      <div class="logo-container">
+        <!--        <img src="../assets/images/logo.png" alt="logo">-->
+        <h1 class="title">
+          Snack Time
+        </h1>
+      </div>
+
+      <hr>
+
+      <div class="user">
+        <p>Администратор</p>
+        <p class="group">administrator</p>
+      </div>
+
+      <hr class="hr-bottom">
+
+      <div class="nav-wrap">
+        <nav class="main-nav" role="navigation">
+          <ul class="list-hover-slide">
+            <li><a routerLink="/admin-panel/hotels">Главная</a></li>
+            <li><a routerLink="/admin-panel/houses">Пользователи</a></li>
+            <li><a routerLink="/admin-panel/users">Рестораны</a>
+            <li><a routerLink="/dispatcher/overview">Ассортимент</a></li>
+            <li (click)="logout()"><a>Выйти</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #categories>
+    <ul>
+      <div class="nav-wrap">
+        <nav class="main-nav" role="navigation">
+          <div class="ul-tasks">
+            <ul class="unstyled list-hover-slide">
+
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </ul>
+    <hr>
+  </ng-template>
+
+    <div class="container-right">
+<!--      <div class="loader" *ngIf="isErrorHttpStatus">-->
+<!--        <p>Идет соединение с сервером... Попробуйте обновить страницу</p>-->
+<!--        <mat-progress-bar mode="indeterminate"></mat-progress-bar>-->
+<!--      </div>-->
+      <router-outlet></router-outlet>
+    </div>
+</div>

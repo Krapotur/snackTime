@@ -5,7 +5,7 @@ const controller = require('../controllers/user')
 
 const router = express.Router();
 
-router.get('/', passport.authenticate('jwt', {session: false}), controller.getAll);
+router.get('/', controller.getAll);
 router.get('/:id', controller.getById);
 router.post('/', controller.create);
 router.patch('/:id', controller.update);
