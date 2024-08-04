@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const restaurantSchema = new Schema({
+    status:{
+        type: Boolean,
+        default: true
+    },
     title: {
       type: String,
       require: true,
@@ -11,20 +15,16 @@ const restaurantSchema = new Schema({
       type: String,
       default: ''
     },
-    date: {
+    work_time: {
         type: String,
         default: ''
     },
     rating: {
         type: Number,
-        require: true
+        default: 5
     },
     kitchen: {
         ref: 'kitchens',
-        type: Schema.Types.ObjectId
-    },
-    user: {
-        ref: 'users',
         type: Schema.Types.ObjectId
     }
 })

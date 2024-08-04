@@ -18,11 +18,13 @@ $white-off: #DFDBD9;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10px 0 10px 0;
+  padding: 3px 0 0 0;
 
   p {
     color: $white-off;
     font: 400 16px $lora;
+    padding-bottom: 5px;
+    margin: 0;
   }
 
   .group {

@@ -21,31 +21,16 @@
       <div class="nav-wrap">
         <nav class="main-nav" role="navigation">
           <ul class="list-hover-slide">
-            <li><a routerLink="/admin-panel/hotels">Главная</a></li>
-            <li><a routerLink="/admin-panel/houses">Пользователи</a></li>
-            <li><a routerLink="/admin-panel/users">Рестораны</a>
-            <li><a routerLink="/dispatcher/overview">Ассортимент</a></li>
+            <li><a routerLink="/dashboard">Главная</a></li>
+            <li><a routerLink="/users">Пользователи</a></li>
+            <li><a routerLink="/restaurants">Рестораны</a>
+            <li><a routerLink="/categories">Ассортимент</a></li>
             <li (click)="logout()"><a>Выйти</a></li>
           </ul>
         </nav>
       </div>
     </div>
   </div>
-
-  <ng-template #categories>
-    <ul>
-      <div class="nav-wrap">
-        <nav class="main-nav" role="navigation">
-          <div class="ul-tasks">
-            <ul class="unstyled list-hover-slide">
-
-            </ul>
-          </div>
-        </nav>
-      </div>
-    </ul>
-    <hr>
-  </ng-template>
 
     <div class="container-right">
 <!--      <div class="loader" *ngIf="isErrorHttpStatus">-->

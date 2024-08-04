@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs')
 
 module.exports.getAll = async function (req, res) {
     try {
-        User.find().then(
+       await User.find().then(
             users => {
                 res.status(200).json(users)
             }

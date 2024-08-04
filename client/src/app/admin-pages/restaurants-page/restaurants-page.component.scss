@@ -1,0 +1,29 @@
+
+.main {
+  user-select: none;
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  justify-content: space-evenly;
+  align-items: flex-start;
+}
+
+.mat-elevation-z8 {
+  margin-top: 23px;
+}
+
+h5 {
+  font-weight: bold;
+  padding: 0 0 0 30px;
+  font-family: 'Source Sans Pro', Lora, Arial, sans-serif;
+}
+
+button {
+  background-color: #F87839;
+  border-radius: 1px;
+  height: 40px;
+  color: white;
+}
+
+
+

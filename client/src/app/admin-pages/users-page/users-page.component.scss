@@ -1,6 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Lora&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lora&family=Nunito+Sans:opsz,wght@6..12,300&display=swap');
-
 $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
 
 .main {
@@ -22,42 +19,6 @@ h5 {
   font-family: $lora;
 }
 
-table {
-  min-width: max-content;
-  padding: 5px 20px 0 20px;
-
-  th {
-    font-weight: bold;
-    font-family: $lora;
-    text-align: center;
-  }
-  th:first-child{
-    border-right: 1px solid black;
-
-  }
-
-  td {
-    font-family: $lora;
-    font-size: 14px;
-    text-align: center;
-
-    img {
-      cursor: pointer;
-    }
-  }
-
-  td:first-child{
-    border-right: 1px solid black;
-
-  }
-}
-
-.table-bottom {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 0 25px 20px;
-}
-
 button {
   background-color: #F87839;
   border-radius: 1px;
@@ -65,14 +26,5 @@ button {
   color: white;
 }
 
-.mat-mdc-slide-toggle.mat-warn {
-  --mdc-switch-selected-icon-color: #ffffff;
-  --mdc-switch-selected-focus-track-color: #f87a56;
-  --mdc-switch-selected-handle-color: #f65405;
-  --mdc-switch-selected-track-color: #f87a56;
-  --mat-switch-selected-with-icon-handle-horizontal-margin: 0 20px;
-  --mat-switch-unselected-with-icon-handle-horizontal-margin: 0;
-  --mdc-switch-track-height: 20px;
-  --mdc-switch-track-width: 43px;
-}
+
 

@@ -1,9 +1,18 @@
 const Category = require('../models/Category')
 const errorHandler = require('../utils/errorHandler')
 
-module.exports.create = async function (req, res) {
-    console.log(req.body)
+module.exports.getAll = async function (req, res) {
 
+    try {
+        await Category.find().then(
+            categories => res.status(200).json(categories)
+        )
+    } catch (e) {
+        errorHandler(res, e)
+    }
+}
+
+module.exports.create = async function (req, res) {
     const candidate = await Category.findOne({title: req.body.title})
 
     if (candidate) {
@@ -23,10 +32,6 @@ module.exports.create = async function (req, res) {
             errorHandler(res, e)
         }
     }
-
-}
-
-module.exports.getAll = function (req, res) {
 
 }
 

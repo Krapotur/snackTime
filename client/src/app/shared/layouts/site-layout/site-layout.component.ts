@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import {RouterLink, RouterOutlet} from "@angular/router";
+import {Router, RouterLink, RouterOutlet} from "@angular/router";
 import {NgIf} from "@angular/common";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-site-layout',
@@ -15,9 +16,11 @@ import {NgIf} from "@angular/common";
 })
 export class SiteLayoutComponent {
 
-  isTemplate = true
-
+ constructor(private authService: AuthService,
+             private router: Router) {
+ }
   logout() {
-
+    this.authService.logout()
+    this.router.navigate(['/login']).then()
   }
 }

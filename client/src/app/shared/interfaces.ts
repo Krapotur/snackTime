@@ -19,3 +19,19 @@ export interface User {
   phone: string,
   email: string
 }
+
+export interface Restaurant{
+  status: boolean,
+  title: string,
+  description: string,
+  workTime: string,
+  imgSrc: string,
+  rating: number,
+  kitchen: string,
+}
+
+export interface Kitchen {
+  _id: string
+  title: string,
+  imgSrc: string
+}

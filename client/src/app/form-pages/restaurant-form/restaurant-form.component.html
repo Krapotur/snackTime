@@ -1,0 +1,143 @@
+<div [class]="isDelete ? 'blur' : ''">
+  <div class="main">
+    <div class="container-block">
+      <h3>Новый ресторан</h3>
+      <div class="img-del" *ngIf="restaurantID">
+        <img src="../assets/icons/delete-hotel.png" alt="delete" (click)="isDelete = !isDelete">
+      </div>
+      <form [formGroup]="form">
+        <div class="container-form">
+
+          <div class="row">
+            <div class="input-field col s6">
+              <input id="title" type="text" formControlName="title"
+                     [ngClass]="{'invalid' : form.get('title').invalid && form.get('title').touched}"
+              >
+              <label class="active" for="title">Название</label>
+            </div>
+          </div>
+          <span class="error" *ngIf="form.get('title').hasError('required') && form.get('title').touched"
+          >*Введите название
+                    </span>
+          <span class="error" *ngIf="form.get('title').hasError('minlength') && form.get('title').touched"
+          >*Не менее 3х символов
+                    </span>
+
+          <div class="row">
+            <div class="input-field col s6">
+              <input id="floors" type="text" formControlName="description"
+                     [ngClass]="{'invalid' : form.get('description').invalid && form.get('description').touched}"
+              >
+              <label class="active" for="floors">Описание</label>
+            </div>
+          </div>
+          <span *ngIf="form.get('description').hasError('required') && form.get('description').touched"
+          >*Введите описание
+                              </span>
+          <span class="error" *ngIf="form.get('description').hasError('minlength') && form.get('description').touched"
+          >*Еще немного информации...
+                              </span>
+
+          <p> Режим работы </p>
+          <div class="time-inputs">
+            <div class="row">
+              <div id="time-start" class="input-field col s6">
+                <input type="text" formControlName="workTime"
+                       [ngClass]="{'invalid' : form.get('workTime').invalid && form.get('workTime').touched}"
+                       [ngxTimepicker]="fullTime" [format]="24" readonly>
+                <ngx-material-timepicker #fullTime></ngx-material-timepicker>
+                <label class="active" for="time-start">Начало</label>
+              </div>
+            </div>
+
+            <div class="row">
+              <div id="time-end" class="input-field col s6">
+                <input type="text" formControlName="workTime"
+                       [ngClass]="{'invalid' : form.get('workTime').invalid && form.get('workTime').touched}"
+                       [ngxTimepicker]="fullTime" [format]="24" readonly>
+                <ngx-material-timepicker #fullTime></ngx-material-timepicker>
+                <label class="active" for="time-end">Конец</label>
+              </div>
+            </div>
+          </div>
+
+          <span class="error" *ngIf="form.get('workTime').hasError('required') && form.get('workTime').touched"
+          >*Укажите время работы ресторана
+                              </span>
+
+          <mat-form-field>
+            <mat-label>Кухня <span *ngIf="!kitchens.length">(список пуст)</span></mat-label>
+            <mat-select formControlName="kitchen">
+              <mat-select-trigger>
+                {{ form.get('kitchen').value }}
+              </mat-select-trigger>
+              <mat-option *ngFor="let kitchen of kitchens"
+                          [value]=" kitchen.title"
+              >{{ kitchen.title }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <hr>
+
+          <div class="img-block">
+            <label [for]="inputImgRef">Выберите изображение </label>
+            <div class="img-group">
+              <span *ngIf="image">Изображение загружено!</span>
+              <input type="file" class="dn"
+                     #inputImg
+                     (change)="uploadImg($event)">
+              <img (click)=" triggerClick()" [class]="isDelete ? 'dn' : ''"
+                   src="../assets/icons/add-photo.png" alt="edit">
+            </div>
+          </div>
+
+          <hr>
+
+          <div class="btn-group">
+            <button
+              class="btn-cancel" extended="" mat-fab
+              [disabled]="isDelete"
+              routerLink="/restaurants"
+            >
+              Отмена
+            </button>
+            <button
+              type="submit"
+              class="btn-save" extended="" mat-fab
+              [disabled]="form.invalid"
+              (click)="onSubmit()"
+            >
+              Сохранить
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!--Template for Delete-->
+
+<!--<div class="container-del" *ngIf="isDelete">-->
+<!--  <h2>Удалить дом?</h2>-->
+<!--  <h3>"{{ house.title }}"</h3>-->
+<!--  <div class="input-block">-->
+<!--    <div class="btn-group-del">-->
+<!--      <button-->
+<!--        class="btn-cancel" extended="" mat-fab-->
+<!--        (click)="isDelete = !isDelete"-->
+<!--      >-->
+<!--        Нет-->
+<!--      </button>-->
+<!--      <button-->
+<!--        type="submit"-->
+<!--        class="btn-save" extended="" mat-fab-->
+<!--        (click)="deleteHouse()"-->
+<!--      >-->
+<!--        Да-->
+<!--      </button>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+

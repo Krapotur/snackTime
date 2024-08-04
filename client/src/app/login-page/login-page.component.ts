@@ -9,6 +9,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {AuthService} from "../shared/services/auth.service";
 import {Subscription} from "rxjs";
+import {MaterialService} from "../shared/classes/material.service";
 
 @Component({
   selector: 'app-login-page',
@@ -36,7 +37,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {
   }
 
@@ -73,7 +74,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     this.aSub = this.authService.login(this.form.value).subscribe({
         next: () => this.router.navigate(['/users']),
         error: error => {
-          console.log('error: ' + error.error.message)
+          MaterialService.toast(error.error.message)
           this.form.enable()
         }
       }

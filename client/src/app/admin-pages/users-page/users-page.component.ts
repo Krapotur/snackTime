@@ -1,9 +1,6 @@
-import { Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
-import {
-  MatTableDataSource,
-  MatTableModule
-} from "@angular/material/table";
+import {MatTableDataSource, MatTableModule} from "@angular/material/table";
 import {MatButtonModule} from "@angular/material/button";
 import {NgIf, NgOptimizedImage} from "@angular/common";
 import {MatInputModule} from "@angular/material/input";
@@ -14,7 +11,7 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {UserService} from "../../shared/services/user.service";
 import {Subscription} from "rxjs";
 import {User} from "../../shared/interfaces";
-import {AuthService} from "../../shared/services/auth.service";
+import {MaterialService} from "../../shared/classes/material.service";
 
 @Component({
   selector: 'app-users-page',
@@ -38,9 +35,8 @@ import {AuthService} from "../../shared/services/auth.service";
 
 export class UsersPageComponent implements OnInit, OnDestroy {
 
-  constructor( private userService: UserService,
-               private authService: AuthService
-               ) {
+  constructor(private userService: UserService
+  ) {
   }
 
   isShowTemplate = false;
@@ -55,28 +51,20 @@ export class UsersPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if(this.uSub) this.uSub.unsubscribe()
+    if (this.uSub) this.uSub.unsubscribe()
   }
 
-  getUsers(){
+  getUsers() {
     let position = 1
     this.uSub = this.userService.getUsers().subscribe({
       next: users => {
-       // users.filter(user => user.group != 'admin')
+        // users.filter(user => user.group != 'admin')
         users.map(user => user.position = position++)
         this.dataSource = new MatTableDataSource<User>(users)
         this.paginator._intl.itemsPerPageLabel = 'Количество позиций';
         this.dataSource.paginator = this.paginator;
       },
-      error: error => console.log(error.error.message)
+      error: error => MaterialService.toast(error.error.message)
     })
-  }
-
-  openCreateUserPage() {
-
-  }
-
-  getToken(){
-    console.log(this.authService.getToken())
   }
 }
