@@ -12,6 +12,7 @@ import {MatInputModule} from "@angular/material/input";
 import {MatSelectModule} from "@angular/material/select";
 import {ReactiveFormsModule} from "@angular/forms";
 import {RouterLink} from "@angular/router";
+import {LoaderComponent} from "../../shared/components/loader/loader.component";
 
 @Component({
   selector: 'app-restaurants-page',
@@ -26,7 +27,8 @@ import {RouterLink} from "@angular/router";
     ReactiveFormsModule,
     RouterLink,
     MatSlideToggleModule,
-    NgOptimizedImage
+    NgOptimizedImage,
+    LoaderComponent
   ],
   templateUrl: './restaurants-page.component.html',
   styleUrl: './restaurants-page.component.scss'
@@ -37,6 +39,7 @@ export class RestaurantsPageComponent implements OnInit, OnDestroy {
   ) {
   }
 
+  isLoading = false
   isShowTemplate = false;
   dataSource: MatTableDataSource<Restaurant>;
   displayedColumns: string[] = ['#', 'title', 'kitchen', 'rating', 'workTime', 'edit', 'status'];
@@ -53,15 +56,18 @@ export class RestaurantsPageComponent implements OnInit, OnDestroy {
   }
 
   getRestaurants() {
-    this.rSub = this.restaurantService.getRestaurants().subscribe({
-        next: restaurants => {
-          this.dataSource = new MatTableDataSource<Restaurant>(restaurants)
-          this.paginator._intl.itemsPerPageLabel = 'Количество позиций';
-          this.dataSource.paginator = this.paginator;
-        },
-        error: error => MaterialService.toast(error.error.message)
-      }
-    )
+    this.isLoading = true
+    setTimeout(() => {
+      this.rSub = this.restaurantService.getRestaurants().subscribe({
+          next: restaurants => {
+            this.isLoading = false
+            this.dataSource = new MatTableDataSource<Restaurant>(restaurants)
+            this.paginator._intl.itemsPerPageLabel = 'Количество позиций';
+            this.dataSource.paginator = this.paginator;
+          },
+          error: error => MaterialService.toast(error.error.message)
+        }
+      )
+    }, 500)
   }
-
 }

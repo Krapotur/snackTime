@@ -4,8 +4,14 @@
 
 $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 .dn {
   display: none;
@@ -21,7 +27,8 @@ table {
     font-family: $lora;
     text-align: center;
   }
-  th:first-child{
+
+  th:first-child {
     border-right: 1px solid black;
 
   }
@@ -36,7 +43,7 @@ table {
     }
   }
 
-  td:first-child{
+  td:first-child {
     border-right: 1px solid black;
   }
 }
@@ -58,6 +65,7 @@ table {
   --mdc-switch-track-height: 20px;
   --mdc-switch-track-width: 43px;
 }
+
 //////////////////////////////////   Table /////////////////////////////////////
 
 /////////////////////////////////  Button Style ///////////////////////////////
@@ -83,7 +91,7 @@ table {
 }
 
 .btn-save {
-  background-color: seagreen;
+  background-color: #26a69a;
   width: 100px;
 }
 
@@ -134,7 +142,7 @@ table {
     }
 
     span {
-      color: green;
+      color: #26a69a;
       font-size: 13px;
       font-weight: bold;
       padding-right: 5px;
@@ -143,3 +151,13 @@ table {
 }
 
 ////////////////////////////// Add Image ///////////////////////////////////
+
+///////////////////////////// Loader  /////////////////////////////////////
+
+.center {
+  position: absolute;
+  top: 20%;
+  left: 40%;
+}
+
+//////////////////////////// Loader  ////////////////////////////////////////

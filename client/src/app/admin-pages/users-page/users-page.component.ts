@@ -12,6 +12,7 @@ import {UserService} from "../../shared/services/user.service";
 import {Subscription} from "rxjs";
 import {User} from "../../shared/interfaces";
 import {MaterialService} from "../../shared/classes/material.service";
+import {LoaderComponent} from "../../shared/components/loader/loader.component";
 
 @Component({
   selector: 'app-users-page',
@@ -26,7 +27,8 @@ import {MaterialService} from "../../shared/classes/material.service";
     ReactiveFormsModule,
     RouterLink,
     MatSlideToggleModule,
-    NgOptimizedImage
+    NgOptimizedImage,
+    LoaderComponent
   ],
   templateUrl: './users-page.component.html',
   styleUrl: './users-page.component.scss'
@@ -39,6 +41,7 @@ export class UsersPageComponent implements OnInit, OnDestroy {
   ) {
   }
 
+  isLoading = false;
   isShowTemplate = false;
   dataSource: MatTableDataSource<User>;
   displayedColumns: string[] = ['#', 'name', 'login', 'group', 'phone', 'edit', 'status'];
@@ -55,16 +58,21 @@ export class UsersPageComponent implements OnInit, OnDestroy {
   }
 
   getUsers() {
+    this.isLoading = true
     let position = 1
-    this.uSub = this.userService.getUsers().subscribe({
-      next: users => {
-        // users.filter(user => user.group != 'admin')
-        users.map(user => user.position = position++)
-        this.dataSource = new MatTableDataSource<User>(users)
-        this.paginator._intl.itemsPerPageLabel = 'Количество позиций';
-        this.dataSource.paginator = this.paginator;
-      },
-      error: error => MaterialService.toast(error.error.message)
-    })
+
+    setTimeout(() => {
+      this.uSub = this.userService.getUsers().subscribe({
+        next: users => {
+          this.isLoading = false
+          // users.filter(user => user.group != 'admin')
+          users.map(user => user.position = position++)
+          this.dataSource = new MatTableDataSource<User>(users)
+          this.paginator._intl.itemsPerPageLabel = 'Количество позиций';
+          this.dataSource.paginator = this.paginator;
+        },
+        error: error => MaterialService.toast(error.error.message)
+      })
+    }, 500)
   }
 }

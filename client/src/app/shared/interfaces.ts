@@ -21,12 +21,13 @@ export interface User {
 }
 
 export interface Restaurant{
-  status: boolean,
+  _id?:string,
+  status?: boolean,
   title: string,
   description: string,
   workTime: string,
-  imgSrc: string,
-  rating: number,
+  imgSrc?: string,
+  rating?: number,
   kitchen: string,
 }
 

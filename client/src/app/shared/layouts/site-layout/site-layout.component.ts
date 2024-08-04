@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {Router, RouterLink, RouterOutlet} from "@angular/router";
+import {Router, RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
 import {NgIf} from "@angular/common";
 import {AuthService} from "../../services/auth.service";
 
@@ -9,7 +9,8 @@ import {AuthService} from "../../services/auth.service";
   imports: [
     RouterOutlet,
     RouterLink,
-    NgIf
+    NgIf,
+    RouterLinkActive
   ],
   templateUrl: './site-layout.component.html',
   styleUrl: './site-layout.component.scss'

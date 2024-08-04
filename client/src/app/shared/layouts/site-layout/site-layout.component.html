@@ -21,10 +21,10 @@
       <div class="nav-wrap">
         <nav class="main-nav" role="navigation">
           <ul class="list-hover-slide">
-            <li><a routerLink="/dashboard">Главная</a></li>
-            <li><a routerLink="/users">Пользователи</a></li>
-            <li><a routerLink="/restaurants">Рестораны</a>
-            <li><a routerLink="/categories">Ассортимент</a></li>
+            <li routerLinkActive="active"><a routerLink="/dashboard">Главная</a></li>
+            <li routerLinkActive="active"><a routerLink="/users">Пользователи</a></li>
+            <li routerLinkActive="active"><a routerLink="/restaurants">Рестораны</a>
+            <li routerLinkActive="active"><a routerLink="/categories">Ассортимент</a></li>
             <li (click)="logout()"><a>Выйти</a></li>
           </ul>
         </nav>
@@ -32,11 +32,11 @@
     </div>
   </div>
 
-    <div class="container-right">
-<!--      <div class="loader" *ngIf="isErrorHttpStatus">-->
-<!--        <p>Идет соединение с сервером... Попробуйте обновить страницу</p>-->
-<!--        <mat-progress-bar mode="indeterminate"></mat-progress-bar>-->
-<!--      </div>-->
-      <router-outlet></router-outlet>
-    </div>
+  <div class="container-right">
+    <!--      <div class="loader" *ngIf="isErrorHttpStatus">-->
+    <!--        <p>Идет соединение с сервером... Попробуйте обновить страницу</p>-->
+    <!--        <mat-progress-bar mode="indeterminate"></mat-progress-bar>-->
+    <!--      </div>-->
+    <router-outlet></router-outlet>
+  </div>
 </div>

@@ -22,7 +22,7 @@ export const TokenInterceptor: HttpInterceptorFn = (req, next) => {
         auth.setStatus(event.status)
       },
       (error: HttpErrorResponse) => {
-        if (error.status == 401) {
+        if (error.status === 401) {
           router.navigate(['/login'], {
             queryParams: {
               sessionFailed: true

@@ -3,7 +3,7 @@
   <div>
     <h5>Пользователи</h5>
 
-    <div class="mat-elevation-z8">
+    <div class="mat-elevation-z8" *ngIf="!isLoading">
       <table mat-table [dataSource]="dataSource">
         <!-- Position Column -->
         <ng-container matColumnDef="#">
@@ -71,6 +71,9 @@
       </div>
     </div>
   </div>
+</div>
 
+<div class="center">
+  <app-loader *ngIf="isLoading"></app-loader>
 </div>
 
