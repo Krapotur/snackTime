@@ -76,7 +76,5 @@
   <app-loader *ngIf="isLoading"></app-loader>
 </div>
 
-<app-empty *ngIf="isEmpty">
-  <p>Список пуст... <a (click)="navigateToFormPage()"> Добавьте </a> первого пользователя!</p>
-</app-empty>
+<app-empty [page]="activeRoute" *ngIf="isEmpty"></app-empty>
 

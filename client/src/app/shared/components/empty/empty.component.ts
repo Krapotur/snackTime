@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {NgOptimizedImage} from "@angular/common";
 import {Router} from "@angular/router";
 
@@ -11,12 +11,17 @@ import {Router} from "@angular/router";
   templateUrl: './empty.component.html',
   styleUrl: './empty.component.scss'
 })
-export class EmptyComponent {
+export class EmptyComponent implements OnInit{
 
   constructor(private router: Router) {
   }
-
+  element = ''
   @Input() page: string = ''
+
+  ngOnInit() {
+    if(this.page === 'new-restaurant') this.element = 'ресторан'
+    if(this.page === 'new-user') this.element = 'пользователя'
+  }
 
   navigateToFormPage() {
     this.router.navigate([this.page]).then()
