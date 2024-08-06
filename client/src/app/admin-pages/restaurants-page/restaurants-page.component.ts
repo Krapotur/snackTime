@@ -11,8 +11,9 @@ import {MaterialService} from "../../shared/classes/material.service";
 import {MatInputModule} from "@angular/material/input";
 import {MatSelectModule} from "@angular/material/select";
 import {ReactiveFormsModule} from "@angular/forms";
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {LoaderComponent} from "../../shared/components/loader/loader.component";
+import {EmptyComponent} from "../../shared/components/empty/empty.component";
 
 @Component({
   selector: 'app-restaurants-page',
@@ -28,19 +29,23 @@ import {LoaderComponent} from "../../shared/components/loader/loader.component";
     RouterLink,
     MatSlideToggleModule,
     NgOptimizedImage,
-    LoaderComponent
+    LoaderComponent,
+    EmptyComponent
   ],
   templateUrl: './restaurants-page.component.html',
-  styleUrl: './restaurants-page.component.scss'
+  styleUrls: ['./restaurants-page.component.scss', '../../shared/styles/style-table.scss']
 })
 export class RestaurantsPageComponent implements OnInit, OnDestroy {
 
-  constructor(private restaurantService: RestaurantService
+  constructor(private restaurantService: RestaurantService,
+              private router: Router
   ) {
   }
 
   isLoading = false
   isShowTemplate = false;
+  isEmpty: boolean
+  activeRoute = 'new-restaurant'
   dataSource: MatTableDataSource<Restaurant>;
   displayedColumns: string[] = ['#', 'title', 'kitchen', 'rating', 'workTime', 'edit', 'status'];
   rSub: Subscription
@@ -60,6 +65,7 @@ export class RestaurantsPageComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.rSub = this.restaurantService.getRestaurants().subscribe({
           next: restaurants => {
+            if (restaurants.length == 0) this.isEmpty = true
             this.isLoading = false
             this.dataSource = new MatTableDataSource<Restaurant>(restaurants)
             this.paginator._intl.itemsPerPageLabel = 'Количество позиций';

@@ -1,8 +1,7 @@
 <!--Table-->
 <div class="main">
-  <div>
-    <h5>Пользователи</h5>
-
+  <h5>Пользователи</h5>
+  <div *ngIf="!isEmpty">
     <div class="mat-elevation-z8" *ngIf="!isLoading">
       <table mat-table [dataSource]="dataSource">
         <!-- Position Column -->
@@ -76,4 +75,8 @@
 <div class="center">
   <app-loader *ngIf="isLoading"></app-loader>
 </div>
+
+<app-empty *ngIf="isEmpty">
+  <p>Список пуст... <a (click)="navigateToFormPage()"> Добавьте </a> первого пользователя!</p>
+</app-empty>
 

@@ -1,3 +1,13 @@
-.circle-clipper .circle {
-  border-color: #F87839;
+.center {
+  position: absolute;
+  top: 20%;
+  left: 40%;
+
+  p {
+    font-family: 'Lora', serif;
+  }
+
+  .circle-clipper .circle {
+    border-color: #F87839;
+  }
 }

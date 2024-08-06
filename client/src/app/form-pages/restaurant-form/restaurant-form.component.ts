@@ -3,14 +3,13 @@ import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import {MatButtonModule} from "@angular/material/button";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatOptionModule} from "@angular/material/core";
-import {NgClass, NgForOf, NgIf} from "@angular/common";
+import {NgClass, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {MatSelectModule} from "@angular/material/select";
 import {Kitchen, Restaurant} from "../../shared/interfaces";
 import {Subscription} from "rxjs";
 import {KitchenService} from "../../shared/services/kitchen.service";
 import {MaterialService} from "../../shared/classes/material.service";
 import {RouterLink} from "@angular/router";
-import {NgxMaterialTimepickerModule} from "ngx-material-timepicker";
 import {FilterUsersPipe} from "../../shared/pipes/filter-kitchen.pipe";
 
 @Component({
@@ -23,15 +22,15 @@ import {FilterUsersPipe} from "../../shared/pipes/filter-kitchen.pipe";
     MatFormFieldModule,
     MatOptionModule,
     MatSelectModule,
-    NgxMaterialTimepickerModule,
     NgForOf,
     NgIf,
     RouterLink,
     NgClass,
     FilterUsersPipe,
+    NgOptimizedImage,
   ],
   templateUrl: './restaurant-form.component.html',
-  styleUrls: ['./restaurant-form.component.scss', '../../../styles.scss']
+  styleUrls: ['./restaurant-form.component.scss', '../../shared/styles/style-form.scss']
 })
 export class RestaurantFormComponent implements OnInit, OnDestroy {
   form: FormGroup

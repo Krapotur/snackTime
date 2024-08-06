@@ -1,0 +1,17 @@
+.empty-template {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 70px 0 0 350px;
+
+  p {
+    padding-top: 10px;
+    font: 15px 'Lora', serif;
+
+    a {
+      color: #F57C23;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  }
+}

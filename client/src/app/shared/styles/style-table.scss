@@ -1,0 +1,66 @@
+.main {
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  margin-top: 40px;
+  justify-content: space-evenly;
+  align-items: flex-start;
+
+  .mat-elevation-z8 {
+    margin-top: 23px;
+  }
+
+  h5 {
+    font-weight: bold;
+    padding: 0 0 0 20px;
+    font-family: 'Lora', serif;
+  }
+}
+
+table {
+  min-width: max-content;
+  padding: 5px 20px 0 20px;
+
+  th {
+    font-weight: bold;
+    font-family:'Lora', serif;
+    text-align: center;
+  }
+
+  th:first-child {
+    border-right: 1px solid black;
+
+  }
+
+  td {
+    font-family:'Lora', serif;
+    font-size: 14px;
+    text-align: center;
+
+    img {
+      cursor: pointer;
+    }
+  }
+
+  td:first-child {
+    border-right: 1px solid black;
+  }
+}
+
+.table-bottom {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0 25px 20px;
+  align-items: center;
+}
+
+.mat-mdc-slide-toggle.mat-warn {
+  --mdc-switch-selected-icon-color: #ffffff;
+  --mdc-switch-selected-focus-track-color: #f87a56;
+  --mdc-switch-selected-handle-color: #f65405;
+  --mdc-switch-selected-track-color: #f87a56;
+  --mat-switch-selected-with-icon-handle-horizontal-margin: 0 20px;
+  --mat-switch-unselected-with-icon-handle-horizontal-margin: 0;
+  --mdc-switch-track-height: 20px;
+  --mdc-switch-track-width: 43px;
+}

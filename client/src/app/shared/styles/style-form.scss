@@ -1,0 +1,83 @@
+/////////////////////////////////  Button Style ///////////////////////////////
+
+.btn-group {
+  width: 210px;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+
+.btn-group button {
+  height: 35px;
+  padding: 0 10px;
+  border-radius: 1px;
+  color: white;
+  font-family: 'Lora', serif;
+}
+
+.btn-cancel {
+  background-color: slategrey;
+  width: 100px;
+}
+
+.btn-save {
+  background-color: #26a69a;
+  width: 100px;
+}
+
+/////////////////////////////////  Button Style ///////////////////////////////
+
+////////////////////////////////   Input //////////////////////////////////////
+.row {
+  margin-bottom: 0;
+  padding: 0;
+
+  input {
+    margin-bottom: 0;
+  }
+}
+
+.invalid {
+  color: #e40606;
+}
+
+////////////////////////////////   Input //////////////////////////////////////
+
+.error {
+  color: red;
+  font-size: 13px;
+  padding-bottom: 5px;
+}
+
+////////////////////////////// Add Image ///////////////////////////////////
+.img-block {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  padding: 5px 5px 10px 5px;
+
+  label {
+    font-size: 18px;
+  }
+
+  .img-group {
+    padding-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    img {
+      width: 60px;
+      cursor: pointer;
+    }
+
+    span {
+      color: #26a69a;
+      font-size: 13px;
+      font-weight: bold;
+      padding-right: 5px;
+    }
+  }
+}
+
+////////////////////////////// Add Image ///////////////////////////////////

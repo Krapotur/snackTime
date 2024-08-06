@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {Router, RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
 import {NgIf} from "@angular/common";
 import {AuthService} from "../../services/auth.service";
+import {MatProgressBar} from "@angular/material/progress-bar";
 
 @Component({
   selector: 'app-site-layout',
@@ -10,7 +11,8 @@ import {AuthService} from "../../services/auth.service";
     RouterOutlet,
     RouterLink,
     NgIf,
-    RouterLinkActive
+    RouterLinkActive,
+    MatProgressBar
   ],
   templateUrl: './site-layout.component.html',
   styleUrl: './site-layout.component.scss'

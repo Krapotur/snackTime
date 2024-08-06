@@ -1,5 +1,5 @@
 <div [class]="isDelete ? 'blur' : ''">
-  <div class="main">
+  <div class="main-container">
     <div class="container-block">
       <h3>Новый ресторан</h3>
       <div class="img-del" *ngIf="restaurantID">
@@ -105,7 +105,7 @@
                      #inputImg
                      (change)="uploadImg($event)">
               <img (click)=" triggerClick()" [class]="isDelete ? 'dn' : ''"
-                   src="../assets/icons/add-photo.png" alt="edit">
+                   src="../assets/icons/add-photo.png" alt="edit" >
             </div>
           </div>
 

@@ -10,11 +10,10 @@ $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
   filter: blur(5px);
 }
 
-.main {
+.main-container {
   display: flex;
-  justify-content: center;
+  margin-left: 80%;
   padding-top: 30px;
-  width: 80vw;
 }
 
 .container-block {
@@ -77,6 +76,7 @@ $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
 }
 
 .description-block {
+  padding-top: 5px;
   width: 300px;
 
   label {
@@ -108,7 +108,7 @@ $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 5px 0;
+  padding: 5px 5px;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
 }
 
@@ -130,6 +130,10 @@ $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
 
 hr {
   height: 2px;
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  --mdc-filled-text-field-container-color: #ffffff;
 }
 
 ////////////Container Delete
