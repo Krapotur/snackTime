@@ -11,13 +11,24 @@ $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
 }
 
 .main-container {
+  position: relative;
   display: flex;
-  margin-left: 80%;
+  margin-left: 130px;
   padding-top: 30px;
 }
 
+.close-icon{
+  position: absolute;
+  z-index: 1;
+  top: 30px;
+  right: 3px;
+  font-size: 20px;
+  width: 15px;
+  color: white;
+  cursor: pointer;
+}
+
 .container-block {
-  position: relative;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -31,7 +42,7 @@ $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
     color: white;
     font-size: 20px;
     width: 100%;
-    padding-top: 20px;
+    padding-top: 10px;
     height: 60px;
     text-align: center;
     background-color: #26a69a;

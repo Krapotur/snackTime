@@ -9,8 +9,9 @@ import {Kitchen, Restaurant} from "../../shared/interfaces";
 import {Subscription} from "rxjs";
 import {KitchenService} from "../../shared/services/kitchen.service";
 import {MaterialService} from "../../shared/classes/material.service";
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {FilterUsersPipe} from "../../shared/pipes/filter-kitchen.pipe";
+import {RestaurantService} from "../../shared/services/restaurant.service";
 
 @Component({
   selector: 'app-restaurant-form',
@@ -48,7 +49,9 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
 
   @ViewChild('inputImg') inputImgRef: ElementRef
 
-  constructor(private kitchenService: KitchenService) {
+  constructor(private kitchenService: KitchenService,
+              private restaurantService: RestaurantService,
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -67,7 +70,7 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
       timeStart: new FormControl('', [Validators.required]),
       timeEnd: new FormControl('', [Validators.required]),
       kitchen: new FormControl('', [Validators.required]),
-      imgSrc: new FormControl('',)
+      imgSrc: new FormControl('', Validators.required)
     })
   }
 
@@ -87,23 +90,25 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-
     let time = this.form.get('timeStart').value + '-' + this.form.get('timeEnd').value
 
     let restaurant: Restaurant = {
       title: this.form.get('title').value,
       description: this.form.get('description').value,
-      imgSrc: "",
       kitchen: this.form.get('kitchen').value,
-      workTime: time
+      work_time: time
     }
 
-    console.log(restaurant)
+    this.restaurantService.create(restaurant, this.image).subscribe({
+      next: message => MaterialService.toast(message.message),
+      error: error => MaterialService.toast(error.error.message)
+    })
 
+    this.router.navigate(['restaurants']).then()
   }
 
   openRestaurantsPage() {
-
+    this.router.navigate(['restaurants']).then()
   }
 
 }

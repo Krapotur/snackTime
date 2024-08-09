@@ -1,5 +1,8 @@
 <div [class]="isDelete ? 'blur' : ''">
   <div class="main-container">
+    <div class="close-icon" (click)="openRestaurantsPage()">
+      x
+    </div>
     <div class="container-block">
       <h3>Новый ресторан</h3>
       <div class="img-del" *ngIf="restaurantID">
@@ -102,6 +105,7 @@
             <div class="img-group">
               <span *ngIf="image">Изображение загружено!</span>
               <input type="file" class="dn"
+                     formControlName="imgSrc"
                      #inputImg
                      (change)="uploadImg($event)">
               <img (click)=" triggerClick()" [class]="isDelete ? 'dn' : ''"

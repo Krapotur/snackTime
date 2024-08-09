@@ -70,11 +70,10 @@ export class UsersPageComponent implements OnInit, OnDestroy {
       this.uSub = this.userService.getUsers().subscribe({
         next: users => {
           this.isLoading = false
-          // if (users.length == 0) this.isEmpty = true
+          if (users.length == 0) this.isEmpty = true
           // users.filter(user => user.group != 'admin')
-          this.isEmpty = true
           users.map(user => user.position = position++)
-          // this.dataSource = new MatTableDataSource<User>(users)
+          this.dataSource = new MatTableDataSource<User>(users)
           this.paginator._intl.itemsPerPageLabel = 'Количество позиций';
           this.dataSource.paginator = this.paginator;
         },

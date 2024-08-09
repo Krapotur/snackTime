@@ -8,7 +8,6 @@ export const TokenInterceptor: HttpInterceptorFn = (req, next) => {
   const auth = inject(AuthService)
   const router = inject(Router)
 
-
   if (auth.isAuthenticated()) {
     req = req.clone({
       setHeaders: {
@@ -16,6 +15,7 @@ export const TokenInterceptor: HttpInterceptorFn = (req, next) => {
       }
     })
   }
+
   return next(req).pipe(
     tap(
       (event: HttpResponse<any>) => ()=>{

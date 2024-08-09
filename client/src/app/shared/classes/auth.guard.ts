@@ -13,13 +13,14 @@ import {Observable, of} from "rxjs";
   providedIn: 'root'
 })
 export class AuthGuard {
-
-  constructor(private auth: AuthService,
-              private router: Router) {
+  constructor(
+    private auth: AuthService,
+    private router: Router) {
   }
 
   canActivate(route: ActivatedRouteSnapshot,
               state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+
     if (this.auth.isAuthenticated()) {
       return of(true)
     } else {
@@ -31,7 +32,6 @@ export class AuthGuard {
     }
     return of(false);
   }
-
 }
 
 export const isAuthGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree => {

@@ -25,7 +25,7 @@ export interface Restaurant{
   status?: boolean,
   title: string,
   description: string,
-  workTime: string,
+  work_time: string,
   imgSrc?: string,
   rating?: number,
   kitchen: string,

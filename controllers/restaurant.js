@@ -16,6 +16,7 @@ module.exports.getById = function (req, res) {
 }
 
 module.exports.create = async function (req, res) {
+    console.log(req.body)
     const candidate = await Restaurant.findOne({title: req.body.title})
 
     if (candidate) {
@@ -27,15 +28,16 @@ module.exports.create = async function (req, res) {
             status: req.body.status,
             title: req.body.title,
             description: req.body.description,
-            work_time: req.body.work_time,
-            rating: req.body.rating,
+            work_time: req.body.workTime,
             kitchen: req.body.kitchen,
             imgSrc: req.file ? req.file.path : ''
         })
 
         try {
             await restaurant.save()
-            res.status(201).json(restaurant)
+            res.status(201).json({
+                message: `Ресторан "${req.body.title}" успешно добавлен!`
+            })
         } catch (e) {
             errorHandler(res, e)
         }

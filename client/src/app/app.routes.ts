@@ -21,7 +21,7 @@ export const routes: Routes = [
     ]
   },
   {
-    path: '', component: SiteLayoutComponent, children: [
+    path: '', component: SiteLayoutComponent, canActivate: [isAuthGuard], children: [
       {path: 'dashboard', component: DashboardPageComponent},
       {path: 'overview', component: OverviewPageComponent},
       {path: 'users', component: UsersPageComponent},
