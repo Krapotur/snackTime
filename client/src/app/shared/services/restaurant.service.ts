@@ -26,8 +26,13 @@ export class RestaurantService {
     fd.append('description', restaurant.description)
     fd.append('kitchen', restaurant.kitchen)
     fd.append('workTime', restaurant.work_time)
+    fd.append('typePlace', restaurant.typePlace)
 
     return this.http.post<{ message: string }>('/api/restaurant', fd)
+  }
+
+  update(restaurant?: Restaurant, fd?: FormData): Observable<{message: string}> {
+    return this.http.patch<{message:string}>(`/api/restaurant/${restaurant._id}`,restaurant)
   }
 
 }

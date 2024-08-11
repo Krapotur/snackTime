@@ -23,6 +23,10 @@ const restaurantSchema = new Schema({
         type: Number,
         default: 5
     },
+    typePlace:{
+      type:String,
+      default: 'other'
+    },
     kitchen: {
         ref: 'kitchens',
         type: Schema.Types.ObjectId

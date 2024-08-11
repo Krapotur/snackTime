@@ -74,7 +74,7 @@ export class UsersPageComponent implements OnInit, OnDestroy {
           // users.filter(user => user.group != 'admin')
           users.map(user => user.position = position++)
           this.dataSource = new MatTableDataSource<User>(users)
-          this.paginator._intl.itemsPerPageLabel = 'Количество позиций';
+          // this.paginator._intl.itemsPerPageLabel = 'Количество позиций';
           this.dataSource.paginator = this.paginator;
         },
         error: error => MaterialService.toast(error.error.message)

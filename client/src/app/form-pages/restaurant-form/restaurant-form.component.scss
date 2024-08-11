@@ -13,7 +13,7 @@ $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
 .main-container {
   position: relative;
   display: flex;
-  margin-left: 130px;
+  margin-left: 300px;
   padding-top: 30px;
 }
 
@@ -26,6 +26,10 @@ $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
   width: 15px;
   color: white;
   cursor: pointer;
+}
+
+.close-icon:hover{
+  font-size: 23px;
 }
 
 .container-block {
@@ -121,6 +125,7 @@ $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
   align-items: center;
   padding: 5px 5px;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
 }
 
 

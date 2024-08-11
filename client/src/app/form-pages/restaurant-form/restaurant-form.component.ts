@@ -10,8 +10,9 @@ import {Subscription} from "rxjs";
 import {KitchenService} from "../../shared/services/kitchen.service";
 import {MaterialService} from "../../shared/classes/material.service";
 import {Router, RouterLink} from "@angular/router";
-import {FilterUsersPipe} from "../../shared/pipes/filter-kitchen.pipe";
 import {RestaurantService} from "../../shared/services/restaurant.service";
+import {FilterKitchenPipe} from "../../shared/pipes/filter-kitchen.pipe";
+import {AuthService} from "../../shared/services/auth.service";
 
 @Component({
   selector: 'app-restaurant-form',
@@ -27,7 +28,7 @@ import {RestaurantService} from "../../shared/services/restaurant.service";
     NgIf,
     RouterLink,
     NgClass,
-    FilterUsersPipe,
+    FilterKitchenPipe,
     NgOptimizedImage,
   ],
   templateUrl: './restaurant-form.component.html',
@@ -36,10 +37,14 @@ import {RestaurantService} from "../../shared/services/restaurant.service";
 export class RestaurantFormComponent implements OnInit, OnDestroy {
   form: FormGroup
   kSub: Subscription
+  rSub: Subscription
   kitchens: Kitchen [] = []
+  restaurants: Restaurant[]
   image: File
+  isError = false
   isDelete = false
   restaurantID = ''
+  sortPlaces = ['Ресторан', 'Кафе', 'Другое']
   hours = ['00:00', '00:30', '01:00', '01:30', '02:00', '02:30', '03:00', '03:30', '04:00',
     '04:30', '05:00', '05:30', '06:00', '06:30', '7:00', '7:30', '8:00', '8:30', '09:00',
     '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00',
@@ -56,20 +61,26 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.generateForm()
+    this.getKitchens()
+    this.getRestaurants()
   }
 
   ngOnDestroy() {
     if (this.kSub) this.kSub.unsubscribe()
+    if (this.rSub) this.rSub.unsubscribe()
   }
 
   generateForm() {
-    this.getKitchens()
     this.form = new FormGroup({
-      title: new FormControl('', [Validators.required, Validators.minLength(3)]),
-      description: new FormControl('', [Validators.required, Validators.minLength(5)]),
-      timeStart: new FormControl('', [Validators.required]),
-      timeEnd: new FormControl('', [Validators.required]),
-      kitchen: new FormControl('', [Validators.required]),
+      title: new FormControl(null, [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(14)]),
+      description: new FormControl('', [Validators.required, Validators.minLength(100)]),
+      timeStart: new FormControl('', Validators.required),
+      timeEnd: new FormControl('', Validators.required),
+      kitchen: new FormControl('', Validators.required),
+      typePlace: new FormControl('', Validators.required),
       imgSrc: new FormControl('', Validators.required)
     })
   }
@@ -77,6 +88,13 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
   getKitchens() {
     this.kSub = this.kitchenService.getKitchens().subscribe({
       next: kitchens => this.kitchens = kitchens,
+      error: error => MaterialService.toast(error.error.message)
+    })
+  }
+
+  getRestaurants() {
+    this.rSub = this.restaurantService.getRestaurants().subscribe({
+      next: restaurants => this.restaurants = restaurants,
       error: error => MaterialService.toast(error.error.message)
     })
   }
@@ -90,25 +108,50 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    let time = this.form.get('timeStart').value + '-' + this.form.get('timeEnd').value
+    const time = this.form.get('timeStart').value + '-' + this.form.get('timeEnd').value
 
     let restaurant: Restaurant = {
       title: this.form.get('title').value,
       description: this.form.get('description').value,
+      work_time: time,
       kitchen: this.form.get('kitchen').value,
-      work_time: time
+      typePlace: this.getTypePlace(this.form.get('typePlace').value)
     }
 
     this.restaurantService.create(restaurant, this.image).subscribe({
-      next: message => MaterialService.toast(message.message),
+      next: message => {
+        MaterialService.toast(message.message)
+        this.router.navigate(['admin/restaurants']).then()
+      },
       error: error => MaterialService.toast(error.error.message)
     })
-
-    this.router.navigate(['restaurants']).then()
   }
 
   openRestaurantsPage() {
-    this.router.navigate(['restaurants']).then()
+    this.router.navigate(['admin/restaurants']).then()
+  }
+
+  checkTitleRestaurant() {
+    const title = this.form.get('title').value
+    this.restaurants.forEach(restaurant => {
+      this.isError = title.toLowerCase() == restaurant.title.toLocaleLowerCase();
+    })
+  }
+
+  getTypePlace(typePlace: string): string {
+    let namePlace: string
+
+    switch (typePlace) {
+      case 'Ресторан':
+        namePlace = 'restaurant';
+        break;
+      case 'Кафе':
+        namePlace = 'сafe';
+        break;
+      default:
+        namePlace = 'other'
+    }
+    return namePlace;
   }
 
 }

@@ -5,7 +5,7 @@ import {Kitchen} from "../interfaces";
   name: 'filterKitchen',
   standalone: true
 })
-export class FilterUsersPipe implements PipeTransform {
+export class FilterKitchenPipe implements PipeTransform {
   constructor() {
   }
   transform(kitchenID: string, kitchens: Kitchen[]): string {

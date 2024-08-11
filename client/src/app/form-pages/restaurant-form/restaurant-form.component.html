@@ -15,15 +15,22 @@
             <div class="input-field col s6">
               <input id="title" type="text" formControlName="title"
                      [ngClass]="{'invalid' : form.get('title').invalid && form.get('title').touched}"
+              (keyup)="checkTitleRestaurant()"
               >
               <label class="active" for="title">Название</label>
             </div>
           </div>
+          <span class="error" *ngIf="isError"
+          >*Придумайте другое название
+                    </span>
           <span class="error" *ngIf="form.get('title').hasError('required') && form.get('title').touched"
           >*Введите название
                     </span>
           <span class="error" *ngIf="form.get('title').hasError('minlength') && form.get('title').touched"
           >*Не менее 3х символов
+                    </span>
+          <span class="error" *ngIf="form.get('title').hasError('maxlength') && form.get('title').touched"
+          >*Слишком длинное название
                     </span>
 
           <div class="description-block">
@@ -46,6 +53,19 @@
           </div>
 
           <mat-form-field>
+            <mat-label>Тип заведения <span *ngIf="!sortPlaces.length">(список пуст)</span></mat-label>
+            <mat-select formControlName="typePlace">
+              <mat-select-trigger>
+                {{ form.get('typePlace').value }}
+              </mat-select-trigger>
+              <mat-option *ngFor="let place of sortPlaces"
+                          [value]="place"
+              >{{ place }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field>
             <mat-label>Кухня <span *ngIf="!kitchens.length">(список пуст)</span></mat-label>
             <mat-select formControlName="kitchen">
               <mat-select-trigger>
@@ -57,6 +77,7 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
+
 
           <div class="time-block">
             <p> Режим работы </p>
@@ -119,14 +140,14 @@
             <button
               class="btn-cancel" extended="" mat-fab
               [disabled]="isDelete"
-              routerLink="/restaurants"
+             (click)="openRestaurantsPage()"
             >
               Отмена
             </button>
             <button
               type="submit"
               class="btn-save" extended="" mat-fab
-              [disabled]="form.invalid"
+              [disabled]="form.invalid || isError"
               (click)="onSubmit()"
             >
               Сохранить

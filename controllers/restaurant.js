@@ -30,7 +30,8 @@ module.exports.create = async function (req, res) {
             description: req.body.description,
             work_time: req.body.workTime,
             kitchen: req.body.kitchen,
-            imgSrc: req.file ? req.file.path : ''
+            imgSrc: req.file ? req.file.path : '',
+            typePlace: req.body.typePlace
         })
 
         try {
@@ -44,8 +45,27 @@ module.exports.create = async function (req, res) {
     }
 }
 
-module.exports.update = function (req, res) {
+module.exports.update = async function (req, res) {
+    let updated = {
+        ...req.body
+    }
 
+    if (req.file) updated.imgSrc = req.file.path
+
+    try {
+        await Restaurant.findByIdAndUpdate(
+            {_id: req.params.id},
+            {$set: updated},
+            {new: true}
+        )
+
+        res.status(200).json({
+            message: 'Изменения внесены'
+        })
+
+    } catch (e) {
+        errorHandler(res, e)
+    }
 }
 
 module.exports.delete = function (req, res) {

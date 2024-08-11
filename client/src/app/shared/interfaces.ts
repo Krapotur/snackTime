@@ -23,12 +23,14 @@ export interface User {
 export interface Restaurant{
   _id?:string,
   status?: boolean,
+  position?:number,
   title: string,
   description: string,
   work_time: string,
   imgSrc?: string,
   rating?: number,
   kitchen: string,
+  typePlace: string
 }
 
 export interface Kitchen {

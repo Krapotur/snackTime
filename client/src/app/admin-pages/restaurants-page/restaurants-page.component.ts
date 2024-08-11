@@ -4,7 +4,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {NgIf, NgOptimizedImage} from "@angular/common";
-import {Restaurant} from "../../shared/interfaces";
+import {Kitchen, Restaurant} from "../../shared/interfaces";
 import {Subscription} from "rxjs";
 import {RestaurantService} from "../../shared/services/restaurant.service";
 import {MaterialService} from "../../shared/classes/material.service";
@@ -14,6 +14,10 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {Router, RouterLink} from "@angular/router";
 import {LoaderComponent} from "../../shared/components/loader/loader.component";
 import {EmptyComponent} from "../../shared/components/empty/empty.component";
+import {KitchenService} from "../../shared/services/kitchen.service";
+import {normalizeExtraEntryPoints} from "@angular-devkit/build-angular/src/tools/webpack/utils/helpers";
+import {FilterKitchenPipe} from "../../shared/pipes/filter-kitchen.pipe";
+import {SortPlacePipe} from "../../shared/pipes/sort-place.pipe";
 
 @Component({
   selector: 'app-restaurants-page',
@@ -30,7 +34,9 @@ import {EmptyComponent} from "../../shared/components/empty/empty.component";
     MatSlideToggleModule,
     NgOptimizedImage,
     LoaderComponent,
-    EmptyComponent
+    EmptyComponent,
+    FilterKitchenPipe,
+    SortPlacePipe
   ],
   templateUrl: './restaurants-page.component.html',
   styleUrls: ['./restaurants-page.component.scss', '../../shared/styles/style-table.scss']
@@ -38,10 +44,10 @@ import {EmptyComponent} from "../../shared/components/empty/empty.component";
 export class RestaurantsPageComponent implements OnInit, OnDestroy {
 
   constructor(private restaurantService: RestaurantService,
-              private router: Router
-  ) {
+              private kitchenService: KitchenService) {
   }
 
+  kitchens: Kitchen[]
   isLoading = false
   isShowTemplate = false;
   isEmpty: boolean
@@ -49,31 +55,62 @@ export class RestaurantsPageComponent implements OnInit, OnDestroy {
   dataSource: MatTableDataSource<Restaurant>;
   displayedColumns: string[] = ['#', 'title', 'kitchen', 'rating', 'workTime', 'edit', 'status'];
   rSub: Subscription
+  kSub: Subscription
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit() {
     this.getRestaurants()
+    this.getKitchens()
   }
 
   ngOnDestroy() {
     if (this.rSub) this.rSub.unsubscribe()
+    if (this.kSub) this.kSub.unsubscribe()
   }
 
   getRestaurants() {
     this.isLoading = true
+    let position = 1
+
     setTimeout(() => {
       this.rSub = this.restaurantService.getRestaurants().subscribe({
           next: restaurants => {
             if (restaurants.length == 0) this.isEmpty = true
             this.isLoading = false
+            restaurants.map(restaurant => restaurant.position = position++)
             this.dataSource = new MatTableDataSource<Restaurant>(restaurants)
-            this.paginator._intl.itemsPerPageLabel = 'Количество позиций';
+            // this.paginator._intl.itemsPerPageLabel = 'Количество позиций';
             this.dataSource.paginator = this.paginator;
           },
-          error: error => MaterialService.toast(error.error.message)
+          error: error => {
+            if (error.status === 401) {
+              MaterialService.toast('Для получения данных, требуется авторизация!')
+            } else {
+              MaterialService.toast(error.error.message)
+            }
+          }
         }
       )
     }, 500)
+  }
+
+  getKitchens() {
+    this.kSub = this.kitchenService.getKitchens().subscribe({
+      next: kitchens => this.kitchens = kitchens,
+      error: error => MaterialService.toast(error.error.message)
+    })
+  }
+
+  changeStatus(restaurant: Restaurant){
+    let newRestaurant: Restaurant = {
+      ...restaurant,
+      status: !restaurant.status,
+    }
+
+    this.restaurantService.update(newRestaurant).subscribe({
+      next: message => MaterialService.toast(message.message),
+      error: error => MaterialService.toast(error.error.error)
+    })
   }
 }
