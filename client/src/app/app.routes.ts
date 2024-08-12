@@ -21,7 +21,7 @@ export const routes: Routes = [
     ]
   },
   {
-    path: 'admin', component: SiteLayoutComponent, canActivate: [isAuthGuard], children: [
+    path: 'admin', component: SiteLayoutComponent,  children: [
       {path: '', redirectTo: '/admin/users', pathMatch: 'full'},
       {path: 'dashboard', component: DashboardPageComponent},
       {path: 'overview', component: OverviewPageComponent},
@@ -29,9 +29,10 @@ export const routes: Routes = [
       {path: 'restaurants', component: RestaurantsPageComponent},
       {path: 'categories', component: CategoriesPageComponent},
       {path: 'new-user', component: UserFormComponent},
-      {path: 'new-restaurant', component: RestaurantFormComponent},
-      {path: 'new-category', component: CategoryFormComponent},
-      {path: 'new-kitchen', component: KitchenFormComponent}
+      {path: 'form-restaurant', component: RestaurantFormComponent},
+      {path: 'form-restaurant/:id', component: RestaurantFormComponent},
+      {path: 'form-category', component: CategoryFormComponent},
+      {path: 'form-kitchen', component: KitchenFormComponent}
     ]
   }
 ];

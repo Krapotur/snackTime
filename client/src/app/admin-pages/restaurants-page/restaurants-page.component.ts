@@ -15,7 +15,6 @@ import {Router, RouterLink} from "@angular/router";
 import {LoaderComponent} from "../../shared/components/loader/loader.component";
 import {EmptyComponent} from "../../shared/components/empty/empty.component";
 import {KitchenService} from "../../shared/services/kitchen.service";
-import {normalizeExtraEntryPoints} from "@angular-devkit/build-angular/src/tools/webpack/utils/helpers";
 import {FilterKitchenPipe} from "../../shared/pipes/filter-kitchen.pipe";
 import {SortPlacePipe} from "../../shared/pipes/sort-place.pipe";
 
@@ -44,14 +43,15 @@ import {SortPlacePipe} from "../../shared/pipes/sort-place.pipe";
 export class RestaurantsPageComponent implements OnInit, OnDestroy {
 
   constructor(private restaurantService: RestaurantService,
-              private kitchenService: KitchenService) {
+              private kitchenService: KitchenService,
+              private router: Router) {
   }
 
   kitchens: Kitchen[]
   isLoading = false
   isShowTemplate = false;
   isEmpty: boolean
-  activeRoute = 'new-restaurant'
+  activeRoute = 'form-restaurant'
   dataSource: MatTableDataSource<Restaurant>;
   displayedColumns: string[] = ['#', 'title', 'kitchen', 'rating', 'workTime', 'edit', 'status'];
   rSub: Subscription
@@ -100,6 +100,10 @@ export class RestaurantsPageComponent implements OnInit, OnDestroy {
       next: kitchens => this.kitchens = kitchens,
       error: error => MaterialService.toast(error.error.message)
     })
+  }
+
+  openPage(id:string){
+    this.router.navigate([`admin/form-restaurant/${id}`]).then()
   }
 
   changeStatus(restaurant: Restaurant){

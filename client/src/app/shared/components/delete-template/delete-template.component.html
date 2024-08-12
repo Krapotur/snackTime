@@ -1,0 +1,24 @@
+<div class="container-del">
+  <div class="title">
+    <h2>Удалить</h2>
+    <p>"{{ title }}"?</p>
+  </div>
+
+  <div class="btn-group-del">
+    <button
+      class="btn-cancel" extended="" mat-fab
+      (click)="openPage()"
+    >
+      Нет
+    </button>
+    <button
+      type="submit"
+      class="btn-save" extended="" mat-fab
+      (click)="delete()"
+    >
+      Да
+    </button>
+  </div>
+</div>
+
+

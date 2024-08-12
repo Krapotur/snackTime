@@ -19,7 +19,7 @@ export class SortPlacePipe implements PipeTransform {
         place = 'Кафе';
         break;
       default:
-        place = 'Другое'
+        place = ''
     }
     return place;
   }

@@ -13,20 +13,21 @@ export interface User {
   firstName: string,
   lastName: string,
   login: string,
-  group:string,
+  group: string,
   password: string,
   imgSrc: string,
   phone: string,
   email: string
 }
 
-export interface Restaurant{
-  _id?:string,
+export interface Restaurant {
+  _id?: string,
   status?: boolean,
-  position?:number,
+  position?: number,
   title: string,
   description: string,
-  work_time: string,
+  timeOpen: string,
+  timeClose: string,
   imgSrc?: string,
   rating?: number,
   kitchen: string,
@@ -37,4 +38,10 @@ export interface Kitchen {
   _id: string
   title: string,
   imgSrc: string
+}
+
+export interface Elem {
+  title: string,
+  route: string,
+  id: string
 }

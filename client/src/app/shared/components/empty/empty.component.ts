@@ -19,11 +19,11 @@ export class EmptyComponent implements OnInit{
   @Input() page: string = ''
 
   ngOnInit() {
-    if(this.page === 'new-restaurant') this.element = 'ресторан'
-    if(this.page === 'new-user') this.element = 'пользователя'
+    if(this.page === 'form-restaurant') this.element = 'ресторан'
+    if(this.page === 'form-user') this.element = 'пользователя'
   }
 
   navigateToFormPage() {
-    this.router.navigate([this.page]).then()
+    this.router.navigate([`admin/${this.page}`]).then()
   }
 }

@@ -11,12 +11,17 @@ module.exports.getAll = async function (req, res) {
     }
 }
 
-module.exports.getById = function (req, res) {
-
+module.exports.getById = async function (req, res) {
+    try {
+        const restaurant = await Restaurant.findById({_id: req.params.id})
+        res.status(200).json(restaurant)
+    } catch (e) {
+        errorHandler(res, e)
+    }
 }
 
 module.exports.create = async function (req, res) {
-    console.log(req.body)
+    console.log(req)
     const candidate = await Restaurant.findOne({title: req.body.title})
 
     if (candidate) {
@@ -28,7 +33,8 @@ module.exports.create = async function (req, res) {
             status: req.body.status,
             title: req.body.title,
             description: req.body.description,
-            work_time: req.body.workTime,
+            timeOpen: req.body.timeOpen,
+            timeClose: req.body.timeClose,
             kitchen: req.body.kitchen,
             imgSrc: req.file ? req.file.path : '',
             typePlace: req.body.typePlace
@@ -68,6 +74,12 @@ module.exports.update = async function (req, res) {
     }
 }
 
-module.exports.delete = function (req, res) {
-
+module.exports.delete = async function (req, res) {
+    try {
+        const restaurant = await Restaurant.findOne({_id: req.params.id})
+        await Restaurant.deleteOne({_id: req.params.id})
+        res.status(200).json({message: `Ресторан "${restaurant.title}" удален`})
+    } catch (e) {
+        errorHandler(res, e)
+    }
 }

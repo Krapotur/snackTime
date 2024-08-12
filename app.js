@@ -40,6 +40,6 @@ app.use('/api/category', categoryRoutes);
 app.use('/api/kitchen', kitchenRoutes);
 app.use('/api/order', orderRoutes);
 app.use('/api/position', positionRoutes);
-app.use('/api/restaurant', restaurantRoutes);
+app.use('/api/restaurants', restaurantRoutes);
 
 module.exports = app;

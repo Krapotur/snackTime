@@ -15,7 +15,11 @@ const restaurantSchema = new Schema({
       type: String,
       default: ''
     },
-    work_time: {
+    timeOpen: {
+        type: String,
+        default: ''
+    },
+    timeClose: {
         type: String,
         default: ''
     },
@@ -26,6 +30,10 @@ const restaurantSchema = new Schema({
     typePlace:{
       type:String,
       default: 'other'
+    },
+    imgSrc: {
+      type: String,
+      default: ''
     },
     kitchen: {
         ref: 'kitchens',

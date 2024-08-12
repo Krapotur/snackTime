@@ -1,18 +1,18 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, DoCheck, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatOptionModule} from "@angular/material/core";
 import {NgClass, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {MatSelectModule} from "@angular/material/select";
-import {Kitchen, Restaurant} from "../../shared/interfaces";
+import {Elem, Kitchen, Restaurant} from "../../shared/interfaces";
 import {Subscription} from "rxjs";
 import {KitchenService} from "../../shared/services/kitchen.service";
 import {MaterialService} from "../../shared/classes/material.service";
-import {Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {RestaurantService} from "../../shared/services/restaurant.service";
 import {FilterKitchenPipe} from "../../shared/pipes/filter-kitchen.pipe";
-import {AuthService} from "../../shared/services/auth.service";
+import {DeleteTemplateComponent} from "../../shared/components/delete-template/delete-template.component";
 
 @Component({
   selector: 'app-restaurant-form',
@@ -30,6 +30,7 @@ import {AuthService} from "../../shared/services/auth.service";
     NgClass,
     FilterKitchenPipe,
     NgOptimizedImage,
+    DeleteTemplateComponent,
   ],
   templateUrl: './restaurant-form.component.html',
   styleUrls: ['./restaurant-form.component.scss', '../../shared/styles/style-form.scss']
@@ -40,10 +41,12 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
   rSub: Subscription
   kitchens: Kitchen [] = []
   restaurants: Restaurant[]
+  restaurant: Restaurant
+  elem: Elem
   image: File
   isError = false
   isDelete = false
-  restaurantID = ''
+  restaurantID: string
   sortPlaces = ['Ресторан', 'Кафе', 'Другое']
   hours = ['00:00', '00:30', '01:00', '01:30', '02:00', '02:30', '03:00', '03:30', '04:00',
     '04:30', '05:00', '05:30', '06:00', '06:30', '7:00', '7:30', '8:00', '8:30', '09:00',
@@ -56,11 +59,13 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
 
   constructor(private kitchenService: KitchenService,
               private restaurantService: RestaurantService,
-              private router: Router) {
+              private router: Router,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit() {
     this.generateForm()
+    this.getRestaurantById()
     this.getKitchens()
     this.getRestaurants()
   }
@@ -70,18 +75,21 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
     if (this.rSub) this.rSub.unsubscribe()
   }
 
-  generateForm() {
+  generateForm(restaurant?: Restaurant) {
     this.form = new FormGroup({
-      title: new FormControl(null, [
+      title: new FormControl(restaurant ? restaurant.title : '', [
         Validators.required,
         Validators.minLength(3),
-        Validators.maxLength(14)]),
-      description: new FormControl('', [Validators.required, Validators.minLength(100)]),
-      timeStart: new FormControl('', Validators.required),
-      timeEnd: new FormControl('', Validators.required),
-      kitchen: new FormControl('', Validators.required),
-      typePlace: new FormControl('', Validators.required),
-      imgSrc: new FormControl('', Validators.required)
+        Validators.maxLength(16)]),
+      description: new FormControl(restaurant ? restaurant.description : '', [
+        Validators.required,
+        Validators.minLength(100)]),
+      timeOpen: new FormControl(restaurant ? restaurant.timeOpen : '', Validators.required),
+      timeClose: new FormControl(restaurant ? restaurant.timeClose : '', Validators.required),
+      kitchen: new FormControl(restaurant ? restaurant.kitchen : '', Validators.required),
+      typePlace: new FormControl(restaurant ? (restaurant.typePlace == 'restaurant' ? 'Ресторан' : 'Кафе') : '',
+        Validators.required),
+      imgSrc: new FormControl(restaurant ? restaurant.imgSrc : '', Validators.required)
     })
   }
 
@@ -93,9 +101,28 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
   }
 
   getRestaurants() {
-    this.rSub = this.restaurantService.getRestaurants().subscribe({
-      next: restaurants => this.restaurants = restaurants,
-      error: error => MaterialService.toast(error.error.message)
+    setTimeout(() => {
+      this.rSub = this.restaurantService.getRestaurants().subscribe({
+        next: restaurants => this.restaurants = restaurants,
+        error: error => MaterialService.toast(error.error.message)
+      })
+    }, 500)
+
+  }
+
+  getRestaurantById() {
+    this.restaurantID = this.route.snapshot.params['id']
+    this.restaurantService.getRestaurantByID(this.restaurantID).subscribe({
+      next: restaurant => {
+        this.generateForm(restaurant)
+        this.elem = {
+          id: restaurant._id,
+          title: restaurant.title,
+          route: 'restaurants',
+        }
+        this.restaurant = restaurant
+      },
+      error: error => MaterialService.toast(error.error.error)
     })
   }
 
@@ -108,27 +135,42 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    const time = this.form.get('timeStart').value + '-' + this.form.get('timeEnd').value
-
     let restaurant: Restaurant = {
       title: this.form.get('title').value,
       description: this.form.get('description').value,
-      work_time: time,
+      timeOpen: this.form.get('timeOpen').value,
+      timeClose: this.form.get('timeClose').value,
       kitchen: this.form.get('kitchen').value,
       typePlace: this.getTypePlace(this.form.get('typePlace').value)
     }
 
-    this.restaurantService.create(restaurant, this.image).subscribe({
-      next: message => {
-        MaterialService.toast(message.message)
-        this.router.navigate(['admin/restaurants']).then()
-      },
-      error: error => MaterialService.toast(error.error.message)
-    })
+    if (this.restaurantID) {
+      restaurant._id = this.restaurantID
+      this.rSub = this.restaurantService.update(restaurant, this.image).subscribe({
+        next: message => {
+          MaterialService.toast(message.message)
+          this.router.navigate(['admin/restaurants']).then()
+        },
+        error: error => MaterialService.toast(error.error.message)
+      })
+    } else {
+      this.rSub = this.restaurantService.create(restaurant, this.image).subscribe({
+        next: message => {
+          MaterialService.toast(message.message)
+          this.router.navigate(['admin/restaurants']).then()
+        },
+        error: error => MaterialService.toast(error.error.message)
+      })
+    }
   }
 
   openRestaurantsPage() {
     this.router.navigate(['admin/restaurants']).then()
+  }
+
+  openDelTemplate() {
+    this.isDelete = true
+    this.form.disable()
   }
 
   checkTitleRestaurant() {
@@ -153,5 +195,4 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
     }
     return namePlace;
   }
-
 }
