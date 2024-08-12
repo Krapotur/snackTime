@@ -1,4 +1,14 @@
 
+.tables{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+app-kitchens-page{
+  margin: 0 50px;
+}
+
 button {
   background-color: #F87839;
   border-radius: 1px;

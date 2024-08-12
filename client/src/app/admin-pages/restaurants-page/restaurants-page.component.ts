@@ -17,6 +17,7 @@ import {EmptyComponent} from "../../shared/components/empty/empty.component";
 import {KitchenService} from "../../shared/services/kitchen.service";
 import {FilterKitchenPipe} from "../../shared/pipes/filter-kitchen.pipe";
 import {SortPlacePipe} from "../../shared/pipes/sort-place.pipe";
+import {KitchensPageComponent} from "../kitchens-page/kitchens-page.component";
 
 @Component({
   selector: 'app-restaurants-page',
@@ -35,7 +36,8 @@ import {SortPlacePipe} from "../../shared/pipes/sort-place.pipe";
     LoaderComponent,
     EmptyComponent,
     FilterKitchenPipe,
-    SortPlacePipe
+    SortPlacePipe,
+    KitchensPageComponent
   ],
   templateUrl: './restaurants-page.component.html',
   styleUrls: ['./restaurants-page.component.scss', '../../shared/styles/style-table.scss']

@@ -35,7 +35,9 @@ export interface Restaurant {
 }
 
 export interface Kitchen {
-  _id: string
+  _id?: string,
+  status?: boolean,
+  position?: number,
   title: string,
   imgSrc: string
 }
