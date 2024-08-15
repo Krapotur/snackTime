@@ -39,11 +39,12 @@ export interface Kitchen {
   status?: boolean,
   position?: number,
   title: string,
-  imgSrc: string
+  imgSrc?: string
 }
 
 export interface Elem {
+  id: string
   title: string,
   route: string,
-  id: string
+  formRoute: string
 }

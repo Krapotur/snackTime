@@ -28,8 +28,10 @@ require('./middleware/passport')(passport);
 
 app.use(morgan('dev'));
 app.use('/uploads', express.static('uploads'))
+
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+
 app.use(cors());
 
 app.use('/api/auth', authRoutes);
@@ -37,7 +39,7 @@ app.use('/api/user', userRoutes);
 app.use('/api/client', clientRoutes);
 app.use('/api/group', groupRoutes);
 app.use('/api/category', categoryRoutes);
-app.use('/api/kitchen', kitchenRoutes);
+app.use('/api/kitchens', kitchenRoutes);
 app.use('/api/order', orderRoutes);
 app.use('/api/position', positionRoutes);
 app.use('/api/restaurants', restaurantRoutes);

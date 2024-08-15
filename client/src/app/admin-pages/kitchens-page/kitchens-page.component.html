@@ -2,7 +2,9 @@
 <div class="main">
   <h5>Кухня</h5>
 
-  <div >
+  <app-empty [page]="activeRoute" *ngIf="isEmpty"></app-empty>
+
+  <div *ngIf="!isEmpty">
     <div class="mat-elevation-z8">
       <table mat-table [dataSource]="dataSource">
         <!-- Position Column -->
@@ -42,9 +44,10 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
 
-      <div class="bottom-table">
+      <div class="table-bottom">
         <button
           class="btn" extended="" mat-fab
+          routerLink="/admin/form-kitchen"
         >
           Добавить
         </button>
@@ -55,4 +58,9 @@
       </div>
     </div>
   </div>
+</div>
+
+
+<div class="center">
+  <app-loader *ngIf="isLoading"></app-loader>
 </div>

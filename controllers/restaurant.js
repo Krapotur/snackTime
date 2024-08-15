@@ -21,7 +21,6 @@ module.exports.getById = async function (req, res) {
 }
 
 module.exports.create = async function (req, res) {
-    console.log(req)
     const candidate = await Restaurant.findOne({title: req.body.title})
 
     if (candidate) {
@@ -57,6 +56,7 @@ module.exports.update = async function (req, res) {
     }
 
     if (req.file) updated.imgSrc = req.file.path
+
 
     try {
         await Restaurant.findByIdAndUpdate(

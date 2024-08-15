@@ -11,8 +11,13 @@ module.exports.getAll = async function (req, res) {
     }
 }
 
-module.exports.getById = function (req, res) {
-
+module.exports.getById = async function (req, res) {
+    try {
+        const kitchen = await Kitchen.findById({_id: req.params.id})
+        res.status(200).json(kitchen)
+    } catch (e) {
+        errorHandler(res, e)
+    }
 }
 
 module.exports.create = async function (req, res) {
@@ -30,15 +35,44 @@ module.exports.create = async function (req, res) {
 
         try {
             await kitchen.save()
-            res.status(201).json(kitchen)
+            res.status(201).json({
+                message: `Кухня "${req.body.title}" успешно добавлена!`
+            })
         } catch (e) {
             errorHandler(res, e)
         }
     }
 }
-module.exports.update = function (req, res) {
 
+module.exports.update = async function (req, res) {
+    let updated = {
+        ...req.body
+    }
+
+    if (req.file) updated.imgSrc = req.file.path
+
+    try {
+        await Kitchen.findByIdAndUpdate(
+            {_id: req.params.id},
+            {$set: updated},
+            {new: true}
+        )
+
+        res.status(200).json({
+            message: 'Изменения внесены'
+        })
+
+    } catch (e) {
+        errorHandler(res, e)
+    }
 }
-module.exports.delete = function (req, res) {
 
+module.exports.delete = async function (req, res) {
+    try {
+        const kitchen = await Kitchen.findOne({_id: req.params.id})
+        await Kitchen.deleteOne({_id: req.params.id})
+        res.status(200).json({message: `Кухня "${kitchen.title}" удалена`})
+    } catch (e) {
+        errorHandler(res, e)
+    }
 }

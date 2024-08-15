@@ -3,6 +3,7 @@
 <div class="tables">
   <div class="main">
     <h5>Рестораны</h5>
+    <app-empty [page]="activeRoute" *ngIf="isEmpty"></app-empty>
 
     <div *ngIf="!isEmpty">
       <div class="mat-elevation-z8" *ngIf="!isLoading">
@@ -81,7 +82,6 @@
       </div>
     </div>
   </div>
-
   <app-kitchens-page *ngIf="!isLoading"></app-kitchens-page>
 </div>
 
@@ -90,5 +90,4 @@
   <app-loader *ngIf="isLoading"></app-loader>
 </div>
 
-<app-empty [page]="activeRoute" *ngIf="isEmpty"></app-empty>
 

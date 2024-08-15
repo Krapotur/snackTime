@@ -37,7 +37,7 @@ export class DeleteTemplateComponent implements OnInit, OnDestroy {
 
   openPage() {
     this.router.navigateByUrl('/').then(() => {
-      this.router.navigate([`admin/form-restaurant/${this.elemIn.id}`]).then()
+      void this.router.navigate([`admin/form-${this.elemIn.formRoute}/${this.elemIn.id}`])
     })
   }
 
@@ -45,7 +45,7 @@ export class DeleteTemplateComponent implements OnInit, OnDestroy {
     this.dSub = this.sharedService.delete(this.elemIn).subscribe({
       next: message => {
         MaterialService.toast(message.message)
-        this.router.navigate([`admin/${this.elemIn.route}`]).then()
+        void this.router.navigate([`admin/${this.elemIn.route}`])
       },
       error: error => MaterialService.toast(error.error.message())
     })

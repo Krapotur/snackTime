@@ -60,7 +60,7 @@ $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 20px;
+  padding-top: 35px;
   width: 350px;
 
   .row {
@@ -72,7 +72,6 @@ $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
 
   mat-form-field {
     width: 300px;
-    padding-top: 10px;
 
     span {
       color: grey;
@@ -93,6 +92,7 @@ $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
     resize: none;
     color: rgba(56, 55, 55, 0.95);
     padding: 10px;
+    margin-bottom: 10px;
     height: 100px;
     outline: none;
     border: 1px solid rgba(128, 128, 128, 0.45);

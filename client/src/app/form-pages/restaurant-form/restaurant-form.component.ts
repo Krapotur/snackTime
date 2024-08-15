@@ -64,6 +64,10 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.restaurantID = this.route.snapshot.params['id'] ?
+      this.route.snapshot.params['id']
+      : ''
+
     this.generateForm()
     this.getRestaurantById()
     this.getKitchens()
@@ -83,7 +87,7 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
         Validators.maxLength(16)]),
       description: new FormControl(restaurant ? restaurant.description : '', [
         Validators.required,
-        Validators.minLength(100)]),
+        Validators.minLength(250)]),
       timeOpen: new FormControl(restaurant ? restaurant.timeOpen : '', Validators.required),
       timeClose: new FormControl(restaurant ? restaurant.timeClose : '', Validators.required),
       kitchen: new FormControl(restaurant ? restaurant.kitchen : '', Validators.required),
@@ -111,7 +115,6 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
   }
 
   getRestaurantById() {
-    this.restaurantID = this.route.snapshot.params['id']
     this.restaurantService.getRestaurantByID(this.restaurantID).subscribe({
       next: restaurant => {
         this.generateForm(restaurant)
@@ -119,6 +122,7 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
           id: restaurant._id,
           title: restaurant.title,
           route: 'restaurants',
+          formRoute:'restaurant'
         }
         this.restaurant = restaurant
       },
@@ -149,7 +153,7 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
       this.rSub = this.restaurantService.update(restaurant, this.image).subscribe({
         next: message => {
           MaterialService.toast(message.message)
-          this.router.navigate(['admin/restaurants']).then()
+          void this.router.navigate(['admin/restaurants'])
         },
         error: error => MaterialService.toast(error.error.message)
       })
@@ -157,7 +161,7 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
       this.rSub = this.restaurantService.create(restaurant, this.image).subscribe({
         next: message => {
           MaterialService.toast(message.message)
-          this.router.navigate(['admin/restaurants']).then()
+          void this.router.navigate(['admin/restaurants'])
         },
         error: error => MaterialService.toast(error.error.message)
       })
@@ -175,9 +179,10 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
 
   checkTitleRestaurant() {
     const title = this.form.get('title').value
-    this.restaurants.forEach(restaurant => {
-      this.isError = title.toLowerCase() == restaurant.title.toLocaleLowerCase();
-    })
+    if (title.length > 5) {
+      this.restaurants.some(restaurant =>
+        this.isError = title.toLowerCase() == restaurant.title.toLocaleLowerCase())
+    }
   }
 
   getTypePlace(typePlace: string): string {

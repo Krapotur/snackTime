@@ -17,7 +17,7 @@ export class RestaurantService {
     return this.http.get<Restaurant[]>('/api/restaurants')
   }
 
-  getRestaurantByID(id: string): Observable<Restaurant>{
+  getRestaurantByID(id: string): Observable<Restaurant> {
     return this.http.get<Restaurant>(`/api/restaurants/${id}`)
   }
 
@@ -36,10 +36,14 @@ export class RestaurantService {
     return this.http.post<{ message: string }>('/api/restaurants', fd)
   }
 
-  update(restaurant: Restaurant, image?): Observable<{message: string}> {
+  update(restaurant: Restaurant, image?): Observable<{ message: string }> {
     const fd = new FormData()
 
     if (image) fd.append('image', image, image.name)
+
+    if (restaurant.status != null){
+      fd.append('status', restaurant.status.toString())
+    }
 
     fd.append('title', restaurant.title)
     fd.append('description', restaurant.description)
@@ -48,7 +52,7 @@ export class RestaurantService {
     fd.append('timeClose', restaurant.timeClose)
     fd.append('typePlace', restaurant.typePlace)
 
-    return this.http.patch<{message:string}>(`/api/restaurants/${restaurant._id}`,fd)
+    return this.http.patch<{ message: string }>(`/api/restaurants/${restaurant._id}`, fd)
   }
 
 }
