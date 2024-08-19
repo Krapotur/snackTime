@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {AuthToken, Login} from "../interfaces";
 import {HttpClient} from "@angular/common/http";
-import {Observable,tap} from "rxjs";
+import {Observable, tap} from "rxjs";
 
 @Injectable({
   providedIn: "root"
@@ -32,6 +32,9 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
+    if (localStorage.getItem('auth-token')) {
+      this.setToken(localStorage.getItem('auth-token'))
+    }
     return !!this.token
   }
 
