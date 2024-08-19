@@ -21,6 +21,7 @@ export class EmptyComponent implements OnInit{
   ngOnInit() {
     if(this.page === 'form-restaurant') this.element = 'ресторан'
     if(this.page === 'form-user') this.element = 'пользователя'
+    if(this.page === 'form-kitchen') this.element = 'кухню'
   }
 
   navigateToFormPage() {
