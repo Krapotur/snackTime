@@ -10,10 +10,12 @@ import {Router, RouterLink} from "@angular/router";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {UserService} from "../../shared/services/user.service";
 import {Subscription} from "rxjs";
-import {User} from "../../shared/interfaces";
+import {Restaurant, User} from "../../shared/interfaces";
 import {MaterialService} from "../../shared/classes/material.service";
 import {LoaderComponent} from "../../shared/components/loader/loader.component";
 import {EmptyComponent} from "../../shared/components/empty/empty.component";
+import {RestaurantService} from "../../shared/services/restaurant.service";
+import {FilterRestaurantPipe} from "../../shared/pipes/filter-restaurant";
 
 @Component({
   selector: 'app-users-page',
@@ -30,7 +32,8 @@ import {EmptyComponent} from "../../shared/components/empty/empty.component";
     MatSlideToggleModule,
     NgOptimizedImage,
     LoaderComponent,
-    EmptyComponent
+    EmptyComponent,
+    FilterRestaurantPipe
   ],
   templateUrl: './users-page.component.html',
   styleUrls: ['./users-page.component.scss', '../../shared/styles/style-table.scss']
@@ -40,7 +43,7 @@ import {EmptyComponent} from "../../shared/components/empty/empty.component";
 export class UsersPageComponent implements OnInit, OnDestroy {
 
   constructor(private userService: UserService,
-              private router: Router
+              private restaurantService: RestaurantService
   ) {
   }
 
@@ -49,17 +52,21 @@ export class UsersPageComponent implements OnInit, OnDestroy {
   isEmpty: boolean
   activeRoute = 'new-user'
   dataSource: MatTableDataSource<User>;
-  displayedColumns: string[] = ['#', 'name', 'login', 'group', 'phone', 'edit', 'status'];
+  displayedColumns: string[] = ['#', 'name', 'login', 'group', 'restaurant','phone', 'edit', 'status'];
   uSub: Subscription
+  rSub: Subscription
+  restaurants: Restaurant [] = []
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit(): void {
+    this.getRestaurants()
     this.getUsers()
   }
 
   ngOnDestroy() {
     if (this.uSub) this.uSub.unsubscribe()
+    if (this.rSub) this.rSub.unsubscribe()
   }
 
   getUsers() {
@@ -82,7 +89,10 @@ export class UsersPageComponent implements OnInit, OnDestroy {
     }, 500)
   }
 
-  navigateToFormPage() {
-    this.router.navigate(['new-user']).then()
+  getRestaurants(){
+    this.rSub = this.restaurantService.getRestaurants().subscribe({
+      next: restaurants => this.restaurants = restaurants
+    })
   }
+
 }

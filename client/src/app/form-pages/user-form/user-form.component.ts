@@ -2,7 +2,7 @@ import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Subscription} from "rxjs";
 import {RestaurantService} from "../../shared/services/restaurant.service";
-import {Restaurant} from "../../shared/interfaces";
+import {Restaurant, User} from "../../shared/interfaces";
 import {MaterialService} from "../../shared/classes/material.service";
 import {NgClass, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {MatButtonModule} from "@angular/material/button";
@@ -13,6 +13,7 @@ import {Router, RouterLink} from "@angular/router";
 import {FilterKitchenPipe} from "../../shared/pipes/filter-kitchen.pipe";
 import {DeleteTemplateComponent} from "../../shared/components/delete-template/delete-template.component";
 import {FilterRestaurantPipe} from "../../shared/pipes/filter-restaurant";
+import {UserService} from "../../shared/services/user.service";
 
 @Component({
   selector: 'app-user-form',
@@ -39,6 +40,7 @@ import {FilterRestaurantPipe} from "../../shared/pipes/filter-restaurant";
 export class UserFormComponent implements OnInit, OnDestroy {
   form: FormGroup
   rSub: Subscription
+  uSub: Subscription
   restaurants: Restaurant[] = []
   isDelete = false
   userID: string
@@ -48,6 +50,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
   @ViewChild('inputImg') inputImgRef: ElementRef
 
   constructor(private restaurantService: RestaurantService,
+              private userService: UserService,
               private router: Router) {
   }
 
@@ -58,6 +61,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     if (this.rSub) this.rSub.unsubscribe()
+    if (this.uSub) this.uSub.unsubscribe()
   }
 
   generateForm() {
@@ -91,8 +95,24 @@ export class UserFormComponent implements OnInit, OnDestroy {
     })
   }
 
-  onSubmit(){
+  onSubmit() {
+    let user: User = {
+      lastName: this.form.get('lastName').value,
+      firstName: this.form.get('firstName').value,
+      login: this.form.get('login').value,
+      email: this.form.get('email').value,
+      phone: this.form.get('phone').value,
+      restaurant: this.form.get('restaurant').value,
+      password: this.form.get('password').value,
+    }
 
+    this.uSub = this.userService.create(user,this.image).subscribe({
+      next: message => {
+        MaterialService.toast(message.message)
+        void this.router.navigate(['admin/users'])
+      },
+      error: error => MaterialService.toast(error.error.error)
+    })
   }
 
   getRestaurants() {
@@ -116,7 +136,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
     this.inputImgRef.nativeElement.click()
   }
 
-  openRestaurantsPage(){
+  openRestaurantsPage() {
     void this.router.navigate(['admin/users'])
   }
 

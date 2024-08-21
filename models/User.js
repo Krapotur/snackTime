@@ -32,7 +32,6 @@ const userSchema = new Schema({
     },
     email: {
         type: String,
-        unique: true,
         default: ''
     },
     // group: {
@@ -40,11 +39,11 @@ const userSchema = new Schema({
     //     type: Schema.Types.ObjectId,
     //     default: 'Клиент'
     // },
-    // restaurant: {
-    //     ref: 'restaurants',
-    //     type: Schema.Types.ObjectId,
-    //     default: 'Оазис'
-    // }
+    restaurant: {
+        ref: 'restaurants',
+        type: Schema.Types.ObjectId,
+        default: ''
+    }
 })
 
 module.exports = mongoose.model('users', userSchema);

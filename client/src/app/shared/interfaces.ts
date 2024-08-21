@@ -8,16 +8,17 @@ export interface AuthToken {
 }
 
 export interface User {
-  status: boolean,
-  position: number,
+  _id?:string
+  status?: boolean,
+  position?: number,
   firstName: string,
   lastName: string,
   login: string,
-  group: string,
+  restaurant: string,
   password: string,
-  imgSrc: string,
+  imgSrc?: string,
   phone: string,
-  email: string
+  email?: string
 }
 
 export interface Restaurant {

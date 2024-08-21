@@ -34,7 +34,7 @@ module.exports.delete = async function (req, res) {
 }
 
 module.exports.create = async function (req, res) {
-
+console.log(req.body)
     if (await User.findOne({login: req.body.login})) {
         res.status(409).json({
             message: `Логин ${req.body.login} уже занят`
@@ -54,10 +54,11 @@ module.exports.create = async function (req, res) {
             lastName: req.body.lastName ? req.body.lastName : '',
             firstName: req.body.firstName ? req.body.firstName : '',
             phone: req.body.phone ? req.body.phone : '',
-            group: req.body.group ? req.body.group : '',
+            email: req.body.email ? req.body.email : '',
             login: req.body.login ? req.body.login : '',
             password: password.length > 0 ? bcrypt.hashSync(password, salt) : '',
-            restaurant: req.body.restaurant ? req.body.restaurant : ''
+            restaurant: req.body.restaurant ? req.body.restaurant : '',
+            imgSrc: req.file ? req.file.path : ''
         })
 
         try {
@@ -79,7 +80,7 @@ module.exports.update = async function (req, res) {
     if (req.body.lastName) updated.lastName = req.body.lastName
     if (req.body.firstName) updated.firstName = req.body.firstName
     if (req.body.phone) updated.phone = req.body.phone
-    if (req.body.group) updated.group = req.body.group
+    if (req.body.restaurant) updated.restaurant = req.body.restaurant
     if (req.body.login) updated.login = req.body.login.toLowerCase()
 
     if (req.body.password) {
