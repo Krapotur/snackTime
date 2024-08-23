@@ -104,11 +104,11 @@ export class RestaurantsPageComponent implements OnInit, OnDestroy {
     })
   }
 
-  openPage(id:string){
-    this.router.navigate([`admin/form-restaurant/${id}`]).then()
+  openPage(id: string) {
+    void this.router.navigate([`admin/form-restaurant/${id}`])
   }
 
-  changeStatus(restaurant: Restaurant){
+  changeStatus(restaurant: Restaurant) {
     let newRestaurant: Restaurant = {
       ...restaurant,
       status: !restaurant.status,

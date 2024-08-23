@@ -37,7 +37,7 @@ app.use(cors());
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/client', clientRoutes);
-app.use('/api/group', groupRoutes);
+app.use('/api/groups', groupRoutes);
 app.use('/api/category', categoryRoutes);
 app.use('/api/kitchens', kitchenRoutes);
 app.use('/api/order', orderRoutes);

@@ -34,7 +34,6 @@ module.exports.delete = async function (req, res) {
 }
 
 module.exports.create = async function (req, res) {
-console.log(req.body)
     if (await User.findOne({login: req.body.login})) {
         res.status(409).json({
             message: `Логин ${req.body.login} уже занят`
@@ -42,7 +41,6 @@ console.log(req.body)
     }
 
     if (await User.findOne({phone: req.body.phone})) {
-
         res.status(409).json({
             message: `Номер ${req.body.phone} уже занят`
         })
@@ -58,6 +56,7 @@ console.log(req.body)
             login: req.body.login ? req.body.login : '',
             password: password.length > 0 ? bcrypt.hashSync(password, salt) : '',
             restaurant: req.body.restaurant ? req.body.restaurant : '',
+            group: req.body.group ? req.body.group : '',
             imgSrc: req.file ? req.file.path : ''
         })
 

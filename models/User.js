@@ -34,11 +34,10 @@ const userSchema = new Schema({
         type: String,
         default: ''
     },
-    // group: {
-    //     ref: 'groups',
-    //     type: Schema.Types.ObjectId,
-    //     default: 'Клиент'
-    // },
+    group: {
+        ref: 'groups',
+        type: Schema.Types.ObjectId,
+    },
     restaurant: {
         ref: 'restaurants',
         type: Schema.Types.ObjectId,

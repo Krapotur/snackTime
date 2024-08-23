@@ -6,7 +6,7 @@ import {NgIf, NgOptimizedImage} from "@angular/common";
 import {MatInputModule} from "@angular/material/input";
 import {MatSelectModule} from "@angular/material/select";
 import {ReactiveFormsModule} from "@angular/forms";
-import {Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {UserService} from "../../shared/services/user.service";
 import {Subscription} from "rxjs";
@@ -43,8 +43,8 @@ import {FilterRestaurantPipe} from "../../shared/pipes/filter-restaurant";
 export class UsersPageComponent implements OnInit, OnDestroy {
 
   constructor(private userService: UserService,
-              private restaurantService: RestaurantService
-  ) {
+              private restaurantService: RestaurantService,
+              private router: Router) {
   }
 
   isLoading = false;
@@ -91,8 +91,13 @@ export class UsersPageComponent implements OnInit, OnDestroy {
 
   getRestaurants(){
     this.rSub = this.restaurantService.getRestaurants().subscribe({
-      next: restaurants => this.restaurants = restaurants
+      next: restaurants => this.restaurants = restaurants,
+      error: error => MaterialService.toast(error.error.error)
     })
+  }
+
+  openPage(id:string){
+   void this.router.navigate([`admin/form-user/${id}`])
   }
 
 }

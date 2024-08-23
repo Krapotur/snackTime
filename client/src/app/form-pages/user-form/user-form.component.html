@@ -1,7 +1,7 @@
 <div class="main-container">
   <div class="container-block">
-    <h3>Новый пользователь</h3>
-    <div class="img-del" *ngIf="userID">
+    <h3> {{userID.length > 0 ? user.lastName + ' ' + user.firstName : 'Новый пользователь'}}</h3>
+    <div class="img-del" *ngIf="userID && isVisibleBtn">
       <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
            data-name="Layer 1" viewBox="0 0 24 24"
            (click)="openDelTemplate()"
@@ -75,15 +75,40 @@
           >*Введите телефон
                     </span>
           <span class="error" *ngIf="(form.get('phone').hasError('pattern') ||
-        !(form.get('phone').value.toString().charAt(0) == '7')) && form.get('phone').touched"
+        !checkValidNumber()) && form.get('phone').touched"
           >*Укажите в формате 79XX ... .. ..
                     </span>
 
+
           <mat-form-field>
+            <mat-label>Группа <span *ngIf="!groups.length">(список пуст)</span></mat-label>
+            <mat-select formControlName="group">
+              <mat-select-trigger>
+                {{form.get('group').value | filterGroup: groups}}
+              </mat-select-trigger>
+              <mat-option *ngFor="let group of groups"
+                          [value]="group._id"
+              >{{ group.title }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <span class="error" *ngIf="form.get('group').hasError('required') && form.get('group').touched"
+          >*Выберите группу
+                    </span>
+
+          <div *ngIf="form.enabled">
+            <mat-checkbox [checked]="isChecked" (change)="toggle($event)"
+            >
+              Заведение
+            </mat-checkbox>
+          </div>
+
+          <mat-form-field *ngIf="isChecked">
             <mat-label>Заведение <span *ngIf="!restaurants.length">(список пуст)</span></mat-label>
             <mat-select formControlName="restaurant">
               <mat-select-trigger>
-                {{ form.get('restaurant').value | filterRestaurant : restaurants }}
+                {{form.get('restaurant').value | filterRestaurant : restaurants}}
               </mat-select-trigger>
               <mat-option *ngFor="let restaurant of restaurants"
                           [value]="restaurant._id"
@@ -113,42 +138,53 @@
           >*Не более 10 символов
                     </span>
 
+          <button *ngIf=" userID.length !== 0"
+                  class="btn-psw" extended="" mat-fab
+                  (click)="generateFormPsw()"
+                  [disabled]="form.disabled"
+          >
+            Сменить пароль
+          </button>
 
-          <div class="row">
-            <div class="input-field col s6">
-              <label class="active" for="password">*Пароль</label>
-              <input id="password" type="password" formControlName="password"
-                     [ngClass]="{'invalid' : form.get('password').invalid && form.get('password').touched}"
-              >
+          <div *ngIf="userID.length == 0">
+            <div class="row">
+              <div class="input-field col s6">
+                <label class="active" for="password">*Пароль</label>
+                <input id="password" type="password" formControlName="password"
+                       [ngClass]="{'invalid' : form.get('password').invalid && form.get('password').touched}"
+                >
+              </div>
             </div>
-          </div>
-          <span class="error" *ngIf="form.get('password').hasError('required') && form.get('password').touched"
-          >*Введите пароль
+            <span class="error" *ngIf="form.get('password').hasError('required') && form.get('password').touched"
+            >*Введите пароль
                     </span>
-          <span class="error" *ngIf="form.get('password').hasError('minlength') && form.get('password').touched"
-          >*Не менее 7 символов
+            <span class="error" *ngIf="form.get('password').hasError('minlength') && form.get('password').touched"
+            >*Не менее 7 символов
                     </span>
-          <span class="error" *ngIf="form.get('password').hasError('maxlength')"
-          >*Не более 15 символов
+            <span class="error" *ngIf="form.get('password').hasError('maxlength')"
+            >*Не более 15 символов
                     </span>
 
-          <div class="row" *ngIf="form.get('password').valid">
-            <div class="input-field col s6">
-              <label class="active" for="pswConfirm">*Подтверждение пароля</label>
-              <input id="pswConfirm" type="password" formControlName="pswConfirm"
-                     [ngClass]="{'invalid' : form.get('pswConfirm').invalid && form.get('pswConfirm').touched}"
-              >
+            <div class="row" *ngIf="form.get('password').valid">
+              <div class="input-field col s6">
+                <label class="active" for="pswConfirm">*Подтверждение пароля</label>
+                <input id="pswConfirm" type="password" formControlName="pswConfirm"
+                       [ngClass]="{'invalid' : form.get('pswConfirm').invalid && form.get('pswConfirm').touched}"
+                >
+              </div>
             </div>
+            <span class="error" *ngIf="form.get('pswConfirm').hasError('required') && form.get('pswConfirm').touched"
+            >*Подтвердите пароль
+                    </span>
+            <span class="error"
+                  *ngIf="(form.get('password').value !== form.get('pswConfirm').value) && form.get('pswConfirm').touched"
+            >*Пароли не совпадают
+                    </span>
           </div>
-          <span class="error" *ngIf="form.get('pswConfirm').hasError('required') && form.get('pswConfirm').touched"
-          >*Подтвердите пароль
-                    </span>
-          <span class="error"
-                *ngIf="(form.get('password').value !== form.get('pswConfirm').value) && form.get('pswConfirm').touched"
-          >*Пароли не совпадают
-                    </span>
 
-          <div class="img-block">
+
+          <div *ngIf="form.enabled"
+            class="img-block">
             <label [for]="inputImg">Изображение </label>
             <div class="img-group">
               <span *ngIf="image || form.get('imgSrc').value">Изображение загружено!</span>
@@ -164,21 +200,96 @@
 
     </form>
     <div class="btn-group">
-      <button
-        class="btn-cancel" extended="" mat-fab
-        [disabled]="isDelete"
-        (click)="openRestaurantsPage()"
+      <div class="div">
+        <button
+          class="btn-cancel" extended="" mat-fab
+          [disabled]="isDelete || form.disabled"
+          (click)="openUsersPage()"
+        >
+          Отмена
+        </button>
+        <button
+          type="submit"
+          class="btn-save" extended="" mat-fab
+          [disabled]="form.invalid || form.disabled"
+          (click)="onSubmit()"
+        >
+          Сохранить
+        </button>
+      </div>
+
+      <button class="btn-save" extended="" mat-fab
+              (click)="resetForm()"
+              [disabled]="form.disabled"
       >
-        Отмена
-      </button>
-      <button
-        type="submit"
-        class="btn-save" extended="" mat-fab
-        [disabled]="form.invalid "
-        (click)="onSubmit()"
-      >
-        Сохранить
+        Сбросить
       </button>
     </div>
   </div>
 </div>
+
+<!--Template for change password-->
+
+  <div *ngIf="!isVisibleBtn && userID.length > 0"
+    class="container-change-psw">
+    <h3>Смена пароля</h3>
+
+    <form [formGroup]="formPsw">
+      <div class="container-form">
+          <div class="row">
+            <div class="input-field col s6">
+              <label class="active" for="password">*Пароль</label>
+              <input type="password" formControlName="password"
+                     [ngClass]="{'invalid' : formPsw.get('password').invalid && formPsw.get('password').touched}"
+              >
+            </div>
+          </div>
+          <span class="error" *ngIf="formPsw.get('password').hasError('required') && formPsw.get('password').touched"
+          >*Введите пароль
+                    </span>
+          <span class="error" *ngIf="formPsw.get('password').hasError('minlength') && formPsw.get('password').touched"
+          >*Не менее 7 символов
+                    </span>
+          <span class="error" *ngIf="formPsw.get('password').hasError('maxlength')"
+          >*Не более 15 символов
+                    </span>
+
+          <div class="row">
+            <div class="input-field col s6">
+              <label class="active" for="pswConfirm">*Подтверждение пароля</label>
+              <input type="password" formControlName="pswConfirm"
+                     [ngClass]="{'invalid' : formPsw.get('pswConfirm').invalid && formPsw.get('pswConfirm').touched}"
+              >
+            </div>
+          </div>
+          <span class="error" *ngIf="formPsw.get('pswConfirm').hasError('required') && formPsw.get('pswConfirm').touched"
+          >*Подтвердите пароль
+                    </span>
+          <span class="error"
+                *ngIf="(formPsw.get('password').value !== formPsw.get('pswConfirm').value) && formPsw.get('pswConfirm').touched"
+          >*Пароли не совпадают
+                    </span>
+        </div>
+
+        <div class="btn-group">
+          <button
+            class="btn-cancel" extended="" mat-fab
+            [disabled]="isDelete"
+            (click)="enableForm()"
+          >
+            Отмена
+          </button>
+          <button
+            type="submit"
+            class="btn-save" extended="" mat-fab
+            [disabled]="formPsw.invalid || formPsw.get('password').value !== formPsw.get('pswConfirm').value"
+            (click)="updatePassword()"
+          >
+            Сохранить
+          </button>
+        </div>
+    </form>
+</div>
+
+<!--Template for change password-->
+

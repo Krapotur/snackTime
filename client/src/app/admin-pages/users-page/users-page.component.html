@@ -46,7 +46,9 @@
         <ng-container matColumnDef="edit">
           <th mat-header-cell *matHeaderCellDef> Действие</th>
           <td mat-cell *matCellDef="let user">
-            <img ngSrc="assets/icons/edit.png" width="35" height="35" alt="edit">
+            <img ngSrc="assets/icons/edit.png" width="35" height="35" alt="edit"
+            (click)="openPage(user._id)"
+            >
           </td>
         </ng-container>
 

@@ -1,7 +1,7 @@
 <div [class]="isDelete ? 'blur' : ''">
   <div class="main-container">
     <div class="container-block">
-      <h3>Новый ресторан</h3>
+      <h3>{{restaurantID.length > 0 ? restaurant.title : 'Новый ресторан'}}</h3>
       <div class="img-del" *ngIf="restaurantID">
         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
              data-name="Layer 1" viewBox="0 0 24 24"
