@@ -72,7 +72,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
     this.userID = this.route.snapshot.params['id'] ?
       this.route.snapshot.params['id']
       : ''
-    this.generateForm()
+
     this.getUserById()
     this.getRestaurants()
     this.getGroups()
@@ -190,20 +190,25 @@ export class UserFormComponent implements OnInit, OnDestroy {
   }
 
   getUserById() {
-    this.userService.getUserByID(this.userID).subscribe({
-      next: user => {
-        this.generateForm(user)
-        this.elem = {
-          id: user._id,
-          title: user.lastName + ' ' + user.firstName,
-          route: 'users',
-          formRoute: 'user'
-        }
-        this.user = user
-        this.isVisibleBtn = true
-      },
-      error: error => MaterialService.toast(error.error.error)
-    })
+    if (this.userID.length > 0) {
+      this.userService.getUserByID(this.userID).subscribe({
+        next: user => {
+          this.generateForm(user)
+          this.elem = {
+            id: user._id,
+            title: user.lastName + ' ' + user.firstName,
+            route: 'users',
+            formRoute: 'user'
+          }
+          this.user = user
+          this.isVisibleBtn = true
+        },
+        error: error => MaterialService.toast(error.error.error)
+      })
+    } else {
+      this.generateForm()
+    }
+
   }
 
   openDelTemplate() {
