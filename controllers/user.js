@@ -72,7 +72,7 @@ module.exports.create = async function (req, res) {
 }
 
 module.exports.update = async function (req, res) {
-
+    const candidate = await User.findOne({_id: req.params.id})
     let updated = {}
 
     if (req.body.status || !req.body.status) updated.status = req.body.status
@@ -82,6 +82,20 @@ module.exports.update = async function (req, res) {
     if (req.body.restaurant) updated.restaurant = req.body.restaurant
     if (req.body.login) updated.login = req.body.login.toLowerCase()
 
+    if (candidate.status !== req.body.status){
+        try {
+            await User.findByIdAndUpdate(
+                {_id: req.params.id},
+                {$set: updated},
+                {new: true}
+            )
+            res.status(200).json({
+                message: `Учетная запись отключена`
+            })
+        } catch (e) {
+            errorHandler(res, e)
+        }
+    }
     if (req.body.password) {
         const salt = bcrypt.genSaltSync(10)
         const password = req.body.password

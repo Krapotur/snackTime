@@ -43,6 +43,10 @@ export class UserService {
 
     if (image) fd.append('image', image, image.name)
 
+    if (user.status != null){
+      fd.append('status', user.status.toString())
+    }
+
     fd.append('lastName', user.lastName)
     fd.append('firstName', user.firstName)
     fd.append('login', user.login)

@@ -212,6 +212,8 @@ export class UserFormComponent implements OnInit, OnDestroy {
   }
 
   openDelTemplate() {
+    this.isDelete = !this.isDelete
+    this.form.disable()
   }
 
   checkLogin() {
