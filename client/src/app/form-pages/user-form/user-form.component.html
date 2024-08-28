@@ -2,7 +2,7 @@
   <div class="container-block">
     <h3> {{userID.length > 0 ? user.lastName + ' ' + user.firstName : 'Новый пользователь'}}</h3>
     <div class="img-del" *ngIf="userID && isVisibleBtn">
-      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
            data-name="Layer 1" viewBox="0 0 24 24"
            (click)="openDelTemplate()"
            *ngIf="!isDelete"

@@ -56,7 +56,7 @@ export class UsersPageComponent implements OnInit, OnDestroy {
   isEmpty: boolean
   activeRoute = 'new-user'
   dataSource: MatTableDataSource<User>;
-  displayedColumns: string[] = ['#', 'name', 'login', 'group', 'restaurant','phone', 'edit', 'status'];
+  displayedColumns: string[] = ['#', 'name', 'login', 'group', 'restaurant', 'phone', 'edit', 'status'];
   uSub: Subscription
   rSub: Subscription
   gSub: Subscription
@@ -97,32 +97,38 @@ export class UsersPageComponent implements OnInit, OnDestroy {
     }, 500)
   }
 
-  getRestaurants(){
+  getRestaurants() {
     this.rSub = this.restaurantService.getRestaurants().subscribe({
       next: restaurants => this.restaurants = restaurants,
       error: error => MaterialService.toast(error.error.error)
     })
   }
 
-  getGroups(){
+  getGroups() {
     this.gSub = this.groupService.getGroups().subscribe({
       next: groups => this.groups = groups,
       error: error => MaterialService.toast(error.error.error)
     })
   }
 
-  openPage(id:string){
-   void this.router.navigate([`admin/form-user/${id}`])
+  openPage(id: string) {
+    void this.router.navigate([`admin/form-user/${id}`])
   }
 
   changeStatus(user: User) {
+    delete user.password
     let newUser: User = {
       ...user,
       status: !user.status,
     }
 
     this.userService.update(newUser).subscribe({
-      next: message => MaterialService.toast(message.message),
+      next: message => {
+        MaterialService.toast(message.message);
+        this.router.navigateByUrl('/').then(() => {
+          void this.router.navigate([`admin/users`])
+        })
+      },
       error: error => MaterialService.toast(error.error.error)
     })
   }

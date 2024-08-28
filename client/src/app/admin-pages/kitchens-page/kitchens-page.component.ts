@@ -2,11 +2,11 @@ import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource, MatTableModule} from "@angular/material/table";
 import {MatButtonModule} from "@angular/material/button";
 import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
-import { MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {NgIf, NgOptimizedImage} from "@angular/common";
 import {Router, RouterLink} from "@angular/router";
 import {SortPlacePipe} from "../../shared/pipes/sort-place.pipe";
-import {Kitchen, } from "../../shared/interfaces";
+import {Kitchen,} from "../../shared/interfaces";
 import {Subscription} from "rxjs";
 import {KitchenService} from "../../shared/services/kitchen.service";
 import {MaterialService} from "../../shared/classes/material.service";
@@ -36,19 +36,20 @@ import {LoaderComponent} from "../../shared/components/loader/loader.component";
     LoaderComponent
   ],
   templateUrl: './kitchens-page.component.html',
-  styleUrls: ['./kitchens-page.component.scss','../../shared/styles/style-table.scss']
+  styleUrls: ['./kitchens-page.component.scss', '../../shared/styles/style-table.scss']
 })
-export class KitchensPageComponent implements OnInit, OnDestroy{
+export class KitchensPageComponent implements OnInit, OnDestroy {
 
-  constructor( private router: Router,
-               private kitchenService: KitchenService){}
+  constructor(private router: Router,
+              private kitchenService: KitchenService) {
+  }
 
   kSub: Subscription
   isLoading = false
   isEmpty: boolean
   activeRoute = 'form-kitchen'
   dataSource: MatTableDataSource<Kitchen>;
-  displayedColumns: string[] = ['#', 'title','edit', 'status'];
+  displayedColumns: string[] = ['#', 'title', 'edit', 'status'];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -57,10 +58,10 @@ export class KitchensPageComponent implements OnInit, OnDestroy{
   }
 
   ngOnDestroy() {
-    if(this.kSub) this.kSub.unsubscribe()
+    if (this.kSub) this.kSub.unsubscribe()
   }
 
-  getKitchens(){
+  getKitchens() {
     let position = 1
     this.isLoading = true
 
@@ -77,7 +78,7 @@ export class KitchensPageComponent implements OnInit, OnDestroy{
   }
 
   openPage(id: string) {
-      this.router.navigate([`admin/form-kitchen/${id}`]).then()
+    void this.router.navigate([`admin/form-kitchen/${id}`])
   }
 
   changeStatus(kitchen: Kitchen) {
@@ -85,8 +86,14 @@ export class KitchensPageComponent implements OnInit, OnDestroy{
       ...kitchen,
       status: !kitchen.status
     }
+
     this.kSub = this.kitchenService.update(newKitchen).subscribe({
-      next: message => MaterialService.toast(message.message),
+      next: message => {
+        MaterialService.toast(message.message);
+        this.router.navigateByUrl('/').then(() => {
+          void this.router.navigate([`admin/restaurants`])
+        })
+      },
       error: error => MaterialService.toast(error.error.message())
     })
   }

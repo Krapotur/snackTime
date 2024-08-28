@@ -50,7 +50,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
   gSub: Subscription
   restaurants: Restaurant[] = []
   groups: Group[] = []
-  user: User
+  user: User | undefined
   isDelete = false
   userID: string
   elem: Elem
@@ -129,6 +129,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
   }
 
   updatePassword(){
+    delete this.user.status
     let user: User = {
       ...this.user,
       password: this.formPsw.get('pswConfirm').value
@@ -208,7 +209,6 @@ export class UserFormComponent implements OnInit, OnDestroy {
     } else {
       this.generateForm()
     }
-
   }
 
   openDelTemplate() {

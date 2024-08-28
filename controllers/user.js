@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs')
 
 module.exports.getAll = async function (req, res) {
     try {
-       await User.find().then(
+        await User.find().then(
             users => {
                 res.status(200).json(users)
             }
@@ -17,6 +17,7 @@ module.exports.getAll = async function (req, res) {
 module.exports.getById = async function (req, res) {
     try {
         const user = await User.findById({_id: req.params.id})
+        user.password = null
         res.status(200).json(user)
     } catch (e) {
         errorHandler(res, e)
@@ -81,51 +82,19 @@ module.exports.update = async function (req, res) {
     if (req.body.phone) updated.phone = req.body.phone
     if (req.body.restaurant) updated.restaurant = req.body.restaurant
     if (req.body.login) updated.login = req.body.login.toLowerCase()
+    if (req.body.password && req.body.password.length > 7) updated.password = req.body.password
 
-    if (candidate.status !== req.body.status){
-        try {
-            await User.findByIdAndUpdate(
-                {_id: req.params.id},
-                {$set: updated},
-                {new: true}
-            )
-            res.status(200).json({
-                message: `Учетная запись отключена`
-            })
-        } catch (e) {
-            errorHandler(res, e)
-        }
-    }
-    if (req.body.password) {
-        const salt = bcrypt.genSaltSync(10)
-        const password = req.body.password
 
-        updated.password = bcrypt.hashSync(password, salt)
-
-        try {
-            await User.findByIdAndUpdate(
-                {_id: req.params.id},
-                {$set: updated},
-                {new: true}
-            )
-            res.status(200).json({
-                message: `Пароль успешно изменен`
-            })
-        } catch (e) {
-            errorHandler(res, e)
-        }
-    } else {
-        try {
-            await User.findByIdAndUpdate(
-                {_id: req.params.id},
-                {$set: updated},
-                {new: true}
-            )
-            res.status(200).json({
-                message: `Изменения внесены`
-            })
-        } catch (e) {
-            errorHandler(res, e)
-        }
+    try {
+        await User.findByIdAndUpdate(
+            {_id: req.params.id},
+            {$set: updated},
+            {new: true}
+        )
+        res.status(200).json({
+            message: `Изменения внесены`
+        })
+    } catch (e) {
+        errorHandler(res, e)
     }
 }

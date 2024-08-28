@@ -115,7 +115,12 @@ export class RestaurantsPageComponent implements OnInit, OnDestroy {
     }
 
     this.restaurantService.update(newRestaurant).subscribe({
-      next: message => MaterialService.toast(message.message),
+      next: message => {
+        MaterialService.toast(message.message);
+        this.router.navigateByUrl('/').then(() => {
+          void this.router.navigate([`admin/restaurants`])
+        })
+      },
       error: error => MaterialService.toast(error.error.error)
     })
   }
