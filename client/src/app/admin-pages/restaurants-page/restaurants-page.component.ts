@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource, MatTableModule} from "@angular/material/table";
 import {MatButtonModule} from "@angular/material/button";
 import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
@@ -11,7 +11,7 @@ import {MaterialService} from "../../shared/classes/material.service";
 import {MatInputModule} from "@angular/material/input";
 import {MatSelectModule} from "@angular/material/select";
 import {ReactiveFormsModule} from "@angular/forms";
-import {Router, RouterLink} from "@angular/router";
+import { Router, RouterLink} from "@angular/router";
 import {LoaderComponent} from "../../shared/components/loader/loader.component";
 import {EmptyComponent} from "../../shared/components/empty/empty.component";
 import {KitchenService} from "../../shared/services/kitchen.service";
@@ -43,11 +43,9 @@ import {KitchensPageComponent} from "../kitchens-page/kitchens-page.component";
   styleUrls: ['./restaurants-page.component.scss', '../../shared/styles/style-table.scss']
 })
 export class RestaurantsPageComponent implements OnInit, OnDestroy {
-
-  constructor(private restaurantService: RestaurantService,
-              private kitchenService: KitchenService,
-              private router: Router) {
-  }
+  private restaurantService = inject(RestaurantService)
+  private kitchenService = inject(KitchenService)
+  private router = inject(Router)
 
   kitchens: Kitchen[]
   isLoading = false
@@ -94,7 +92,7 @@ export class RestaurantsPageComponent implements OnInit, OnDestroy {
           }
         }
       )
-    }, 500)
+    }, 300)
   }
 
   getKitchens() {
@@ -114,12 +112,10 @@ export class RestaurantsPageComponent implements OnInit, OnDestroy {
       status: !restaurant.status,
     }
 
-    this.restaurantService.update(newRestaurant).subscribe({
+    this.restaurantService.update(null,newRestaurant, newRestaurant._id).subscribe({
       next: message => {
         MaterialService.toast(message.message);
-        this.router.navigateByUrl('/').then(() => {
-          void this.router.navigate([`admin/restaurants`])
-        })
+        this.getRestaurants()
       },
       error: error => MaterialService.toast(error.error.error)
     })

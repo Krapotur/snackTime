@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FilterKitchenPipe} from "../../shared/pipes/filter-kitchen.pipe";
 import {MatButtonModule} from "@angular/material/button";
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -36,11 +36,9 @@ import {DeleteTemplateComponent} from "../../shared/components/delete-template/d
   styleUrls: ['./kitchen-form.component.scss', '../../shared/styles/style-form.scss']
 })
 export class KitchenFormComponent implements OnInit, OnDestroy {
-
-  constructor(private kitchenService: KitchenService,
-              private router: Router,
-              private route: ActivatedRoute) {
-  }
+  private kitchenService = inject(KitchenService)
+  private router = inject(Router)
+  private route = inject(ActivatedRoute)
 
   form: FormGroup
   isDelete = false
@@ -49,7 +47,7 @@ export class KitchenFormComponent implements OnInit, OnDestroy {
   image: File
   kSub: Subscription
   kitchen: Kitchen
-  kitchens: Kitchen[]
+  kitchens: Kitchen[] = []
   elem: Elem
 
   @ViewChild('inputImg') inputImgRef: ElementRef
@@ -110,31 +108,32 @@ export class KitchenFormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    let kitchen: Kitchen = {
-      title: this.form.get('title').value
-    }
+    const fd = new FormData()
+
+    if (this.image) fd.append('image', this.image, this.image.name)
+    fd.append('title', this.form.get('title').value)
+
 
     if (this.kitchenID) {
-      kitchen._id = this.kitchenID
       setTimeout(() => {
-        this.kSub = this.kitchenService.update(kitchen, this.image).subscribe({
+        this.kSub = this.kitchenService.update(fd, null, this.kitchenID).subscribe({
           next: message => {
             MaterialService.toast(message.message)
-            this.router.navigate(['admin/restaurants']).then()
+            void this.router.navigate(['admin/restaurants'])
           },
           error: error => MaterialService.toast(error.error.message)
         })
-      }, 500)
+      }, 300)
     } else {
       setTimeout(() => {
-        this.kSub = this.kitchenService.create(kitchen, this.image).subscribe({
+        this.kSub = this.kitchenService.create(fd).subscribe({
           next: message => {
             MaterialService.toast(message.message)
-            this.router.navigate(['admin/restaurants']).then()
+            void this.router.navigate(['admin/restaurants'])
           },
           error: error => MaterialService.toast(error.error.message)
         })
-      }, 500)
+      }, 300)
     }
   }
 

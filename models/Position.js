@@ -20,9 +20,22 @@ const positionSchema = new Schema({
         require: true,
         default: 100,
     },
+    proteins: {
+      type: Number,
+    },
+    fats: {
+      type: Number,
+    },
+    carbs: {
+      type: Number,
+    },
     caloric: {
         type: Number,
         default: 100
+    },
+    category:{
+        ref: 'categories',
+        type: Schema.Types.ObjectId
     }
 })
 

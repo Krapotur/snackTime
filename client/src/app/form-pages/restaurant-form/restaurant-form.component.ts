@@ -122,7 +122,7 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
           id: restaurant._id,
           title: restaurant.title,
           route: 'restaurants',
-          formRoute:'restaurant'
+          formRoute: 'restaurant'
         }
         this.restaurant = restaurant
       },
@@ -139,18 +139,20 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    let restaurant: Restaurant = {
-      title: this.form.get('title').value,
-      description: this.form.get('description').value,
-      timeOpen: this.form.get('timeOpen').value,
-      timeClose: this.form.get('timeClose').value,
-      kitchen: this.form.get('kitchen').value,
-      typePlace: this.getTypePlace(this.form.get('typePlace').value)
-    }
+    const fd = new FormData()
+
+    if (this.image) fd.append('image', this.image, this.image.name)
+
+    fd.append('title', this.form.get('title').value)
+    fd.append('description', this.form.get('description').value)
+    fd.append('kitchen', this.form.get('kitchen').value)
+    fd.append('timeOpen', this.form.get('timeOpen').value)
+    fd.append('timeClose', this.form.get('timeClose').value)
+    fd.append('typePlace', this.getTypePlace(this.form.get('typePlace').value))
+
 
     if (this.restaurantID) {
-      restaurant._id = this.restaurantID
-      this.rSub = this.restaurantService.update(restaurant, this.image).subscribe({
+      this.rSub = this.restaurantService.update(fd, null, this.restaurantID).subscribe({
         next: message => {
           MaterialService.toast(message.message)
           void this.router.navigate(['admin/restaurants'])
@@ -158,7 +160,7 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
         error: error => MaterialService.toast(error.error.message)
       })
     } else {
-      this.rSub = this.restaurantService.create(restaurant, this.image).subscribe({
+      this.rSub = this.restaurantService.create(fd).subscribe({
         next: message => {
           MaterialService.toast(message.message)
           void this.router.navigate(['admin/restaurants'])
@@ -169,7 +171,7 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
   }
 
   openRestaurantsPage() {
-    this.router.navigate(['admin/restaurants']).then()
+   void this.router.navigate(['admin/restaurants'])
   }
 
   openDelTemplate() {

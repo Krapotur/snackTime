@@ -12,6 +12,7 @@ import {RestaurantFormComponent} from "./form-pages/restaurant-form/restaurant-f
 import {UserFormComponent} from "./form-pages/user-form/user-form.component";
 import {CategoryFormComponent} from "./form-pages/category-form/category-form.component";
 import {KitchenFormComponent} from "./form-pages/kitchen-form/kitchen-form.component";
+import {PositionsPageComponent} from "./admin-pages/positions-page/positions-page.component";
 
 export const routes: Routes = [
   {
@@ -27,7 +28,7 @@ export const routes: Routes = [
       {path: 'overview', component: OverviewPageComponent},
       {path: 'users', component: UsersPageComponent},
       {path: 'restaurants', component: RestaurantsPageComponent},
-      {path: 'categories', component: CategoriesPageComponent},
+      {path: 'assortment', component: PositionsPageComponent},
       {path: 'form-user', component: UserFormComponent},
       {path: 'form-user/:id', component: UserFormComponent},
       {path: 'form-restaurant', component: RestaurantFormComponent},

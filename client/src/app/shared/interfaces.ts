@@ -50,6 +50,29 @@ export interface Kitchen {
   imgSrc?: string
 }
 
+export interface Category{
+  position?: number,
+  _id?: string,
+  title: string,
+  status?: boolean,
+  imgSrc: string
+}
+
+export interface Position {
+  position?: number,
+  _id?: string,
+  title: string,
+  status?: boolean,
+  imgSrc: string,
+  composition: string,
+  weight: number,
+  proteins: number,
+  fats: number,
+  carbs: number,
+  caloric: number,
+  category: string
+}
+
 export interface Elem {
   id: string
   title: string,

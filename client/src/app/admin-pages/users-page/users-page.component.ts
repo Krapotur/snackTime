@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
 import {MatTableDataSource, MatTableModule} from "@angular/material/table";
 import {MatButtonModule} from "@angular/material/button";
@@ -6,7 +6,7 @@ import {NgIf, NgOptimizedImage} from "@angular/common";
 import {MatInputModule} from "@angular/material/input";
 import {MatSelectModule} from "@angular/material/select";
 import {ReactiveFormsModule} from "@angular/forms";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {UserService} from "../../shared/services/user.service";
 import {Subscription} from "rxjs";
@@ -44,12 +44,10 @@ import {FilterGroupPipe} from "../../shared/pipes/filter-group.pipe";
 
 
 export class UsersPageComponent implements OnInit, OnDestroy {
-
-  constructor(private userService: UserService,
-              private restaurantService: RestaurantService,
-              private groupService: GroupService,
-              private router: Router) {
-  }
+  private restaurantService = inject(RestaurantService)
+  private groupService = inject(GroupService)
+  private userService = inject(UserService)
+  private router = inject(Router)
 
   isLoading = false;
   isShowTemplate = false;
@@ -94,7 +92,7 @@ export class UsersPageComponent implements OnInit, OnDestroy {
         },
         error: error => MaterialService.toast(error.error.message)
       })
-    }, 500)
+    }, 300)
   }
 
   getRestaurants() {
@@ -122,12 +120,10 @@ export class UsersPageComponent implements OnInit, OnDestroy {
       status: !user.status,
     }
 
-    this.userService.update(newUser).subscribe({
+    this.userService.update(null, newUser, user._id).subscribe({
       next: message => {
         MaterialService.toast(message.message);
-        this.router.navigateByUrl('/').then(() => {
-          void this.router.navigate([`admin/users`])
-        })
+        this.getUsers()
       },
       error: error => MaterialService.toast(error.error.error)
     })

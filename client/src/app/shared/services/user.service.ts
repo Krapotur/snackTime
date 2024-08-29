@@ -1,7 +1,7 @@
-import {Injectable} from "@angular/core";
+import {inject, Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
-import { User} from "../interfaces";
+import {User} from "../interfaces";
 
 
 @Injectable({
@@ -9,9 +9,7 @@ import { User} from "../interfaces";
 })
 
 export class UserService {
-
-  constructor(private http: HttpClient) {
-  }
+  private http = inject(HttpClient)
 
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>('/api/users')
@@ -21,42 +19,12 @@ export class UserService {
     return this.http.get<User>(`/api/users/${id}`)
   }
 
-
-  create(user: User, image?): Observable<{ message: string }> {
-    const fd = new FormData()
-
-    if (image) fd.append('image', image, image.name)
-
-    fd.append('lastName', user.lastName)
-    fd.append('firstName', user.firstName)
-    fd.append('login', user.login)
-    fd.append('email', user.email)
-    fd.append('phone', user.phone)
-    fd.append('group', user.group)
-    fd.append('restaurant', user.restaurant)
-    fd.append('password', user.password)
-
+  create(fd: FormData): Observable<{ message: string }> {
     return this.http.post<{ message: string }>('/api/users', fd)
   }
-  update(user: User, image?): Observable<{ message: string }> {
-    const fd = new FormData()
 
-    if (image) fd.append('image', image, image.name)
-
-    if (user.status != null){
-      fd.append('status', user.status.toString())
-    }
-
-    fd.append('lastName', user.lastName)
-    fd.append('firstName', user.firstName)
-    fd.append('login', user.login)
-    fd.append('email', user.email)
-    fd.append('phone', user.phone)
-    fd.append('group', user.group)
-    fd.append('restaurant', user.restaurant)
-    fd.append('password', user.password)
-
-    return this.http.patch<{ message: string }>(`/api/users/${user._id}`, fd)
+  update(fd: FormData, user?: User, id?: string): Observable<{ message: string }> {
+    return this.http.patch<{ message: string }>(`/api/users/${id}`, fd ? fd : user)
   }
 
 }

@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource, MatTableModule} from "@angular/material/table";
 import {MatButtonModule} from "@angular/material/button";
 import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
@@ -39,10 +39,8 @@ import {LoaderComponent} from "../../shared/components/loader/loader.component";
   styleUrls: ['./kitchens-page.component.scss', '../../shared/styles/style-table.scss']
 })
 export class KitchensPageComponent implements OnInit, OnDestroy {
-
-  constructor(private router: Router,
-              private kitchenService: KitchenService) {
-  }
+  private router = inject(Router)
+  private kitchenService = inject(KitchenService)
 
   kSub: Subscription
   isLoading = false
@@ -87,12 +85,10 @@ export class KitchensPageComponent implements OnInit, OnDestroy {
       status: !kitchen.status
     }
 
-    this.kSub = this.kitchenService.update(newKitchen).subscribe({
+    this.kSub = this.kitchenService.update(null, newKitchen, newKitchen._id).subscribe({
       next: message => {
         MaterialService.toast(message.message);
-        this.router.navigateByUrl('/').then(() => {
-          void this.router.navigate([`admin/restaurants`])
-        })
+        this.getKitchens()
       },
       error: error => MaterialService.toast(error.error.message())
     })

@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Subscription} from "rxjs";
 import {RestaurantService} from "../../shared/services/restaurant.service";
@@ -43,6 +43,12 @@ import {FilterGroupPipe} from "../../shared/pipes/filter-group.pipe";
   styleUrls: ['../../shared/styles/style-form.scss', './user-form.component.scss',]
 })
 export class UserFormComponent implements OnInit, OnDestroy {
+  private restaurantService = inject(RestaurantService)
+  private groupService = inject(GroupService)
+  private userService = inject(UserService)
+  private router = inject(Router)
+  private route = inject(ActivatedRoute)
+
   form: FormGroup
   formPsw: FormGroup
   rSub: Subscription
@@ -59,14 +65,6 @@ export class UserFormComponent implements OnInit, OnDestroy {
   isChecked = true
 
   @ViewChild('inputImg') inputImgRef: ElementRef
-
-  constructor(private restaurantService: RestaurantService,
-              private groupService: GroupService,
-              private userService: UserService,
-              private router: Router,
-              private route: ActivatedRoute
-  ) {
-  }
 
   ngOnInit() {
     this.userID = this.route.snapshot.params['id'] ?
@@ -97,12 +95,6 @@ export class UserFormComponent implements OnInit, OnDestroy {
         Validators.required,
         Validators.minLength(3),
         Validators.maxLength(10)]),
-      password: new FormControl('', [this.user ?
-        Validators.nullValidator : Validators.required,
-        Validators.minLength(7),
-        Validators.maxLength(15)]),
-      pswConfirm: new FormControl('', this.user ?
-        Validators.nullValidator : Validators.required),
       email: new FormControl(user ? user.email : '', [
         Validators.email,
         Validators.minLength(3),
@@ -114,6 +106,19 @@ export class UserFormComponent implements OnInit, OnDestroy {
       restaurant: new FormControl(user ? user.restaurant : ''),
       imgSrc: new FormControl(user ? user.imgSrc : '',)
     })
+
+    if (this.userID.length == 0) {
+      this.form.addControl(
+        'password', new FormControl('', [
+          Validators.required,
+          Validators.minLength(7),
+          Validators.maxLength(15)])
+      )
+      this.form.addControl(
+        'pswConfirm', new FormControl('',
+          Validators.required)
+      )
+    }
   }
 
   generateFormPsw() {
@@ -128,14 +133,14 @@ export class UserFormComponent implements OnInit, OnDestroy {
     this.isVisibleBtn = false
   }
 
-  updatePassword(){
+  updatePassword() {
     delete this.user.status
     let user: User = {
       ...this.user,
       password: this.formPsw.get('pswConfirm').value
     }
 
-    this.uSub = this.userService.update(user).subscribe({
+    this.uSub = this.userService.update(null, user, user._id).subscribe({
       next: message => {
         MaterialService.toast(message.message)
         void this.router.navigate(['admin/users'])
@@ -145,20 +150,26 @@ export class UserFormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    let user: User = {
-      lastName: this.form.get('lastName').value,
-      firstName: this.form.get('firstName').value,
-      login: this.form.get('login').value,
-      email: this.form.get('email').value,
-      phone: this.form.get('phone').value,
-      group: this.form.get('group').value,
-      restaurant: this.isChecked && this.form.get('restaurant').value ? this.form.get('restaurant').value : '',
+    const fd = new FormData()
+
+    if (this.image) fd.append('image', this.image, this.image.name)
+
+    fd.append('lastName', this.form.get('lastName').value)
+    fd.append('firstName', this.form.get('firstName').value)
+    fd.append('login', this.form.get('login').value)
+    fd.append('email', this.form.get('email').value)
+    fd.append('phone', this.form.get('phone').value)
+    fd.append('group', this.form.get('group').value)
+    if(this.form.get('password')){
+      fd.append('password', this.form.get('password').value)
     }
 
-    if(!this.user){
-      user.password = this.form.get('password').value
+    if (this.isChecked && this.form.get('restaurant').value.length > 0) {
+      fd.append('restaurant', this.form.get('restaurant').value)
+    }
 
-      this.uSub = this.userService.create(user, this.image ? this.image : null).subscribe({
+    if (!this.user) {
+      this.uSub = this.userService.create(fd).subscribe({
         next: message => {
           MaterialService.toast(message.message)
           void this.router.navigate(['admin/users'])
@@ -166,7 +177,8 @@ export class UserFormComponent implements OnInit, OnDestroy {
         error: error => MaterialService.toast(error.error.error)
       })
     } else {
-      this.uSub = this.userService.update(user, this.image ? this.image : null).subscribe({
+      fd.delete('password')
+      this.uSub = this.userService.update(fd, null, this.user._id).subscribe({
         next: message => {
           MaterialService.toast(message.message)
           void this.router.navigate(['admin/users'])
@@ -247,12 +259,16 @@ export class UserFormComponent implements OnInit, OnDestroy {
     return isTrue
   }
 
-  enableForm(){
+  checkValidConfirmPsw(): boolean{
+    return (this.form.get('password').value !== this.form.get('pswConfirm').value) && this.form.get('pswConfirm').touched
+  }
+
+  enableForm() {
     this.isVisibleBtn = !this.isVisibleBtn
     this.form.enable()
   }
 
-  toggle(event){
+  toggle(event) {
     this.isChecked = event.checked
   }
 

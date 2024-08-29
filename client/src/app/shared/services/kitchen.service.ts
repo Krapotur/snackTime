@@ -1,4 +1,4 @@
-import {Injectable} from "@angular/core";
+import {inject, Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {Kitchen} from "../interfaces";
@@ -8,9 +8,7 @@ import {Kitchen} from "../interfaces";
 })
 
 export class KitchenService {
-
-  constructor(private http: HttpClient) {
-  }
+  private http = inject(HttpClient)
 
   getKitchens(): Observable<Kitchen[]> {
     return this.http.get<Kitchen[]>('/api/kitchens')
@@ -21,25 +19,12 @@ export class KitchenService {
   }
 
 
-  create(kitchen: Kitchen, image): Observable<{ message: string }> {
-    const fd = new FormData()
-
-    if (image) fd.append('image', image, image.name)
-    fd.append('title', kitchen.title)
-
+  create(fd: FormData): Observable<{ message: string }> {
     return this.http.post<{ message: string }>('/api/kitchens', fd)
   }
 
-  update(kitchen: Kitchen, image?): Observable<{ message: string }> {
-    const fd = new FormData()
-
-    fd.append('title', kitchen.title)
-    if (image) fd.append('image', image, image.name)
-    if (kitchen.status != null) {
-      fd.append('status', kitchen.status.toString())
-    }
-
-    return this.http.patch<{ message: string }>(`/api/kitchens/${kitchen._id}`, fd)
+  update(fd?: FormData, kitchen?: Kitchen, id?: string): Observable<{ message: string }> {
+    return this.http.patch<{ message: string }>(`/api/kitchens/${id}`, fd ? fd : kitchen)
   }
 
 }

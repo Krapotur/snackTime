@@ -56,7 +56,7 @@ module.exports.create = async function (req, res) {
             email: req.body.email ? req.body.email : '',
             login: req.body.login ? req.body.login : '',
             password: password.length > 0 ? bcrypt.hashSync(password, salt) : '',
-            restaurant: req.body.restaurant ? req.body.restaurant : '',
+            restaurant: req.body.restaurant ? req.body.restaurant : null,
             group: req.body.group ? req.body.group : '',
             imgSrc: req.file ? req.file.path : ''
         })
@@ -82,8 +82,10 @@ module.exports.update = async function (req, res) {
     if (req.body.phone) updated.phone = req.body.phone
     if (req.body.restaurant) updated.restaurant = req.body.restaurant
     if (req.body.login) updated.login = req.body.login.toLowerCase()
-    if (req.body.password && req.body.password.length > 7) updated.password = req.body.password
-
+    if (req.body.password && req.body.password.length > 3) {
+        const salt = bcrypt.genSaltSync(10)
+        updated.password = bcrypt.hashSync(req.body.password, salt)
+    }
 
     try {
         await User.findByIdAndUpdate(
