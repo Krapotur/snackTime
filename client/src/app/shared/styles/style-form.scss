@@ -47,7 +47,7 @@
   color: red;
   font-size: 13px;
   font-family: 'Lora', serif;
-  padding-bottom: 5px;
+  padding: 0 0 5px 10px;
 }
 
 ////////////////////////////// Add Image ///////////////////////////////////
@@ -135,3 +135,13 @@
     }
   }
 }
+/////////////////// Template for Kitchen & Category ///////////////
+
+hr {
+  height: 2px;
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  --mdc-filled-text-field-container-color: #ffffff;
+}
+

@@ -144,7 +144,8 @@ export class KitchenFormComponent implements OnInit, OnDestroy {
   checkTitleKitchen() {
     const title = this.form.get('title').value
     if (title.length > 5) {
-      this.isError = this.kitchens.some(kitchen => title.toLowerCase() == kitchen.title.toLowerCase())
+      this.isError = this.kitchens.some(kitchen => title.toLowerCase() == kitchen.title.toLowerCase() &&
+      kitchen._id !== this.kitchenID)
     }
   }
 

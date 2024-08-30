@@ -27,7 +27,7 @@ module.exports.create = async function (req, res) {
 
         try {
             await category.save()
-            res.status(201).json(category)
+            res.status(201).json({message: 'Категория успешно создана'})
         } catch (e) {
             errorHandler(res, e)
         }
@@ -35,12 +35,42 @@ module.exports.create = async function (req, res) {
 
 }
 
-module.exports.getById = function (req, res) {
-
+module.exports.getById = async function (req, res) {
+    try {
+        const category = await Category.findById({_id: req.params.id})
+        res.status(200).json(category)
+    } catch (e) {
+        errorHandler(res, e)
+    }
 }
-module.exports.update = function (req, res) {
+module.exports.update = async function (req, res) {
+    let updated = {
+        ...req.body
+    }
 
+    if (req.file) updated.imgSrc = req.file.path
+
+    try {
+        await Category.findByIdAndUpdate(
+            {_id: req.params.id},
+            {$set: updated},
+            {new: true}
+        )
+
+        res.status(200).json({
+            message: 'Изменения внесены'
+        })
+
+    } catch (e) {
+        errorHandler(res, e)
+    }
 }
-module.exports.delete = function (req, res) {
-
+module.exports.delete = async function (req, res) {
+    try {
+        const category = await Category.findOne({_id: req.params.id})
+        await Category.deleteOne({_id: req.params.id})
+        res.status(200).json({message: `Категория "${category.title}" удалена`})
+    } catch (e) {
+        errorHandler(res, e)
+    }
 }

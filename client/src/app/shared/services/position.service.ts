@@ -23,7 +23,7 @@ export class PositionService {
     return this.http.post<{ message: string }>('/api/positions', fd)
   }
 
-  update(fd?: FormData, position?: Position, id?: string): Observable<{ message: string }> {
+  update(fd: FormData, position?: Position, id?: string): Observable<{ message: string }> {
     return this.http.patch<{ message: string }>(`/api/positions/${id}`, fd ? fd : position)
   }
 

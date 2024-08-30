@@ -1,0 +1,66 @@
+<!--Table-->
+<div class="main">
+  <h5>Категории</h5>
+
+  <app-empty [page]="activeRoute" *ngIf="isEmpty"></app-empty>
+
+  <div *ngIf="!isEmpty">
+    <div class="mat-elevation-z8">
+      <table mat-table [dataSource]="dataSource">
+        <!-- Position Column -->
+        <ng-container matColumnDef="#">
+          <th mat-header-cell *matHeaderCellDef> #</th>
+          <td mat-cell *matCellDef="let category">{{ category.position }}</td>
+        </ng-container>
+
+        <!-- Title Column -->
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef> Название</th>
+          <td mat-cell *matCellDef="let category">{{category.title }}</td>
+        </ng-container>
+
+        <!-- Edit Column -->
+        <ng-container matColumnDef="edit">
+          <th mat-header-cell *matHeaderCellDef> Действие</th>
+          <td mat-cell *matCellDef="let category">
+            <img ngSrc="assets/icons/edit.png"
+                 width="35" height="35" alt="edit"
+                 (click)="openPage(category._id)"
+            >
+          </td>
+        </ng-container>
+
+        <!-- Status Column -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef> Статус</th>
+          <td mat-cell *matCellDef="let category">
+            <mat-slide-toggle [checked]="category.status" color="warn"
+                              (click)="changeStatus(category)"
+            ></mat-slide-toggle>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <div class="table-bottom">
+        <button
+          class="btn" extended="" mat-fab
+          routerLink="/admin/form-category"
+        >
+          Добавить
+        </button>
+        <mat-paginator [pageSizeOptions]="[5,10, 20]"
+                       showFirstLastButtons
+                       aria-label="">
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="center">
+  <app-loader *ngIf="isLoading"></app-loader>
+</div>

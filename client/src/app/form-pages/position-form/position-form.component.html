@@ -18,21 +18,21 @@
             <div class="input-field col s6">
               <label class="active" for="title">Название</label>
               <input id="title" type="text" formControlName="title"
-                     [ngClass]="{'invalid' : form.get('title').invalid && form.get('title').touched}"
-                     (keyup)="checkTitleKitchen()"
+                     [ngClass]="{'invalid' : form.get('title').invalid && form.get('title')['touched']}"
+                     (keyup)="checkTitlePosition()"
               >
             </div>
           </div>
           <span class="error" *ngIf="isError"
           >*Название уже занято
                     </span>
-          <span class="error" *ngIf="form.get('title').hasError('required') && form.get('title').touched"
+          <span class="error" *ngIf="form.get('title').hasError('required') && form.get('title')['touched']"
           >*Введите название
                     </span>
-          <span class="error" *ngIf="form.get('title').hasError('minlength') && form.get('title').touched"
+          <span class="error" *ngIf="form.get('title').hasError('minlength') && form.get('title')['touched']"
           >*Не менее 3х символов
                     </span>
-          <span class="error" *ngIf="form.get('title').hasError('maxlength') && form.get('title').touched"
+          <span class="error" *ngIf="form.get('title').hasError('maxlength') && form.get('title')['touched']"
           >*Слишком длинное название
                     </span>
 

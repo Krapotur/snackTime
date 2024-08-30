@@ -57,12 +57,14 @@ export class UserFormComponent implements OnInit, OnDestroy {
   restaurants: Restaurant[] = []
   groups: Group[] = []
   user: User | undefined
+  users: User [] = []
   isDelete = false
   userID: string
   elem: Elem
   image: File
   isVisibleBtn: boolean
   isChecked = true
+  isError = false
 
   @ViewChild('inputImg') inputImgRef: ElementRef
 
@@ -202,6 +204,13 @@ export class UserFormComponent implements OnInit, OnDestroy {
     })
   }
 
+  getUsers(){
+    this.uSub = this.userService.getUsers().subscribe({
+      next: users => this.users = users,
+      error: error => MaterialService.toast(error.error.error)
+    })
+  }
+
   getUserById() {
     if (this.userID.length > 0) {
       this.userService.getUserByID(this.userID).subscribe({
@@ -215,6 +224,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
           }
           this.user = user
           this.isVisibleBtn = true
+          this.getUsers()
         },
         error: error => MaterialService.toast(error.error.error)
       })
@@ -228,8 +238,8 @@ export class UserFormComponent implements OnInit, OnDestroy {
     this.form.disable()
   }
 
-  checkLogin() {
-  }
+  // checkLogin() {
+  // }
 
   uploadImg($event: any) {
     this.image = $event.target.files[0]
@@ -260,7 +270,15 @@ export class UserFormComponent implements OnInit, OnDestroy {
   }
 
   checkValidConfirmPsw(): boolean{
-    return (this.form.get('password').value !== this.form.get('pswConfirm').value) && this.form.get('pswConfirm').touched
+    return (this.form.get('password').value !== this.form.get('pswConfirm').value) && this.form.get('pswConfirm')['touched']
+  }
+
+  checkLogin() {
+    const login = this.form.get('login').value
+    if (login.length >= 2) {
+      this.isError = this.users.some(user => login.toLowerCase() == user.login.toLowerCase() &&
+        user._id !== this.userID)
+    }
   }
 
   enableForm() {

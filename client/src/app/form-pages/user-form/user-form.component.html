@@ -19,17 +19,17 @@
             <div class="input-field col s6">
               <label class="active" for="lastName">*Фамилия</label>
               <input id="lastName" type="text" formControlName="lastName"
-                     [ngClass]="{'invalid' : form.get('lastName').invalid && form.get('lastName').touched}"
+                     [ngClass]="{'invalid' : this.form.get('lastName').invalid && this.form.get('lastName')['touched']}"
               >
             </div>
           </div>
-          <span class="error" *ngIf="form.get('lastName').hasError('required') && form.get('lastName').touched"
+          <span class="error" *ngIf="form.get('lastName').hasError('required') && form.get('lastName')['touched']"
           >*Введите фамилию
                     </span>
-          <span class="error" *ngIf="form.get('lastName').hasError('minlength') && form.get('lastName').touched"
+          <span class="error" *ngIf="form.get('lastName').hasError('minlength') && form.get('lastName')['touched']"
           >*Не менее 3х символов
                     </span>
-          <span class="error" *ngIf="form.get('lastName').hasError('maxlength') && form.get('lastName').touched"
+          <span class="error" *ngIf="form.get('lastName').hasError('maxlength') && form.get('lastName')['touched']"
           >*Слишком длинная фамилия
                     </span>
 
@@ -37,17 +37,17 @@
             <div class="input-field col s6">
               <label class="active" for="firstName">*Имя</label>
               <input id="firstName" type="text" formControlName="firstName"
-                     [ngClass]="{'invalid' : form.get('firstName').invalid && form.get('firstName').touched}"
+                     [ngClass]="{'invalid' : this.form.get('firstName').invalid && this.form.get('firstName')['touched']}"
               >
             </div>
           </div>
-          <span class="error" *ngIf="form.get('firstName').hasError('required') && form.get('firstName').touched"
+          <span class="error" *ngIf="form.get('firstName').hasError('required') && form.get('firstName')['touched']"
           >*Введите имя
                     </span>
-          <span class="error" *ngIf="form.get('firstName').hasError('minlength') && form.get('firstName').touched"
+          <span class="error" *ngIf="form.get('firstName').hasError('minlength') && form.get('firstName')['touched']"
           >*Не менее 3х символов
                     </span>
-          <span class="error" *ngIf="form.get('firstName').hasError('maxlength') && form.get('firstName').touched"
+          <span class="error" *ngIf="form.get('firstName').hasError('maxlength') && form.get('firstName')['touched']"
           >*Слишком длинное имя
                     </span>
 
@@ -55,11 +55,11 @@
             <div class="input-field col s6">
               <label class="active" for="email">Email</label>
               <input id="email" type="text" formControlName="email"
-                     [ngClass]="{'invalid' : form.get('email').invalid && form.get('email').touched}"
+                     [ngClass]="{'invalid' : this.form.get('email').invalid && this.form.get('email')['touched']}"
               >
             </div>
           </div>
-          <span class="error" *ngIf="form.get('email').hasError('email') && form.get('email').touched"
+          <span class="error" *ngIf="form.get('email').hasError('email') && form.get('email')['touched']"
           >*Неверный формат
         </span>
 
@@ -67,15 +67,15 @@
             <div class="input-field col s6">
               <label class="active" for="phone">*Телефон</label>
               <input id="phone" type="number" formControlName="phone"
-                     [ngClass]="{'invalid' : form.get('phone').invalid && form.get('phone').touched}"
+                     [ngClass]="{'invalid' : this.form.get('phone').invalid && this.form.get('phone')['touched']}"
               >
             </div>
           </div>
-          <span class="error" *ngIf="form.get('phone').hasError('required') && form.get('phone').touched"
+          <span class="error" *ngIf="form.get('phone').hasError('required') && form.get('phone')['touched']"
           >*Введите телефон
                     </span>
           <span class="error" *ngIf="(form.get('phone').hasError('pattern') ||
-        !checkValidNumber()) && form.get('phone').touched"
+        !checkValidNumber()) && form.get('phone')['touched']"
           >*Укажите в формате 79XX ... .. ..
                     </span>
 
@@ -93,7 +93,7 @@
             </mat-select>
           </mat-form-field>
 
-          <span class="error" *ngIf="form.get('group').hasError('required') && form.get('group').touched"
+          <span class="error" *ngIf="form.get('group').hasError('required') && form.get('group')['touched']"
           >*Выберите группу
                     </span>
 
@@ -124,17 +124,20 @@
             <div class="input-field col s6">
               <label class="active" for="login">*Логин</label>
               <input id="login" type="text" formControlName="login"
-                     [ngClass]="{'invalid' : form.get('login').invalid && form.get('login').touched}"
+                     [ngClass]="{'invalid' : form.get('login').invalid && form.get('login')['touched']}"
+                     (keyup)="checkLogin()"
               >
             </div>
           </div>
-          <span class="error" *ngIf="form.get('login').hasError('required') && form.get('login').touched"
+          <span class="error" *ngIf="isError"
+          >*Логин уже занят..
+                    </span><span class="error" *ngIf="form.get('login').hasError('required') && form.get('login')['touched']"
           >*Придумайте логин
                     </span>
-          <span class="error" *ngIf="form.get('login').hasError('minlength') && form.get('login').touched"
+          <span class="error" *ngIf="form.get('login').hasError('minlength') && form.get('login')['touched']"
           >*Не менее 3 символов
                     </span>
-          <span class="error" *ngIf="form.get('login').hasError('maxlength') && form.get('login').touched"
+          <span class="error" *ngIf="form.get('login').hasError('maxlength') && form.get('login')['touched']"
           >*Не более 10 символов
                     </span>
 
@@ -151,14 +154,14 @@
               <div class="input-field col s6">
                 <label class="active" for="password">*Пароль</label>
                 <input id="password" type="password" formControlName="password"
-                       [ngClass]="{'invalid' : form.get('password').invalid && form.get('password').touched}"
+                       [ngClass]="{'invalid' : form.get('password').invalid && form.get('password')['touched']}"
                 >
               </div>
             </div>
-            <span class="error" *ngIf="form.get('password').hasError('required') && form.get('password').touched"
+            <span class="error" *ngIf="form.get('password').hasError('required') && form.get('password')['touched']"
             >*Введите пароль
                     </span>
-            <span class="error" *ngIf="form.get('password').hasError('minlength') && form.get('password').touched"
+            <span class="error" *ngIf="form.get('password').hasError('minlength') && form.get('password')['touched']"
             >*Не менее 7 символов
                     </span>
             <span class="error" *ngIf="form.get('password').hasError('maxlength')"
@@ -169,12 +172,12 @@
               <div class="input-field col s6">
                 <label class="active" for="pswConfirm">*Подтверждение пароля</label>
                 <input id="pswConfirm" type="password" formControlName="pswConfirm"
-                       [ngClass]="{'invalid' : form.get('pswConfirm').invalid && form.get('pswConfirm').touched}"
+                       [ngClass]="{'invalid' : form.get('pswConfirm').invalid && form.get('pswConfirm')['touched']}"
                 >
               </div>
             </div>
             <div>
-               <span class="error" *ngIf="form.get('pswConfirm').hasError('required') && form.get('pswConfirm').touched"
+               <span class="error" *ngIf="form.get('pswConfirm').hasError('required') && form.get('pswConfirm')['touched']"
                >*Подтвердите пароль
                     </span>
             </div>
@@ -214,7 +217,7 @@
         <button
           type="submit"
           class="btn-save" extended="" mat-fab
-          [disabled]="form.invalid || form.disabled || (!userID.length && checkValidConfirmPsw()) "
+          [disabled]="form.invalid || form.disabled || (!userID.length && checkValidConfirmPsw()) || isError"
           (click)="onSubmit()"
         >
           Сохранить
@@ -245,14 +248,14 @@
         <div class="input-field col s6">
           <label class="active" for="password">*Пароль</label>
           <input type="password" formControlName="password"
-                 [ngClass]="{'invalid' : formPsw.get('password').invalid && formPsw.get('password').touched}"
+                 [ngClass]="{'invalid' : formPsw.get('password').invalid && formPsw.get('password')['touched']}"
           >
         </div>
       </div>
-      <span class="error" *ngIf="formPsw.get('password').hasError('required') && formPsw.get('password').touched"
+      <span class="error" *ngIf="formPsw.get('password').hasError('required') && formPsw.get('password')['touched']"
       >*Введите пароль
                     </span>
-      <span class="error" *ngIf="formPsw.get('password').hasError('minlength') && formPsw.get('password').touched"
+      <span class="error" *ngIf="formPsw.get('password').hasError('minlength') && formPsw.get('password')['touched']"
       >*Не менее 7 символов
                     </span>
       <span class="error" *ngIf="formPsw.get('password').hasError('maxlength')"
@@ -263,15 +266,15 @@
         <div class="input-field col s6">
           <label class="active" for="pswConfirm">*Подтверждение пароля</label>
           <input type="password" formControlName="pswConfirm"
-                 [ngClass]="{'invalid' : formPsw.get('pswConfirm').invalid && formPsw.get('pswConfirm').touched}"
+                 [ngClass]="{'invalid' : formPsw.get('pswConfirm').invalid && formPsw.get('pswConfirm')['touched']}"
           >
         </div>
       </div>
-      <span class="error" *ngIf="formPsw.get('pswConfirm').hasError('required') && formPsw.get('pswConfirm').touched"
+      <span class="error" *ngIf="formPsw.get('pswConfirm').hasError('required') && formPsw.get('pswConfirm')['touched']"
       >*Подтвердите пароль
                     </span>
       <span class="error"
-            *ngIf="(formPsw.get('password').value !== formPsw.get('pswConfirm').value) && formPsw.get('pswConfirm').touched"
+            *ngIf="(formPsw.get('password').value !== formPsw.get('pswConfirm').value) && formPsw.get('pswConfirm')['touched']"
       >*Пароли не совпадают
                     </span>
     </div>

@@ -145,7 +145,6 @@ export class PositionFormComponent implements OnInit, OnDestroy{
     fd.append('category', this.form.get('category').value)
 
     if (this.positionID) {
-      setTimeout(() => {
         this.pSub = this.positionService.update(fd, null, this.positionID).subscribe({
           next: message => {
             MaterialService.toast(message.message)
@@ -153,9 +152,7 @@ export class PositionFormComponent implements OnInit, OnDestroy{
           },
           error: error => MaterialService.toast(error.error.message)
         })
-      }, 300)
     } else {
-      setTimeout(() => {
         this.pSub = this.positionService.create(fd).subscribe({
           next: message => {
             MaterialService.toast(message.message)
@@ -163,7 +160,6 @@ export class PositionFormComponent implements OnInit, OnDestroy{
           },
           error: error => MaterialService.toast(error.error.message)
         })
-      }, 300)
     }
   }
 
@@ -171,7 +167,7 @@ export class PositionFormComponent implements OnInit, OnDestroy{
     void this.router.navigate(['admin/assortment'])
   }
 
-  checkTitleKitchen() {
+  checkTitlePosition() {
     const title = this.form.get('title').value
     if (title.length > 5) {
       this.isError = this.positions.some(position => title.toLowerCase() == position.title.toLowerCase())

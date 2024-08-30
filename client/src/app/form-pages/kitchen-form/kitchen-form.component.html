@@ -3,7 +3,7 @@
     <div class="container-block">
       <h3>{{kitchenID.length > 0 ? kitchen.title + ' кухня' : 'Новая кухня'}}</h3>
       <div class="img-del" *ngIf="kitchenID">
-        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
              data-name="Layer 1" viewBox="0 0 24 24"
              (click)="openDelTemplate()"
              *ngIf="!isDelete"
@@ -18,7 +18,7 @@
             <div class="input-field col s6">
               <label class="active" for="title">Название</label>
               <input id="title" type="text" formControlName="title"
-                     [ngClass]="{'invalid' : form.get('title').invalid && form.get('title').touched}"
+                     [ngClass]="{'invalid' : form.get('title').invalid && form.get('title')['touched']}"
                      (keyup)="checkTitleKitchen()"
               >
             </div>
@@ -26,13 +26,13 @@
           <span class="error" *ngIf="isError"
           >*Название уже занято
                     </span>
-          <span class="error" *ngIf="form.get('title').hasError('required') && form.get('title').touched"
+          <span class="error" *ngIf="form.get('title').hasError('required') && form.get('title')['touched']"
           >*Введите название
                     </span>
-          <span class="error" *ngIf="form.get('title').hasError('minlength') && form.get('title').touched"
+          <span class="error" *ngIf="form.get('title').hasError('minlength') && form.get('title')['touched']"
           >*Не менее 3х символов
                     </span>
-          <span class="error" *ngIf="form.get('title').hasError('maxlength') && form.get('title').touched"
+          <span class="error" *ngIf="form.get('title').hasError('maxlength') && form.get('title')['touched']"
           >*Слишком длинное название
                     </span>
 

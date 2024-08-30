@@ -183,7 +183,7 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
     const title = this.form.get('title').value
     if (title.length > 5) {
       this.restaurants.some(restaurant =>
-        this.isError = title.toLowerCase() == restaurant.title.toLocaleLowerCase())
+        this.isError = title.toLowerCase() == restaurant.title.toLocaleLowerCase() && restaurant._id !== this.restaurantID)
     }
   }
 
