@@ -46,8 +46,8 @@ export class AuthService {
     this.status = status
   }
 
-  getStatus() {
-    return this.status
-  }
+  // getStatus() {
+  //   return this.status
+  // }
 
 }
