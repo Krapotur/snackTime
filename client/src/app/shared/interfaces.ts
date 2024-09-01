@@ -6,7 +6,7 @@ export interface Login {
 export interface AuthToken {
   token: string
   userName: string
-  role: string
+  group: string
 }
 
 export interface User {

@@ -3,14 +3,13 @@ import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {User} from "../interfaces";
 
-
 @Injectable({
   providedIn: "root"
 })
 
 export class UserService {
   private http = inject(HttpClient)
-  private group = ''
+  private group =''
 
   setGroup(group: string){
     this.group = group
@@ -35,5 +34,4 @@ export class UserService {
   update(fd: FormData, user?: User, id?: string): Observable<{ message: string }> {
     return this.http.patch<{ message: string }>(`/api/users/${id}`, fd ? fd : user)
   }
-
 }

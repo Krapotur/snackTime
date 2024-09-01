@@ -26,11 +26,11 @@ export class SiteLayoutComponent implements OnInit {
   isAdmin: boolean
 
   ngOnInit() {
-    this.isAdmin = this.userService.getGroup() == 'administrator'
+    this.isAdmin = this.userService.getGroup() === 'administrator'
   }
 
   logout() {
     this.authService.logout()
-    this.router.navigate(['/login']).then()
+    void this.router.navigate(['/login'])
   }
 }

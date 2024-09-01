@@ -8,10 +8,6 @@ const keys = require('../config/keys')
 
 module.exports.login = async function (req, res) {
     const candidate = await User.findOne({login: req.body.login})
-    let group = {}
-    if (candidate){
-         group = await Group.findOne({_id: candidate.group})
-    }
 
     try {
         if (candidate && candidate.status) {
@@ -25,7 +21,7 @@ module.exports.login = async function (req, res) {
                 const userToken = {
                     token: `Bearer ${token}`,
                     userName: candidate.lastName + ' ' + candidate.firstName,
-                    role: group.alias
+                    group: candidate.group
                 }
                 res.status(200).json(userToken)
 
