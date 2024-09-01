@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatInputModule} from "@angular/material/input";
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -10,6 +10,8 @@ import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {AuthService} from "../shared/services/auth.service";
 import {Subscription} from "rxjs";
 import {MaterialService} from "../shared/classes/material.service";
+import {UserService} from "../shared/services/user.service";
+import {User} from "../shared/interfaces";
 
 @Component({
   selector: 'app-login-page',
@@ -31,15 +33,15 @@ import {MaterialService} from "../shared/classes/material.service";
   styleUrl: './login-page.component.scss'
 })
 export class LoginPageComponent implements OnInit, OnDestroy {
+  private authService = inject(AuthService)
+  private userService = inject(UserService)
+  private router = inject(Router)
+  private route = inject(ActivatedRoute)
+
+  users: User[] = []
   form: FormGroup
   aSub: Subscription
-
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-    private route: ActivatedRoute,
-  ) {
-  }
+  uSub: Subscription
 
   ngOnInit() {
     this.form = new FormGroup({
@@ -48,16 +50,18 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     })
 
     this.route.queryParams.subscribe(params => {
-      if(params['accessDenied']) {
+      if (params['accessDenied']) {
         MaterialService.toast('Для начала авторизуйтесь')
-      } else if(params['sessionFailed']) {
+      } else if (params['sessionFailed']) {
         MaterialService.toast('Сессия истекла, авторизуйтесь снова')
       }
     })
+
   }
 
   ngOnDestroy(): void {
     if (this.aSub) this.aSub.unsubscribe()
+    if (this.uSub) this.uSub.unsubscribe()
   }
 
   get login() {
@@ -72,7 +76,13 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     this.form.disable()
 
     this.aSub = this.authService.login(this.form.value).subscribe({
-        next: () => this.router.navigate(['/admin/restaurants']),
+        next: () => {
+          if (this.userService.getGroup() == 'administrator') {
+            void this.router.navigate(['/st/restaurants'])
+          } else {
+            void this.router.navigate(['/st/assortment'])
+          }
+        },
         error: error => {
           MaterialService.toast(error.error.message)
           this.form.enable()

@@ -114,7 +114,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
       this.cSub = this.categoryService.update(fd, null, this.categoryID).subscribe({
         next: message => {
           MaterialService.toast(message.message)
-          void this.router.navigate(['admin/assortment'])
+          void this.router.navigate(['st/assortment'])
         },
         error: error => MaterialService.toast(error.error.message)
       })
@@ -122,7 +122,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
       this.cSub = this.categoryService.create(fd).subscribe({
         next: message => {
           MaterialService.toast(message.message)
-          void this.router.navigate(['admin/assortment'])
+          void this.router.navigate(['st/assortment'])
         },
         error: error => MaterialService.toast(error.error.message)
       })
@@ -130,7 +130,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
   }
 
   openAssortmentPage() {
-    void this.router.navigate(['admin/assortment'])
+    void this.router.navigate(['st/assortment'])
   }
 
   checkTitleCategory() {

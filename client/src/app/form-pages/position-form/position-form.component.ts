@@ -148,7 +148,7 @@ export class PositionFormComponent implements OnInit, OnDestroy{
         this.pSub = this.positionService.update(fd, null, this.positionID).subscribe({
           next: message => {
             MaterialService.toast(message.message)
-            void this.router.navigate(['admin/assortment'])
+            void this.router.navigate(['st/assortment'])
           },
           error: error => MaterialService.toast(error.error.message)
         })
@@ -156,7 +156,7 @@ export class PositionFormComponent implements OnInit, OnDestroy{
         this.pSub = this.positionService.create(fd).subscribe({
           next: message => {
             MaterialService.toast(message.message)
-            void this.router.navigate(['admin/assortment'])
+            void this.router.navigate(['st/assortment'])
           },
           error: error => MaterialService.toast(error.error.message)
         })
@@ -164,7 +164,7 @@ export class PositionFormComponent implements OnInit, OnDestroy{
   }
 
   openRestaurantsPage() {
-    void this.router.navigate(['admin/assortment'])
+    void this.router.navigate(['st/assortment'])
   }
 
   checkTitlePosition() {

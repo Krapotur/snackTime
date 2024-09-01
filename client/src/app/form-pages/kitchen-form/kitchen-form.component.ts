@@ -119,7 +119,7 @@ export class KitchenFormComponent implements OnInit, OnDestroy {
         this.kSub = this.kitchenService.update(fd, null, this.kitchenID).subscribe({
           next: message => {
             MaterialService.toast(message.message)
-            void this.router.navigate(['admin/restaurants'])
+            void this.router.navigate(['st/restaurants'])
           },
           error: error => MaterialService.toast(error.error.message)
         })
@@ -129,7 +129,7 @@ export class KitchenFormComponent implements OnInit, OnDestroy {
         this.kSub = this.kitchenService.create(fd).subscribe({
           next: message => {
             MaterialService.toast(message.message)
-            void this.router.navigate(['admin/restaurants'])
+            void this.router.navigate(['st/restaurants'])
           },
           error: error => MaterialService.toast(error.error.message)
         })
@@ -138,7 +138,7 @@ export class KitchenFormComponent implements OnInit, OnDestroy {
   }
 
   openRestaurantsPage() {
-   void this.router.navigate(['admin/restaurants'])
+   void this.router.navigate(['st/restaurants'])
   }
 
   checkTitleKitchen() {

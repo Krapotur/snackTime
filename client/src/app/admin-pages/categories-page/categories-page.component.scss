@@ -20,3 +20,51 @@ button {
   color: white;
   font-family: 'Lora', serif;
 }
+
+///////// Cards //////////
+
+.main {
+  h2 {
+    font-family: 'Lora', serif;
+    margin: 0;
+  }
+
+  .category-cards {
+    display: flex;
+    flex-wrap: nowrap;
+    margin-top: 50px;
+
+    .category-card {
+      display: flex;
+      cursor: pointer;
+      flex-direction: column;
+      margin: 10px;
+      width: 220px;
+      -webkit-box-shadow: 0 0 10px -4px rgba(34, 60, 80, 0.2);
+      -moz-box-shadow: 0 0 10px -4px rgba(34, 60, 80, 0.2);
+      box-shadow: 0 0 10px -4px rgba(34, 60, 80, 0.2);
+
+      .img-block {
+        width: 220px;
+      }
+
+      img {
+        height: 200px;
+        width: 220px;
+      }
+
+      p {
+        padding: 0 0 5px 15px;
+        font-size: 20px;
+        font-weight: bold;
+        font-family: 'Lora', serif;
+      }
+    }
+
+    .category-card:hover {
+      -webkit-box-shadow: 0 0 20px 0 rgba(34, 60, 80, 0.2);
+      -moz-box-shadow: 0 0 20px 0 rgba(34, 60, 80, 0.2);
+      box-shadow: 0 0 20px 0 rgba(34, 60, 80, 0.2);
+    }
+  }
+}

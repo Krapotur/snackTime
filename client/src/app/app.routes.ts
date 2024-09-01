@@ -11,9 +11,9 @@ import {RestaurantFormComponent} from "./form-pages/restaurant-form/restaurant-f
 import {UserFormComponent} from "./form-pages/user-form/user-form.component";
 import {CategoryFormComponent} from "./form-pages/category-form/category-form.component";
 import {KitchenFormComponent} from "./form-pages/kitchen-form/kitchen-form.component";
-import {PositionsPageComponent} from "./admin-pages/positions-page/positions-page.component";
 import {PositionFormComponent} from "./form-pages/position-form/position-form.component";
 import {AssortmentComponent} from "./admin-pages/assortment/assortment.component";
+import {PositionsPageComponent} from "./admin-pages/positions-page/positions-page.component";
 
 export const routes: Routes = [
   {
@@ -23,12 +23,13 @@ export const routes: Routes = [
     ]
   },
   {
-    path: 'admin', component: SiteLayoutComponent, canActivate:[isAuthGuard], children: [
-      {path: '', redirectTo: '/admin/users', pathMatch: 'full'},
+    path: 'st', component: SiteLayoutComponent, canActivate: [isAuthGuard], children: [
+      {path: '', redirectTo: '/st/users', pathMatch: 'full'},
       {path: 'dashboard', component: DashboardPageComponent},
       {path: 'overview', component: OverviewPageComponent},
       {path: 'users', component: UsersPageComponent},
       {path: 'restaurants', component: RestaurantsPageComponent},
+      {path: 'positions', component: PositionsPageComponent},
       {path: 'assortment', component: AssortmentComponent},
       {path: 'form-user', component: UserFormComponent},
       {path: 'form-user/:id', component: UserFormComponent},

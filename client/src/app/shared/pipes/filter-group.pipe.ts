@@ -1,5 +1,5 @@
 import {Pipe, PipeTransform} from "@angular/core";
-import {Group, Kitchen} from "../interfaces";
+import {Group} from "../interfaces";
 
 @Pipe({
   name: 'filterGroup',

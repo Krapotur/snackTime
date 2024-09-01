@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, inject, Input, OnDestroy, OnInit} from '@angular/core';
 import {MatFabButton} from "@angular/material/button";
 import {NgIf} from "@angular/common";
 import {Elem} from "../../interfaces";
@@ -18,9 +18,8 @@ import {Router} from "@angular/router";
   styleUrl: './delete-template.component.scss'
 })
 export class DeleteTemplateComponent implements OnInit, OnDestroy {
-  constructor(private sharedService: SharedDelService,
-              private router: Router) {
-  }
+  private sharedService = inject(SharedDelService)
+  private router =  inject(Router)
 
   title = ''
   dSub: Subscription
@@ -37,7 +36,7 @@ export class DeleteTemplateComponent implements OnInit, OnDestroy {
 
   openPage() {
     this.router.navigateByUrl('/').then(() => {
-      void this.router.navigate([`admin/form-${this.elemIn.formRoute}/${this.elemIn.id}`])
+      void this.router.navigate([`st/form-${this.elemIn.formRoute}/${this.elemIn.id}`])
     })
   }
 

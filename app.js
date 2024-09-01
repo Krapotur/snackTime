@@ -41,7 +41,7 @@ app.use('/api/groups', groupRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/kitchens', kitchenRoutes);
 app.use('/api/order', orderRoutes);
-app.use('/api/position', positionRoutes);
+app.use('/api/positions', positionRoutes);
 app.use('/api/restaurants', restaurantRoutes);
 
 module.exports = app;

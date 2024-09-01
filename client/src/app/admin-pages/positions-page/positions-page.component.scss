@@ -1,0 +1,33 @@
+.block{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 70vw;
+
+  .category{
+    margin-top: 40px;
+
+    h5{
+      text-align: center;
+      font-weight: bold;
+      font-family: 'Lora', serif;
+    }
+
+    img{
+      margin-top: 20px;
+      height: 450px;
+      width: 440px;
+      -webkit-box-shadow: 0 0 10px -4px rgba(34, 60, 80, 0.2);
+      -moz-box-shadow: 0 0 10px -4px rgba(34, 60, 80, 0.2);
+      box-shadow: 0 0 10px -4px rgba(34, 60, 80, 0.2);
+    }
+  }
+}
+
+button {
+  background-color: #F87839;
+  border-radius: 1px;
+  height: 40px;
+  color: white;
+  font-family: 'Lora', serif;
+}

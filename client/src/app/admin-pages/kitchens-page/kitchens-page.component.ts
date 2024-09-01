@@ -76,7 +76,7 @@ export class KitchensPageComponent implements OnInit, OnDestroy {
   }
 
   openPage(id: string) {
-    void this.router.navigate([`admin/form-kitchen/${id}`])
+    void this.router.navigate([`st/form-kitchen/${id}`])
   }
 
   changeStatus(kitchen: Kitchen) {

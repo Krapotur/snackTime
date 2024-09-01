@@ -2,11 +2,17 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
 const User = require('../models/User')
+const Group = require('../models/Group')
 const errorHandler = require('../utils/errorHandler')
 const keys = require('../config/keys')
 
 module.exports.login = async function (req, res) {
     const candidate = await User.findOne({login: req.body.login})
+    let group = {}
+    if (candidate){
+         group = await Group.findOne({_id: candidate.group})
+    }
+
     try {
         if (candidate && candidate.status) {
             const passwordResult = bcrypt.compareSync(req.body.password, candidate.password)
@@ -18,6 +24,8 @@ module.exports.login = async function (req, res) {
 
                 const userToken = {
                     token: `Bearer ${token}`,
+                    userName: candidate.lastName + ' ' + candidate.firstName,
+                    role: group.alias
                 }
                 res.status(200).json(userToken)
 

@@ -2,12 +2,14 @@ import {inject, Injectable} from "@angular/core";
 import {AuthToken, Login} from "../interfaces";
 import {HttpClient} from "@angular/common/http";
 import {Observable, tap} from "rxjs";
+import {UserService} from "./user.service";
 
 @Injectable({
   providedIn: "root"
 })
 export class AuthService {
   private http = inject(HttpClient)
+  private userService = inject(UserService)
 
   private token = null
   private status = null
@@ -18,9 +20,17 @@ export class AuthService {
         tap((authToken) => {
           this.setToken(authToken.token)
           localStorage.setItem('auth-token', authToken.token)
+          // localStorage.setItem('profile', JSON.stringify({
+          //   userName: authToken.userName,
+          //   role: authToken.role
+          // }))
+
+          this.userService.setGroup(authToken.role)
         })
       )
   }
+
+
 
   setToken(token: string) {
     this.token = token

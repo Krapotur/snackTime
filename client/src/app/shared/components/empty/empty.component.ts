@@ -25,6 +25,6 @@ export class EmptyComponent implements OnInit{
   }
 
   navigateToFormPage() {
-    this.router.navigate([`admin/${this.page}`]).then()
+    this.router.navigate([`st/${this.page}`]).then()
   }
 }

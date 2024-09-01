@@ -21,10 +21,19 @@
       <div class="nav-wrap">
         <nav class="main-nav" role="navigation">
           <ul class="list-hover-slide">
-            <li routerLinkActive="active"><a routerLink="/admin/dashboard">Главная</a></li>
-            <li routerLinkActive="active"><a routerLink="/admin/users">Пользователи</a></li>
-            <li routerLinkActive="active"><a routerLink="/admin/restaurants">Рестораны</a>
-            <li routerLinkActive="active"><a routerLink="/admin/assortment">Ассортимент</a></li>
+            <li routerLinkActive="active"><a routerLink="/st/dashboard"
+                                             *ngIf="isAdmin"
+            >Главная</a></li>
+            <li routerLinkActive="active"><a routerLink="/st/overview"
+                                             *ngIf="!isAdmin"
+            >Аналитика</a></li>
+            <li routerLinkActive="active"><a routerLink="/st/users"
+                                             *ngIf="isAdmin"
+            >Пользователи</a></li>
+            <li routerLinkActive="active"><a routerLink="/st/restaurants"
+                                             *ngIf="isAdmin"
+            >Рестораны</a>
+            <li routerLinkActive="active"><a routerLink="/st/assortment">Ассортимент</a></li>
             <li (click)="logout()"><a>Выйти</a></li>
           </ul>
         </nav>
@@ -33,12 +42,12 @@
   </div>
 
   <div class="container-right">
-      <!--      <div class="loader" *ngIf="isErrorHttpStatus">-->
-      <!--        <p>Идет соединение с сервером... Попробуйте обновить страницу</p>-->
-      <!--        <mat-progress-bar mode="indeterminate"></mat-progress-bar>-->
-      <!--      </div>-->
+    <!--      <div class="loader" *ngIf="isErrorHttpStatus">-->
+    <!--        <p>Идет соединение с сервером... Попробуйте обновить страницу</p>-->
+    <!--        <mat-progress-bar mode="indeterminate"></mat-progress-bar>-->
+    <!--      </div>-->
 
-      <router-outlet></router-outlet>
+    <router-outlet></router-outlet>
   </div>
 
 </div>

@@ -110,7 +110,7 @@ export class UsersPageComponent implements OnInit, OnDestroy {
   }
 
   openPage(id: string) {
-    void this.router.navigate([`admin/form-user/${id}`])
+    void this.router.navigate([`st/form-user/${id}`])
   }
 
   changeStatus(user: User) {

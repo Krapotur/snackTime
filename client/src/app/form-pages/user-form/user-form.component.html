@@ -1,6 +1,6 @@
 <div class="main-container">
   <div class="container-block">
-    <h3> {{ userID.length > 0 ? user.lastName + ' ' + user.firstName : 'Новый пользователь' }}</h3>
+    <h3> {{ userID.length ? user.lastName + ' ' + user.firstName : 'Новый пользователь' }}</h3>
     <div class="img-del" *ngIf="userID && isVisibleBtn">
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
            data-name="Layer 1" viewBox="0 0 24 24"
@@ -141,7 +141,7 @@
           >*Не более 10 символов
                     </span>
 
-          <button *ngIf=" userID.length !== 0"
+          <button *ngIf="userID.length"
                   class="btn-psw" extended="" mat-fab
                   (click)="generateFormPsw()"
                   [disabled]="form.disabled"

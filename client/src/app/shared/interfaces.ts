@@ -5,10 +5,12 @@ export interface Login {
 
 export interface AuthToken {
   token: string
+  userName: string
+  role: string
 }
 
 export interface User {
-  _id?: string
+  _id?: string,
   status?: boolean,
   position?: number,
   firstName: string,
@@ -53,13 +55,14 @@ export interface Kitchen {
 export interface Category{
   position?: number,
   _id?: string,
-  title: string,
   status?: boolean,
+  title: string,
+  quantity?: number,
   imgSrc: string
 }
 
 export interface Position {
-  position?: number,
+  positionNum?: number,
   _id?: string,
   title: string,
   status?: boolean,
@@ -71,6 +74,7 @@ export interface Position {
   carbs: number,
   caloric: number,
   category: string
+  restaurant: string
 }
 
 export interface Elem {

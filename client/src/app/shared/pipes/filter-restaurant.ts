@@ -12,7 +12,7 @@ export class FilterRestaurantPipe implements PipeTransform {
   transform(restaurantID: string, restaurants: Restaurant[]): string {
     let title = ''
 
-    restaurants.forEach(restaurant => {
+    restaurants.some(restaurant => {
       if (restaurantID === restaurant._id) title = restaurant.title
     })
 

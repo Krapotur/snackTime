@@ -155,7 +155,7 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
       this.rSub = this.restaurantService.update(fd, null, this.restaurantID).subscribe({
         next: message => {
           MaterialService.toast(message.message)
-          void this.router.navigate(['admin/restaurants'])
+          void this.router.navigate(['st/restaurants'])
         },
         error: error => MaterialService.toast(error.error.message)
       })
@@ -163,7 +163,7 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
       this.rSub = this.restaurantService.create(fd).subscribe({
         next: message => {
           MaterialService.toast(message.message)
-          void this.router.navigate(['admin/restaurants'])
+          void this.router.navigate(['st/restaurants'])
         },
         error: error => MaterialService.toast(error.error.message)
       })
@@ -171,7 +171,7 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
   }
 
   openRestaurantsPage() {
-   void this.router.navigate(['admin/restaurants'])
+   void this.router.navigate(['st/restaurants'])
   }
 
   openDelTemplate() {

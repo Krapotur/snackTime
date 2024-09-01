@@ -14,7 +14,12 @@ module.exports.getAll = function (req, res) {
 }
 
 module.exports.getById = async function (req, res) {
-
+    try {
+        const group = await Group.findById({_id: req.params.id})
+        res.status(200).json(group)
+    } catch (e) {
+        errorHandler(res, e)
+    }
 }
 
 module.exports.create = async function (req, res) {

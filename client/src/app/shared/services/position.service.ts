@@ -18,6 +18,10 @@ export class PositionService {
     return this.http.get<Position>(`/api/positions/${id}`)
   }
 
+  getPositionsByCategoryID(id: string): Observable<Position[]> {
+    return this.http.get<Position[]>(`/api/positions/category/${id}`)
+  }
+
 
   create(fd: FormData): Observable<{ message: string }> {
     return this.http.post<{ message: string }>('/api/positions', fd)

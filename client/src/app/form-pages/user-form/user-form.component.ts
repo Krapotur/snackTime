@@ -145,7 +145,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
     this.uSub = this.userService.update(null, user, user._id).subscribe({
       next: message => {
         MaterialService.toast(message.message)
-        void this.router.navigate(['admin/users'])
+        void this.router.navigate(['st/users'])
       },
       error: error => MaterialService.toast(error.error.error)
     })
@@ -174,7 +174,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
       this.uSub = this.userService.create(fd).subscribe({
         next: message => {
           MaterialService.toast(message.message)
-          void this.router.navigate(['admin/users'])
+          void this.router.navigate(['st/users'])
         },
         error: error => MaterialService.toast(error.error.error)
       })
@@ -183,7 +183,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
       this.uSub = this.userService.update(fd, null, this.user._id).subscribe({
         next: message => {
           MaterialService.toast(message.message)
-          void this.router.navigate(['admin/users'])
+          void this.router.navigate(['st/users'])
         },
         error: error => MaterialService.toast(error.error.error)
       })
@@ -251,7 +251,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
   }
 
   openUsersPage() {
-    void this.router.navigate(['admin/users'])
+    void this.router.navigate(['st/users'])
   }
 
   resetForm() {
