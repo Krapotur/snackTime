@@ -1,28 +1,17 @@
-import {inject, Injectable, OnDestroy} from "@angular/core";
+import {inject, Injectable} from "@angular/core";
 import {AuthToken, Login} from "../interfaces";
 import {HttpClient} from "@angular/common/http";
-import {Observable, Subscription, tap} from "rxjs";
-import {UserService} from "./user.service";
-import {GroupService} from "./group.service";
-import {MaterialService} from "../classes/material.service";
+import {Observable, tap} from "rxjs";
 
 @Injectable({
   providedIn: "root"
 })
 
-export class AuthService implements OnDestroy {
+export class AuthService {
   private http = inject(HttpClient)
-  private userService = inject(UserService)
-  private groupService = inject(GroupService)
-
-  gSub: Subscription
 
   private token = null
   private status = null
-
-  ngOnDestroy() {
-    if (this.gSub) this.gSub.unsubscribe()
-  }
 
   login(login: Login): Observable<AuthToken> {
     return this.http.post<AuthToken>('api/auth/login', login)
@@ -34,20 +23,8 @@ export class AuthService implements OnDestroy {
             userName: authToken.userName,
             group: authToken.group
           }))
-          this.getGroupById(authToken.group)
-        })
-      )
+        }))
   }
-
-  getGroupById(id: string){
-    let profile =  JSON.parse(localStorage.getItem('profile'))
-
-    this.gSub = this.groupService.getGroupByID(id).subscribe({
-      next: group => this.userService.setGroup(group.alias),
-      error: error => MaterialService.toast(error.error.error)
-    })
-
-}
 
   setToken(token: string) {
     this.token = token

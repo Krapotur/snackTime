@@ -16,6 +16,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {SortPlacePipe} from "../../shared/pipes/sort-place.pipe";
 import {CategoryService} from "../../shared/services/category.service";
 import {UserService} from "../../shared/services/user.service";
+import {GroupService} from "../../shared/services/group.service";
 
 @Component({
   selector: 'app-categories-page',
@@ -43,13 +44,15 @@ import {UserService} from "../../shared/services/user.service";
 export class CategoriesPageComponent implements OnInit, OnDestroy {
   private router = inject(Router)
   private categoryService = inject(CategoryService)
-  private userService = inject(UserService)
+  private groupService = inject(GroupService)
 
+  profile = {}
   categories: Category[] = []
   cSub: Subscription
+  gSub: Subscription
   isLoading = false
   isEmpty: boolean
-  isAdmin = false
+  isAdmin :boolean
   activeRoute = 'form-category'
   dataSource: MatTableDataSource<Category>;
   displayedColumns: string[] = ['#', 'title', 'edit', 'status'];
@@ -57,12 +60,13 @@ export class CategoriesPageComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit() {
-    this.isAdmin = this.userService.getGroup() == 'administrator'
+    this.getGroupById()
     this.getCategories()
   }
 
   ngOnDestroy() {
     if (this.cSub) this.cSub.unsubscribe()
+    if (this.gSub) this.gSub.unsubscribe()
   }
 
   getCategories() {
@@ -106,6 +110,14 @@ export class CategoriesPageComponent implements OnInit, OnDestroy {
       queryParams: {
         category: id
       }
+    })
+  }
+
+  getGroupById() {
+    let profile = JSON.parse(localStorage.getItem('profile'))
+    this.gSub = this.groupService.getGroupByID(profile.group).subscribe({
+      next: group => this.isAdmin = group.alias === 'administrator',
+      error: error => MaterialService.toast(error.error.error)
     })
   }
 }

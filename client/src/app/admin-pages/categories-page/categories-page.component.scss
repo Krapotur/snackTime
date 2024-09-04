@@ -26,36 +26,39 @@ button {
 .main {
   h2 {
     font-family: 'Lora', serif;
+    font-size: 30px;
     margin: 0;
   }
 
   .category-cards {
     display: flex;
     flex-wrap: nowrap;
-    margin-top: 50px;
+    margin-top: 20px;
 
     .category-card {
       display: flex;
       cursor: pointer;
       flex-direction: column;
       margin: 10px;
-      width: 220px;
+      width: 200px;
       -webkit-box-shadow: 0 0 10px -4px rgba(34, 60, 80, 0.2);
       -moz-box-shadow: 0 0 10px -4px rgba(34, 60, 80, 0.2);
       box-shadow: 0 0 10px -4px rgba(34, 60, 80, 0.2);
 
       .img-block {
-        width: 220px;
-      }
-
-      img {
         height: 200px;
-        width: 220px;
+        width: 200px;
+
+        img {
+          object-fit: cover;
+          height: 100%;
+          width: 100%;
+        }
       }
 
       p {
         padding: 0 0 5px 15px;
-        font-size: 20px;
+        font-size: 15px;
         font-weight: bold;
         font-family: 'Lora', serif;
       }

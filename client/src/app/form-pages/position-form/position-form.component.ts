@@ -31,7 +31,7 @@ import {MatSelectModule} from "@angular/material/select";
     DeleteTemplateComponent,
   ],
   templateUrl: './position-form.component.html',
-  styleUrl: './position-form.component.scss'
+  styleUrls: ['./position-form.component.scss', '../../shared/styles/style-form.scss']
 })
 export class PositionFormComponent implements OnInit, OnDestroy{
   private positionService = inject(PositionService)

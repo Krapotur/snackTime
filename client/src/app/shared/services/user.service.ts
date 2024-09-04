@@ -9,15 +9,6 @@ import {User} from "../interfaces";
 
 export class UserService {
   private http = inject(HttpClient)
-  private group =''
-
-  setGroup(group: string){
-    this.group = group
-  }
-
-  getGroup(){
-    return this.group
-  }
 
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>('/api/users')

@@ -35,6 +35,7 @@ module.exports.create = async function (req, res) {
         const position = new Position({
             title: req.body.title,
             composition: req.body.composition,
+            price: req.body.price,
             weight: req.body.weight,
             proteins: req.body.proteins,
             fats: req.body.fats,

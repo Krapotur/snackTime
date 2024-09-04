@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {CategoriesPageComponent} from "../categories-page/categories-page.component";
 import {MatTableDataSource, MatTableModule} from "@angular/material/table";
 import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
@@ -18,6 +18,7 @@ import {PositionService} from "../../shared/services/position.service";
 import {FilterRestaurantPipe} from "../../shared/pipes/filter-restaurant";
 import {RestaurantService} from "../../shared/services/restaurant.service";
 import {CategoryService} from "../../shared/services/category.service";
+import {MatSort} from "@angular/material/sort";
 
 @Component({
   selector: 'app-positions-page',
@@ -41,7 +42,7 @@ import {CategoryService} from "../../shared/services/category.service";
   templateUrl: './positions-page.component.html',
   styleUrls: ['../../shared/styles/style-table.scss', './positions-page.component.scss']
 })
-export class PositionsPageComponent implements OnInit, OnDestroy {
+export class PositionsPageComponent implements OnInit, AfterViewInit, OnDestroy {
   private positionService = inject(PositionService)
   private categoryService = inject(CategoryService)
   private restaurantsService = inject(RestaurantService)
@@ -57,16 +58,22 @@ export class PositionsPageComponent implements OnInit, OnDestroy {
   isEmpty: boolean
   activeRoute = 'form-position'
   dataSource: MatTableDataSource<Position>;
-  displayedColumns: string[] = ['#', 'title', 'weight', 'proteins', 'fats', 'carbs', 'caloric', 'restaurant', 'status'];
+  displayedColumns: string[] = ['#', 'title','price', 'weight', 'proteins', 'fats', 'carbs', 'caloric', 'edit', 'status'];
   rSub: Subscription
   cSub: Subscription
   pSub: Subscription
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   ngOnInit() {
     this.getCategoryById()
     this.getRestaurants()
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   ngOnDestroy() {
@@ -81,10 +88,10 @@ export class PositionsPageComponent implements OnInit, OnDestroy {
     this.pSub = this.positionService.getPositionsByCategoryID(id).subscribe({
       next: positions => {
         if (positions.length == 0) this.isEmpty = true
+        this.positions = positions
         this.isLoading = false
         positions.map(position => position.positionNum = positionNum++)
         this.dataSource = new MatTableDataSource<Position>(positions)
-        // this.paginator._intl.itemsPerPageLabel = 'Количество позиций';
         this.dataSource.paginator = this.paginator;
       },
       error: error => {
@@ -106,7 +113,7 @@ export class PositionsPageComponent implements OnInit, OnDestroy {
   }
 
   openPage(id: string) {
-    void this.router.navigate([`st/form-restaurant/${id}`])
+    void this.router.navigate([`st/form-position/${id}`])
   }
 
   changeStatus(position: Position) {
@@ -132,5 +139,14 @@ export class PositionsPageComponent implements OnInit, OnDestroy {
         error: error => MaterialService.toast(error.error.error)
       })
     })
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 }

@@ -19,7 +19,7 @@
 
 table {
   min-width: max-content;
-  padding: 5px 20px 0 20px;
+  //padding: 5px 20px 0 20px;
 
   th {
     font-weight: bold;
@@ -52,6 +52,15 @@ table {
   justify-content: space-between;
   padding: 0 0 0 20px;
   align-items: center;
+
+  button {
+    background-color: #F87839;
+    border-radius: 1px;
+    height: 35px;
+    color: white;
+    font-size: 12px;
+    font-family:'Lora', serif;
+  }
 }
 
 .mat-mdc-slide-toggle.mat-warn {

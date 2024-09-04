@@ -10,7 +10,6 @@ import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {AuthService} from "../shared/services/auth.service";
 import {Subscription} from "rxjs";
 import {MaterialService} from "../shared/classes/material.service";
-import {UserService} from "../shared/services/user.service";
 import {User} from "../shared/interfaces";
 
 @Component({
@@ -34,7 +33,6 @@ import {User} from "../shared/interfaces";
 })
 export class LoginPageComponent implements OnInit, OnDestroy {
   private authService = inject(AuthService)
-  private userService = inject(UserService)
   private router = inject(Router)
   private route = inject(ActivatedRoute)
 
@@ -76,13 +74,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     this.form.disable()
 
     this.aSub = this.authService.login(this.form.value).subscribe({
-        next: () => {
-          if (this.userService.getGroup() == 'administrator') {
-            void this.router.navigate(['/st/restaurants'])
-          } else {
-            void this.router.navigate(['/st/assortment'])
-          }
-        },
+        next: () => void this.router.navigate(['/st/assortment']),
         error: error => {
           MaterialService.toast(error.error.message)
           this.form.enable()

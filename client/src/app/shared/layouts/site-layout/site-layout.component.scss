@@ -22,7 +22,7 @@ $white-off: #DFDBD9;
 
   p {
     color: $white-off;
-    font: 400 16px $lora;
+    font: 400 14px $lora;
     padding-bottom: 5px;
     margin: 0;
   }
@@ -73,7 +73,7 @@ h3 {
     text-decoration: none;
     padding: 1.0em 0;
     color: $white-off;
-    font: 400 0.9em $lora;
+    font: 400 11px $lora;
     text: {
       align: center;
       transform: uppercase;
@@ -87,7 +87,7 @@ h3 {
 
 .sidebar-left {
   background-color: $gray;
-  min-width: 220px;
+  min-width: 210px;
   box-shadow: 11px 0 15px -12px rgb(68, 68, 68);
 
   .new_container {

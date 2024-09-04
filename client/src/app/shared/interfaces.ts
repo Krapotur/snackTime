@@ -67,6 +67,7 @@ export interface Position {
   title: string,
   status?: boolean,
   imgSrc: string,
+  price: number,
   composition: string,
   weight: number,
   proteins: number,

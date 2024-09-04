@@ -11,6 +11,10 @@ const positionSchema = new Schema({
         type: String,
         default: '',
     },
+    price: {
+        type: Number,
+        default: 0
+    },
     composition: {
         type: String,
         default: ''
