@@ -3,10 +3,10 @@ import {Router, RouterLink, RouterLinkActive, RouterOutlet} from "@angular/route
 import {NgIf} from "@angular/common";
 import {AuthService} from "../../services/auth.service";
 import {MatProgressBar} from "@angular/material/progress-bar";
-import {UserService} from "../../services/user.service";
 import {MaterialService} from "../../classes/material.service";
 import {GroupService} from "../../services/group.service";
 import {Subscription} from "rxjs";
+import {RestaurantService} from "../../services/restaurant.service";
 
 @Component({
   selector: 'app-site-layout',
@@ -23,19 +23,24 @@ import {Subscription} from "rxjs";
 })
 export class SiteLayoutComponent implements OnInit, OnDestroy {
   private authService = inject(AuthService)
-  private userService = inject(UserService)
   private groupService = inject(GroupService)
+  private restaurantService = inject(RestaurantService)
   private router = inject(Router)
 
   isAdmin: boolean
   gSub: Subscription
+  rSub: Subscription
+  userName = ''
+  restaurantTitle = ''
 
   ngOnInit() {
     this.getGroupById()
+    this.getRestaurantByUser()
   }
 
   ngOnDestroy() {
     if (this.gSub) this.gSub.unsubscribe()
+    if (this.rSub) this.rSub.unsubscribe()
   }
 
   getGroupById() {
@@ -44,6 +49,24 @@ export class SiteLayoutComponent implements OnInit, OnDestroy {
       next: group => this.isAdmin =  group.alias === 'administrator',
       error: error => MaterialService.toast(error.error.error)
     })
+  }
+
+  getRestaurantByUser(){
+    let profile
+    if (localStorage.getItem('profile')) {
+      profile = JSON.parse(localStorage.getItem('profile'))
+    }
+    this.getRestaurantById(profile['rest'])
+    this.userName = profile['userName']
+  }
+
+  getRestaurantById(id: string){
+    if (id){
+      this.rSub = this.restaurantService.getRestaurantByID(id).subscribe({
+        next: rest => this.restaurantTitle = rest.title,
+        error: e => MaterialService.toast(e.error.message)
+      })
+    }
   }
 
   logout() {

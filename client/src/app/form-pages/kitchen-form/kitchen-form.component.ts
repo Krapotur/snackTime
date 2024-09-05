@@ -72,7 +72,7 @@ export class KitchenFormComponent implements OnInit, OnDestroy {
         Validators.required,
         Validators.minLength(3),
         Validators.maxLength(16)]),
-      imgSrc: new FormControl(kitchen ? kitchen.imgSrc : '', Validators.required)
+      imgSrc: new FormControl( '', Validators.required)
     })
   }
 

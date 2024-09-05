@@ -62,7 +62,6 @@ export class UserFormComponent implements OnInit, OnDestroy {
   userID: string
   elem: Elem
   image: File
-  isVisibleBtn: boolean
   isChecked = true
   isError = false
 
@@ -73,6 +72,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
       this.route.snapshot.params['id']
       : ''
 
+    this.generateForm()
     this.getUserById()
     this.getRestaurants()
     this.getGroups()
@@ -106,7 +106,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
         Validators.pattern("^((\\+7?)|0)?[0-9]{11}$")]),
       group: new FormControl(user ? user.group : '', Validators.required),
       restaurant: new FormControl(user ? user.restaurant : ''),
-      imgSrc: new FormControl(user ? user.imgSrc : '',)
+      imgSrc: new FormControl( '')
     })
 
     if (this.userID.length == 0) {
@@ -132,7 +132,6 @@ export class UserFormComponent implements OnInit, OnDestroy {
         Validators.maxLength(15)]),
       pswConfirm: new FormControl('', Validators.required)
     })
-    this.isVisibleBtn = false
   }
 
   updatePassword() {
@@ -212,10 +211,9 @@ export class UserFormComponent implements OnInit, OnDestroy {
   }
 
   getUserById() {
-    if (this.userID.length > 0) {
+    if (this.userID.length ) {
       this.userService.getUserByID(this.userID).subscribe({
         next: user => {
-          this.generateForm(user)
           this.elem = {
             id: user._id,
             title: user.lastName + ' ' + user.firstName,
@@ -223,13 +221,11 @@ export class UserFormComponent implements OnInit, OnDestroy {
             formRoute: 'user'
           }
           this.user = user
-          this.isVisibleBtn = true
+          this.generateForm(this.user)
           this.getUsers()
         },
         error: error => MaterialService.toast(error.error.error)
       })
-    } else {
-      this.generateForm()
     }
   }
 
@@ -237,9 +233,6 @@ export class UserFormComponent implements OnInit, OnDestroy {
     this.isDelete = !this.isDelete
     this.form.disable()
   }
-
-  // checkLogin() {
-  // }
 
   uploadImg($event: any) {
     this.image = $event.target.files[0]
@@ -256,7 +249,6 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
   resetForm() {
     this.form.reset()
-    this.isVisibleBtn = true
     this.isChecked = false
     this.image = null
   }
@@ -282,7 +274,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
   }
 
   enableForm() {
-    this.isVisibleBtn = !this.isVisibleBtn
+    this.formPsw = null
     this.form.enable()
   }
 

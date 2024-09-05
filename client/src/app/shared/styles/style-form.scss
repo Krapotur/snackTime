@@ -135,6 +135,40 @@ hr {
   height: 2px;
 }
 
+/////////////////// Textarea //////////////////////////////
+
+.description-block {
+  padding-top: 5px;
+  width: 300px;
+
+  label {
+    padding-left: 7px;
+    font-size: 12px;
+  }
+
+  textarea {
+    resize: none;
+    color: rgba(56, 55, 55, 0.95);
+    padding: 10px;
+    height: 100px;
+    font-family: 'Lora', serif;
+    outline: none;
+    border: 1px solid rgba(128, 128, 128, 0.45);
+    border-radius: 3px;
+  }
+
+  textarea:focus {
+    color: black;
+    resize: none;
+    padding: 10px;
+    height: 150px;
+    outline: none;
+    box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
+  }
+}
+
+/////////////// Textarea ////////////////////////////////
+
 .mdc-text-field--filled:not(.mdc-text-field--disabled) {
   --mdc-filled-text-field-container-color: #ffffff;
 }

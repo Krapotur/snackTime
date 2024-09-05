@@ -5,12 +5,13 @@ import {MatButtonModule} from "@angular/material/button";
 import {AsyncPipe, NgClass, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {Subscription} from "rxjs";
-import {Elem, Position} from "../../shared/interfaces";
+import {Category, Elem, Position} from "../../shared/interfaces";
 import {MaterialService} from "../../shared/classes/material.service";
 import {PositionService} from "../../shared/services/position.service";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatOptionModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
+import {FilterKitchenPipe} from "../../shared/pipes/filter-kitchen.pipe";
 
 @Component({
   selector: 'app-position-form',
@@ -29,11 +30,12 @@ import {MatSelectModule} from "@angular/material/select";
     NgOptimizedImage,
     AsyncPipe,
     DeleteTemplateComponent,
+    FilterKitchenPipe,
   ],
   templateUrl: './position-form.component.html',
   styleUrls: ['./position-form.component.scss', '../../shared/styles/style-form.scss']
 })
-export class PositionFormComponent implements OnInit, OnDestroy{
+export class PositionFormComponent implements OnInit, OnDestroy {
   private positionService = inject(PositionService)
   private router = inject(Router)
   private route = inject(ActivatedRoute)
@@ -42,10 +44,13 @@ export class PositionFormComponent implements OnInit, OnDestroy{
   isDelete = false
   isError = false
   positionID: string = ''
+  categoryID: string = ''
   image: File
   pSub: Subscription
+  cSub: Subscription
   position: Position
   positions: Position[] = []
+  categories: Category[] = []
   elem: Elem
 
   @ViewChild('inputImg') inputImgRef: ElementRef
@@ -55,6 +60,10 @@ export class PositionFormComponent implements OnInit, OnDestroy{
       this.route.snapshot.params['id']
       : ''
 
+    this.route.queryParams.subscribe(params => {
+      if (params['category']) this.categoryID = params['category']
+    })
+
     this.generateForm()
     this.getPositionById()
     this.getPositions()
@@ -62,6 +71,7 @@ export class PositionFormComponent implements OnInit, OnDestroy{
 
   ngOnDestroy() {
     if (this.pSub) this.pSub.unsubscribe()
+    if (this.cSub) this.cSub.unsubscribe()
   }
 
   generateForm(position?: Position) {
@@ -70,33 +80,35 @@ export class PositionFormComponent implements OnInit, OnDestroy{
         Validators.required,
         Validators.minLength(3),
         Validators.maxLength(16)]),
+      price: new FormControl(position ? position.price : 0, [
+        Validators.required,
+        Validators.min(0),
+        Validators.max(5000)]),
       composition: new FormControl(position ? position.composition : '', [
         Validators.required,
         Validators.minLength(50),
         Validators.maxLength(250)]),
-      weight: new FormControl(position ? position.weight : '', [
+      weight: new FormControl(position ? position.weight : 0, [
         Validators.required,
-        Validators.min(50),
-        Validators.max(1000)]),
-      proteins:  new FormControl(position ? position.proteins : '', [
+        Validators.min(0),
+        Validators.max(2000)]),
+      proteins: new FormControl(position ? position.proteins : 0, [
+        Validators.required,
+        Validators.min(0),
+        Validators.max(300)]),
+      fats: new FormControl(position ? position.fats : 0, [
+        Validators.required,
+        Validators.min(0),
+        Validators.max(300)]),
+      carbs: new FormControl(position ? position.carbs : 0, [
+        Validators.required,
+        Validators.min(0),
+        Validators.max(300)]),
+      caloric: new FormControl(position ? position.caloric : 0, [
         Validators.required,
         Validators.min(1),
-        Validators.max(50)]),
-      fats: new FormControl(position ? position.fats : '', [
-        Validators.required,
-        Validators.min(1),
-        Validators.max(50)]),
-      carbs: new FormControl(position ? position.carbs : '', [
-        Validators.required,
-        Validators.min(1),
-        Validators.max(150)]),
-      caloric: new FormControl(position ? position.caloric : '', [
-        Validators.required,
-        Validators.min(1),
-        Validators.max(1000)]),
-      category: new FormControl(position ? position.category : '',
-        Validators.required),
-      imgSrc: new FormControl(position ? position.imgSrc : '', Validators.required)
+        Validators.max(2000)]),
+      imgSrc: new FormControl('', Validators.required)
     })
   }
 
@@ -132,40 +144,68 @@ export class PositionFormComponent implements OnInit, OnDestroy{
   }
 
   onSubmit() {
+    let user = JSON.parse(localStorage.getItem('profile'))
     const fd = new FormData()
 
     if (this.image) fd.append('image', this.image, this.image.name)
     fd.append('title', this.form.get('title').value)
+    fd.append('price', this.form.get('price').value)
     fd.append('composition', this.form.get('composition').value)
     fd.append('weight', this.form.get('weight').value)
     fd.append('proteins', this.form.get('proteins').value)
     fd.append('fats', this.form.get('fats').value)
     fd.append('carbs', this.form.get('carbs').value)
     fd.append('caloric', this.form.get('caloric').value)
-    fd.append('category', this.form.get('category').value)
+    fd.append('category', this.categoryID)
+    fd.append('restaurant', user['rest'])
 
     if (this.positionID) {
-        this.pSub = this.positionService.update(fd, null, this.positionID).subscribe({
-          next: message => {
-            MaterialService.toast(message.message)
-            void this.router.navigate(['st/assortment'])
-          },
-          error: error => MaterialService.toast(error.error.message)
-        })
+      this.pSub = this.positionService.update(fd, null, this.positionID).subscribe({
+        next: message => {
+          MaterialService.toast(message.message)
+          void this.router.navigate(['st/positions'], {
+            queryParams: {
+              category: this.position.category
+            }
+          })
+        },
+        error: error => MaterialService.toast(error.error.message)
+      })
     } else {
-        this.pSub = this.positionService.create(fd).subscribe({
-          next: message => {
-            MaterialService.toast(message.message)
-            void this.router.navigate(['st/assortment'])
-          },
-          error: error => MaterialService.toast(error.error.message)
-        })
+      this.pSub = this.positionService.create(fd).subscribe({
+        next: message => {
+          MaterialService.toast(message.message)
+          void this.router.navigate(['st/positions'], {
+            queryParams: {
+              category: this.categoryID
+            }
+          })
+        },
+        error: error => MaterialService.toast(error.error.message)
+      })
     }
   }
 
-  openRestaurantsPage() {
-    void this.router.navigate(['st/assortment'])
+  openPositionsPage() {
+    this.route.queryParams.subscribe(params => {
+      if (params['category']) {
+        void this.router.navigate(['st/positions'], {
+          queryParams: {
+            category: this.categoryID.length ? this.categoryID : this.position.category
+          }
+        })
+      } else void this.router.navigate(['st/assortment'])
+    })
+
+    if (this.route.snapshot.params['id']) {
+      void this.router.navigate(['st/positions'], {
+        queryParams: {
+          category: this.position.category
+        }
+      })
+    }
   }
+
 
   checkTitlePosition() {
     const title = this.form.get('title').value

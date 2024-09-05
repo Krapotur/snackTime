@@ -1,7 +1,10 @@
+<p (click)="openCategoriesPage()">НАЗАД
+</p>
+
 <div class="block">
   <div class="main">
     <div class="header">
-      <h5>Позиции <span>({{positions.length }})</span></h5>
+      <h5>Позиции <span>({{ positions.length }})</span></h5>
       <div *ngIf="!isEmpty">
         <input matInput (keyup)="applyFilter($event)" placeholder="Что искать?" maxlength="10">
       </div>
@@ -38,7 +41,7 @@
 
             <!-- Weight Column -->
             <ng-container matColumnDef="weight">
-              <th mat-header-cell *matHeaderCellDef> Вес(г.)</th>
+              <th mat-header-cell *matHeaderCellDef> {{ categoryTitle !== 'Напитки' ? 'Вес(г.)' : 'Объем(л.)' }}</th>
               <td mat-cell *matCellDef="let position">
                 {{ position.weight }}
               </td>
@@ -68,11 +71,11 @@
               <td mat-cell *matCellDef="let position"> {{ position.caloric }}</td>
             </ng-container>
 
-            <!-- Restaurant -->
-            <ng-container matColumnDef="restaurant">
-              <th mat-header-cell *matHeaderCellDef>Ресторан</th>
-              <td mat-cell *matCellDef="let position"> {{ position.restaurant | filterRestaurant: restaurants }}</td>
-            </ng-container>
+            <!--            &lt;!&ndash; Restaurant &ndash;&gt;-->
+            <!--            <ng-container matColumnDef="restaurant">-->
+            <!--              <th mat-header-cell *matHeaderCellDef>Ресторан</th>-->
+            <!--              <td mat-cell *matCellDef="let position"> {{ position.restaurant | filterRestaurant: restaurants }}</td>-->
+            <!--            </ng-container>-->
 
             <!-- Edit Column -->
             <ng-container matColumnDef="edit">
@@ -104,10 +107,6 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
           </table>
         </section>
-
-
-        <!--          <mat-paginator [pageSizeOptions]="[5, 10, 25]" aria-label="Select page of users"></mat-paginator>-->
-
       </div>
     </div>
 
@@ -115,6 +114,7 @@
       <button
         class="btn" extended="" mat-fab
         [disabled]="isShowTemplate"
+        (click)="openPage()"
         routerLink="/st/form-position"
       >
         Добавить
@@ -124,9 +124,9 @@
   </div>
 
   <div class="category">
-    <h5> "{{category.title}}"</h5>
+    <h5> "{{ category ? category.title : 'Категория' }}"</h5>
     <div class="img-block">
-      <img [src]="category.imgSrc" alt="">
+      <img [src]="category ? category.imgSrc : '' " alt="">
     </div>
   </div>
 </div>

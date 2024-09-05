@@ -1,7 +1,7 @@
 <div [class]="isDelete ? 'blur' : ''">
   <div class="main-container">
     <div class="container-block">
-      <h3>{{kitchenID.length > 0 ? kitchen.title + ' кухня' : 'Новая кухня'}}</h3>
+      <h3>{{kitchen ? kitchen.title + ' кухня' : 'Новая кухня'}}</h3>
       <div class="img-del" *ngIf="kitchenID">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
              data-name="Layer 1" viewBox="0 0 24 24"
@@ -41,7 +41,7 @@
           <div class="img-block">
             <label [for]="inputImg">Выберите изображение </label>
             <div class="img-group">
-              <span *ngIf="image || form.get('imgSrc').value">Изображение загружено!</span>
+              <span *ngIf="image || image || (kitchen ? kitchen.imgSrc : false)">Изображение загружено!</span>
               <input type="file" class="dn"
                      formControlName="imgSrc"
                      #inputImg

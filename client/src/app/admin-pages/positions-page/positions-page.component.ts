@@ -1,7 +1,7 @@
-import {AfterViewInit, Component, inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit, } from '@angular/core';
 import {CategoriesPageComponent} from "../categories-page/categories-page.component";
 import {MatTableDataSource, MatTableModule} from "@angular/material/table";
-import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
+import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatButtonModule} from "@angular/material/button";
 import {NgIf, NgOptimizedImage} from "@angular/common";
 import {MatInputModule} from "@angular/material/input";
@@ -11,14 +11,12 @@ import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {LoaderComponent} from "../../shared/components/loader/loader.component";
 import {EmptyComponent} from "../../shared/components/empty/empty.component";
-import {Category, Position, Restaurant} from "../../shared/interfaces";
+import {Category, Position} from "../../shared/interfaces";
 import {Subscription} from "rxjs";
 import {MaterialService} from "../../shared/classes/material.service";
 import {PositionService} from "../../shared/services/position.service";
 import {FilterRestaurantPipe} from "../../shared/pipes/filter-restaurant";
-import {RestaurantService} from "../../shared/services/restaurant.service";
 import {CategoryService} from "../../shared/services/category.service";
-import {MatSort} from "@angular/material/sort";
 
 @Component({
   selector: 'app-positions-page',
@@ -42,38 +40,28 @@ import {MatSort} from "@angular/material/sort";
   templateUrl: './positions-page.component.html',
   styleUrls: ['../../shared/styles/style-table.scss', './positions-page.component.scss']
 })
-export class PositionsPageComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PositionsPageComponent implements OnInit, OnDestroy {
   private positionService = inject(PositionService)
   private categoryService = inject(CategoryService)
-  private restaurantsService = inject(RestaurantService)
   private router = inject(Router)
   private route = inject(ActivatedRoute)
 
   category: Category
+  categoryTitle: string
   position: Position
   positions: Position[] = []
-  restaurants: Restaurant[] = []
   isLoading = false
   isShowTemplate = false;
   isEmpty: boolean
   activeRoute = 'form-position'
   dataSource: MatTableDataSource<Position>;
-  displayedColumns: string[] = ['#', 'title','price', 'weight', 'proteins', 'fats', 'carbs', 'caloric', 'edit', 'status'];
+  displayedColumns: string[] = ['#', 'title', 'price', 'weight', 'proteins', 'fats', 'carbs', 'caloric', 'edit', 'status'];
   rSub: Subscription
   cSub: Subscription
   pSub: Subscription
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-
   ngOnInit() {
     this.getCategoryById()
-    this.getRestaurants()
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
   }
 
   ngOnDestroy() {
@@ -85,14 +73,14 @@ export class PositionsPageComponent implements OnInit, AfterViewInit, OnDestroy 
   getPositionsCategoryByID(id: string) {
     this.isLoading = true
     let positionNum = 1
+    let profile = JSON.parse(localStorage.getItem('profile'))
     this.pSub = this.positionService.getPositionsByCategoryID(id).subscribe({
       next: positions => {
-        if (positions.length == 0) this.isEmpty = true
-        this.positions = positions
+        this.positions = positions.filter(position => position.restaurant === profile['rest'])
+        if (this.positions.length == 0) this.isEmpty = true
         this.isLoading = false
         positions.map(position => position.positionNum = positionNum++)
-        this.dataSource = new MatTableDataSource<Position>(positions)
-        this.dataSource.paginator = this.paginator;
+        this.dataSource = new MatTableDataSource<Position>(this.positions)
       },
       error: error => {
         if (error.status === 401) {
@@ -104,16 +92,16 @@ export class PositionsPageComponent implements OnInit, AfterViewInit, OnDestroy 
       }
     })
   }
-
-  getRestaurants() {
-    this.rSub = this.restaurantsService.getRestaurants().subscribe({
-      next: restaurants => this.restaurants = restaurants,
-      error: error => MaterialService.toast(error.error.error)
-    })
-  }
-
-  openPage(id: string) {
-    void this.router.navigate([`st/form-position/${id}`])
+  openPage(id?: string) {
+    if (id) {
+      void this.router.navigate([`st/form-position/${id}`])
+    } else {
+      void this.router.navigate(['st/form-position'], {
+        queryParams: {
+          category: this.category._id
+        }
+      })
+    }
   }
 
   changeStatus(position: Position) {
@@ -134,6 +122,7 @@ export class PositionsPageComponent implements OnInit, AfterViewInit, OnDestroy 
       this.cSub = this.categoryService.getCategoryByID(params['category']).subscribe({
         next: category => {
           this.category = category
+          this.categoryTitle = category.title
           this.getPositionsCategoryByID(params['category'])
         },
         error: error => MaterialService.toast(error.error.error)
@@ -148,5 +137,9 @@ export class PositionsPageComponent implements OnInit, AfterViewInit, OnDestroy 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  openCategoriesPage() {
+    void this.router.navigate(['st/assortment'])
   }
 }

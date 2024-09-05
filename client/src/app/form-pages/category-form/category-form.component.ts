@@ -55,6 +55,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
       this.route.snapshot.params['id']
       : ''
 
+    this.generateForm()
     this.getCategoryByID()
     this.getCategories()
   }
@@ -69,7 +70,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
         Validators.required,
         Validators.minLength(3),
         Validators.maxLength(20)]),
-      imgSrc: new FormControl(category ? category.imgSrc : '', Validators.required)
+      imgSrc: new FormControl('', Validators.required)
     })
   }
 

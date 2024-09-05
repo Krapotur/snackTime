@@ -1,3 +1,20 @@
+p{
+  position: absolute;
+  cursor: pointer;
+  top: 30px;
+  left: 250px;
+  font: bold 20px 'Lora', serif;
+}
+
+p:hover{
+  color: #F87839;
+  position: absolute;
+  cursor: pointer;
+  top: 30px;
+  left: 310px;
+  font: bold 20px 'Lora', serif;
+}
+
 .block {
   display: flex;
   justify-content: space-between;
@@ -32,8 +49,8 @@
 
     .img-block {
       margin-top: 20px;
-      height: 300px;
-      width: 300px;
+      height: 200px;
+      width: 200px;
 
       img {
         object-fit: cover;

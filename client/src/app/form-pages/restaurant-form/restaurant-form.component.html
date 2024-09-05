@@ -1,168 +1,168 @@
-<div [class]="isDelete ? 'blur' : ''">
-  <div class="main-container">
-    <div class="container-block">
-      <h3>{{restaurantID.length > 0 ? restaurant.title : 'Новый ресторан'}}</h3>
-      <div class="img-del" *ngIf="restaurantID">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-             data-name="Layer 1" viewBox="0 0 24 24"
-             (click)="openDelTemplate()"
-             *ngIf="!isDelete"
-        >
-          <path d="M17 4V2a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H2v2h2v15a3 3 0 0 0 3 3h10a3
+<div class="main-container">
+  <div class="container-block">
+    <h3>{{ restaurant && restaurantID ? restaurant.title : 'Новый ресторан' }}</h3>
+    <div class="img-del" *ngIf="restaurantID">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+           data-name="Layer 1" viewBox="0 0 24 24"
+           (click)="openDelTemplate()"
+           *ngIf="!isDelete"
+      >
+        <path d="M17 4V2a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H2v2h2v15a3 3 0 0 0 3 3h10a3
          3 0 0 0 3-3V6h2V4Zm-6 13H9v-6h2Zm4 0h-2v-6h2Zm0-13H9V2h6Z" fill="white"/>
-        </svg>
-      </div>
-      <form [formGroup]="form">
-        <div class="container-form">
+      </svg>
+    </div>
+    <form [formGroup]="form">
+      <div class="container-form">
 
-          <div class="row">
-            <div class="input-field col s6">
-              <label class="active" for="title">Название</label>
-              <input id="title" type="text" formControlName="title"
-                     [ngClass]="{'invalid' : form.get('title').invalid && form.get('title')['touched']}"
-                     (keyup)="checkTitleRestaurant()"
-              >
-            </div>
-          </div>
-          <span class="error" *ngIf="isError">
-            *Название уже занято
-                    </span>
-          <span class="error" *ngIf="form.get('title').hasError('required') && form.get('title')['touched']"
-          >*Введите название
-                    </span>
-          <span class="error" *ngIf="form.get('title').hasError('minlength') && form.get('title')['touched']"
-          >*Не менее 3х символов
-                    </span>
-          <span class="error" *ngIf="form.get('title').hasError('maxlength') && form.get('title')['touched']"
-          >*Слишком длинное название
-                    </span>
-
-          <div class="description-block">
-            <label for="textarea" style="padding-left: 10px"
-                   [ngClass]="{'invalid' : form.get('description').invalid && form.get('description')['touched']}"
-
-            >Описание</label>
-            <textarea id="textarea"
-                      maxlength="300"
-                      [ngClass]="{'invalid' : form.get('description').invalid && form.get('description')['touched']}"
-                      placeholder="Почему его должны посетить?"
-                      formControlName="description"
-            ></textarea>
-            <span class="error" *ngIf="form.get('description').hasError('required') &&
-                                        form.get('description')['touched']"
-            >*Введите описание
-                              </span>
-            <span class="error" *ngIf="form.get('description').hasError('minlength') &&
-                                        form.get('description')['touched']"
-            >*Еще немного информации...   {{this.form.get('description').errors['minlength'].actualLength + '/'
-                                            + this.form.get('description').errors['minlength'].requiredLength}}
-                              </span>
-          </div>
-
-          <mat-form-field>
-            <mat-label>Тип заведения <span *ngIf="!sortPlaces.length">(список пуст)</span></mat-label>
-            <mat-select formControlName="typePlace">
-              <mat-select-trigger>
-                {{ form.get('typePlace').value }}
-              </mat-select-trigger>
-              <mat-option *ngFor="let place of sortPlaces"
-                          [value]="place"
-              >{{ place }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <mat-form-field>
-            <mat-label>Кухня <span *ngIf="!kitchens.length">(список пуст)</span></mat-label>
-            <mat-select formControlName="kitchen">
-              <mat-select-trigger>
-                {{ form.get('kitchen').value | filterKitchen : kitchens }}
-              </mat-select-trigger>
-              <mat-option *ngFor="let kitchen of kitchens"
-                          [value]=" kitchen._id"
-              >{{ kitchen.title }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-
-
-          <div class="time-block">
-            <p> Режим работы </p>
-            <div class="time-inputs">
-              <div class="row">
-                <mat-form-field>
-                  <mat-label>Начало</mat-label>
-                  <mat-select formControlName="timeOpen">
-                    <mat-select-trigger>
-                      {{ form.get('timeOpen').value }}
-                    </mat-select-trigger>
-                    <mat-option *ngFor="let hour of hours"
-                                [value]="hour"
-                    >{{ hour }}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-
-              <p>до</p>
-
-              <div class="row">
-                <mat-form-field>
-                  <mat-label>Конец</mat-label>
-                  <mat-select formControlName="timeClose">
-                    <mat-select-trigger>
-                      {{ form.get('timeClose').value }}
-                    </mat-select-trigger>
-                    <mat-option *ngFor="let hour of hours"
-                                [value]="hour"
-                    >{{ hour }}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-            </div>
-            <span class="error" *ngIf="form.get('timeClose').hasError('required') &&
-                                         form.get('timeClose')['touched']"
-            >*Укажите время работы ресторана
-                              </span>
-          </div>
-
-          <hr>
-
-          <div class="img-block">
-            <label [for]="inputImg">Выберите изображение </label>
-            <div class="img-group">
-              <span *ngIf="image || form.get('imgSrc').value">Изображение загружено!</span>
-              <input type="file" class="dn" formControlName="imgSrc"
-                     #inputImg
-                     (change)="uploadImg($event)">
-              <img (click)=" triggerClick()" [class]="isDelete ? 'dn' : ''"
-                   src="../assets/icons/add-photo.png" alt="edit">
-            </div>
-          </div>
-
-          <hr>
-
-          <div class="btn-group">
-            <button
-              class="btn-cancel" extended="" mat-fab
-              [disabled]="isDelete"
-              (click)="openRestaurantsPage()"
+        <div class="row">
+          <div class="input-field col s6">
+            <label class="active" for="title">Название</label>
+            <input id="title" type="text" formControlName="title"
+                   [ngClass]="{'invalid' : form.get('title').invalid && form.get('title')['touched']}"
+                   (keyup)="checkTitleRestaurant()"
             >
-              Отмена
-            </button>
-            <button
-              type="submit"
-              class="btn-save" extended="" mat-fab
-              [disabled]="form.invalid || isError || isDelete"
-              (click)="onSubmit()"
-            >
-              Сохранить
-            </button>
           </div>
         </div>
-      </form>
-    </div>
+        <span class="error" *ngIf="isError">
+            *Название уже занято
+                    </span>
+        <span class="error" *ngIf="form.get('title').hasError('required') && form.get('title')['touched']"
+        >*Введите название
+                    </span>
+        <span class="error" *ngIf="form.get('title').hasError('minlength') && form.get('title')['touched']"
+        >*Не менее 3х символов
+                    </span>
+        <span class="error" *ngIf="form.get('title').hasError('maxlength') && form.get('title')['touched']"
+        >*Слишком длинное название
+                    </span>
+
+        <div class="description-block">
+          <label for="textarea" style="padding-left: 10px"
+                 [ngClass]="{'invalid' : form.get('description').invalid && form.get('description')['touched']}"
+
+          >Описание</label>
+          <textarea id="textarea"
+                    maxlength="300"
+                    [ngClass]="{'invalid' : form.get('description').invalid && form.get('description')['touched']}"
+                    placeholder="Почему его должны посетить?"
+                    formControlName="description"
+          ></textarea>
+          <span class="error" *ngIf="form.get('description').hasError('required') &&
+                                        form.get('description')['touched']"
+          >*Введите описание
+                              </span>
+          <span class="error" *ngIf="form.get('description').hasError('minlength') &&
+                                        form.get('description')['touched']"
+          >*Еще немного информации...   {{
+              this.form.get('description').errors['minlength'].actualLength + '/'
+              + this.form.get('description').errors['minlength'].requiredLength
+            }}
+                              </span>
+        </div>
+
+        <mat-form-field>
+          <mat-label>Тип заведения <span *ngIf="!sortPlaces.length">(список пуст)</span></mat-label>
+          <mat-select formControlName="typePlace">
+            <mat-select-trigger>
+              {{ form.get('typePlace').value }}
+            </mat-select-trigger>
+            <mat-option *ngFor="let place of sortPlaces"
+                        [value]="place"
+            >{{ place }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Кухня <span *ngIf="!kitchens.length">(список пуст)</span></mat-label>
+          <mat-select formControlName="kitchen">
+            <mat-select-trigger>
+              {{ form.get('kitchen').value | filterKitchen : kitchens }}
+            </mat-select-trigger>
+            <mat-option *ngFor="let kitchen of kitchens"
+                        [value]=" kitchen._id"
+            >{{ kitchen.title }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+
+        <div class="time-block">
+          <p> Режим работы </p>
+          <div class="time-inputs">
+            <div class="row">
+              <mat-form-field>
+                <mat-label>Начало</mat-label>
+                <mat-select formControlName="timeOpen">
+                  <mat-select-trigger>
+                    {{ form.get('timeOpen').value }}
+                  </mat-select-trigger>
+                  <mat-option *ngFor="let hour of hours"
+                              [value]="hour"
+                  >{{ hour }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <p>до</p>
+
+            <div class="row">
+              <mat-form-field>
+                <mat-label>Конец</mat-label>
+                <mat-select formControlName="timeClose">
+                  <mat-select-trigger>
+                    {{ form.get('timeClose').value }}
+                  </mat-select-trigger>
+                  <mat-option *ngFor="let hour of hours"
+                              [value]="hour"
+                  >{{ hour }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <span class="error" *ngIf="form.get('timeClose').hasError('required') &&
+                                         form.get('timeClose')['touched']"
+          >*Укажите время работы ресторана
+                              </span>
+        </div>
+
+        <hr>
+
+        <div class="img-block">
+          <label [for]="inputImg">Выберите изображение </label>
+          <div class="img-group">
+            <span *ngIf="image || (restaurant ? restaurant.imgSrc : false)">Изображение загружено!</span>
+            <input type="file" class="dn" formControlName="imgSrc"
+                   #inputImg
+                   (change)="uploadImg($event)">
+            <img (click)=" triggerClick()" [class]="isDelete ? 'dn' : ''"
+                 src="../assets/icons/add-photo.png" alt="edit">
+          </div>
+        </div>
+
+        <hr>
+
+        <div class="btn-group">
+          <button
+            class="btn-cancel" extended="" mat-fab
+            [disabled]="isDelete"
+            (click)="openRestaurantsPage()"
+          >
+            Отмена
+          </button>
+          <button
+            type="submit"
+            class="btn-save" extended="" mat-fab
+            [disabled]="form.invalid || isError || isDelete"
+            (click)="onSubmit()"
+          >
+            Сохранить
+          </button>
+        </div>
+      </div>
+    </form>
   </div>
 </div>
 <!--Template for Delete-->

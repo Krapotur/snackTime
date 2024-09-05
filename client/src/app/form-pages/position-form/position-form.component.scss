@@ -15,7 +15,7 @@
 
   .row {
     input {
-      width: 225px;
+      width: 245px;
       padding-left: 15px;
     }
   }
@@ -29,3 +29,15 @@
     }
   }
 }
+
+.items-row {
+  display: flex;
+  justify-content: space-between;
+  width: 285px;
+
+  #price, #weight, #proteins, #fats, #carbs,#caloric{
+    width: 55px;
+  }
+}
+
+

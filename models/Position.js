@@ -2,10 +2,13 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const positionSchema = new Schema({
+    status:{
+        type: Boolean,
+        default: true,
+    },
     title: {
         type: String,
         required: true,
-        unique: true
     },
     imgSrc: {
         type: String,

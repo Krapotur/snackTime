@@ -86,6 +86,8 @@ module.exports.update = async function (req, res) {
         const salt = bcrypt.genSaltSync(10)
         updated.password = bcrypt.hashSync(req.body.password, salt)
     }
+    if(req.file) updated.imgSrc = req.file.path
+
 
     try {
         await User.findByIdAndUpdate(

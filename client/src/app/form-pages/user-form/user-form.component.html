@@ -1,7 +1,7 @@
 <div class="main-container">
   <div class="container-block">
-    <h3> {{ userID.length ? user.lastName + ' ' + user.firstName : 'Новый пользователь' }}</h3>
-    <div class="img-del" *ngIf="userID && isVisibleBtn">
+    <h3> {{ user ? user.lastName + ' ' + user.firstName : 'Новый пользователь' }}</h3>
+    <div class="img-del" *ngIf="userID && !formPsw">
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
            data-name="Layer 1" viewBox="0 0 24 24"
            (click)="openDelTemplate()"
@@ -12,7 +12,6 @@
       </svg>
     </div>
     <form [formGroup]="form">
-
       <div class="container-form">
         <div class="container-left">
           <div class="row">
@@ -131,8 +130,9 @@
           </div>
           <span class="error" *ngIf="isError"
           >*Логин уже занят..
-                    </span><span class="error" *ngIf="form.get('login').hasError('required') && form.get('login')['touched']"
-          >*Придумайте логин
+                    </span><span class="error"
+                                 *ngIf="form.get('login').hasError('required') && form.get('login')['touched']"
+        >*Придумайте логин
                     </span>
           <span class="error" *ngIf="form.get('login').hasError('minlength') && form.get('login')['touched']"
           >*Не менее 3 символов
@@ -177,7 +177,8 @@
               </div>
             </div>
             <div>
-               <span class="error" *ngIf="form.get('pswConfirm').hasError('required') && form.get('pswConfirm')['touched']"
+               <span class="error"
+                     *ngIf="form.get('pswConfirm').hasError('required') && form.get('pswConfirm')['touched']"
                >*Подтвердите пароль
                     </span>
             </div>
@@ -193,7 +194,7 @@
                class="img-block">
             <label [for]="inputImg">Изображение </label>
             <div class="img-group">
-              <span *ngIf="image || form.get('imgSrc').value">Изображение загружено!</span>
+              <span *ngIf="image || (user ? user.imgSrc : false)">Изображение загружено!</span>
               <input type="file" class="dn" formControlName="imgSrc"
                      #inputImg
                      (change)="uploadImg($event)">
@@ -238,7 +239,7 @@
 
 <!--Template for change password-->
 
-<div *ngIf="!isVisibleBtn && userID.length > 0"
+<div *ngIf="formPsw"
      class="container-change-psw">
   <h3>Смена пароля</h3>
 
