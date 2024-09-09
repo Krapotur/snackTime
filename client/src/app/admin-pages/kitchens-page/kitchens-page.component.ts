@@ -36,18 +36,19 @@ import {LoaderComponent} from "../../shared/components/loader/loader.component";
     LoaderComponent
   ],
   templateUrl: './kitchens-page.component.html',
-  styleUrls: ['./kitchens-page.component.scss', '../../shared/styles/style-table.scss']
+  styleUrls: ['../../shared/styles/style-table.scss', './kitchens-page.component.scss']
 })
 export class KitchensPageComponent implements OnInit, OnDestroy {
   private router = inject(Router)
   private kitchenService = inject(KitchenService)
 
-  kSub: Subscription
+  quantityKitchens = 0
   isLoading = false
   isEmpty: boolean
   activeRoute = 'form-kitchen'
   dataSource: MatTableDataSource<Kitchen>;
   displayedColumns: string[] = ['#', 'title', 'edit', 'status'];
+  kSub: Subscription
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -65,6 +66,7 @@ export class KitchensPageComponent implements OnInit, OnDestroy {
 
     this.kSub = this.kitchenService.getKitchens().subscribe({
       next: kitchens => {
+        this.quantityKitchens = kitchens.length
         if (kitchens.length == 0) this.isEmpty = true
         this.isLoading = false
         kitchens.map(kitchen => kitchen.position = position++)

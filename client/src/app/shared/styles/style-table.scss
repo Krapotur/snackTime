@@ -1,8 +1,35 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+  padding-right: 30px;
+
+  input {
+    width: 200px;
+    padding-left: 10px;
+  }
+
+  .search {
+    position: relative;
+
+    .icon-finder {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+
+      img {
+        width: 40px;
+      }
+    }
+  }
+}
+
 .main {
   user-select: none;
   display: flex;
   flex-direction: column;
-  margin-top: 40px;
+  margin-top: 20px;
   justify-content: space-evenly;
   align-items: flex-start;
 
@@ -11,57 +38,52 @@
   }
 
   h5 {
-    font-weight: bold;
     padding: 0 0 0 20px;
-    font-family: 'Lora', serif;
+    font: 24px 'Lora', serif;
   }
 }
 
-table {
-  min-width: max-content;
-  //padding: 5px 20px 0 20px;
+.table-section {
+  max-height: 700px;
+  overflow: auto;
+  margin-bottom: 10px;
 
-  th {
-    font-weight: bold;
-    font-family:'Lora', serif;
-    text-align: center;
-  }
+  table {
+    min-width: max-content;
 
-  th:first-child {
-    border-right: 1px solid black;
+    th {
+      font-weight: bold;
+      font-family: 'Lora', serif;
+      text-align: center;
+    }
 
-  }
+    th:first-child {
+      border-right: 1px solid black;
+    }
 
-  td {
-    font-family:'Lora', serif;
-    font-size: 14px;
-    text-align: center;
+    td {
+      text-align: center;
+      font-family: 'Lora', serif;
 
-    img {
-      cursor: pointer;
+      img {
+        cursor: pointer;
+      }
+    }
+
+    td:first-child {
+      border-right: 1px solid black;
     }
   }
-
-  td:first-child {
-    border-right: 1px solid black;
-  }
 }
 
-.table-bottom {
-  display: flex;
-  justify-content: space-between;
-  padding: 0 0 0 20px;
-  align-items: center;
-
-  button {
-    background-color: #F87839;
-    border-radius: 1px;
-    height: 35px;
-    color: white;
-    font-size: 12px;
-    font-family:'Lora', serif;
-  }
+button {
+  background-color: #F87839;
+  border-radius: 1px;
+  height: 35px;
+  color: white;
+  font: 12px 'Lora', serif;
 }
+
 
 .mat-mdc-slide-toggle.mat-warn {
   --mdc-switch-selected-icon-color: #ffffff;
@@ -70,6 +92,8 @@ table {
   --mdc-switch-selected-track-color: #f87a56;
   --mat-switch-selected-with-icon-handle-horizontal-margin: 0 20px;
   --mat-switch-unselected-with-icon-handle-horizontal-margin: 0;
-  --mdc-switch-track-height: 20px;
+  --mdc-switch-track-height: 15px;
   --mdc-switch-track-width: 43px;
 }
+
+

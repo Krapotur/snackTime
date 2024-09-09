@@ -49,17 +49,18 @@ export class UsersPageComponent implements OnInit, OnDestroy {
   private userService = inject(UserService)
   private router = inject(Router)
 
+  quantityUsers = 0
   isLoading = false;
   isShowTemplate = false;
   isEmpty: boolean
   activeRoute = 'new-user'
   dataSource: MatTableDataSource<User>;
   displayedColumns: string[] = ['#', 'name', 'login', 'group', 'restaurant', 'phone', 'edit', 'status'];
+  restaurants: Restaurant [] = []
+  groups: Group[] = []
   uSub: Subscription
   rSub: Subscription
   gSub: Subscription
-  restaurants: Restaurant [] = []
-  groups: Group[] = []
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -82,12 +83,11 @@ export class UsersPageComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.uSub = this.userService.getUsers().subscribe({
         next: users => {
+          this.quantityUsers = users.length
           this.isLoading = false
           if (users.length == 0) this.isEmpty = true
-          // users.filter(user => user.group != 'admin')
           users.map(user => user.position = position++)
           this.dataSource = new MatTableDataSource<User>(users)
-          // this.paginator._intl.itemsPerPageLabel = 'Количество позиций';
           this.dataSource.paginator = this.paginator;
         },
         error: error => MaterialService.toast(error.error.message)
@@ -129,4 +129,12 @@ export class UsersPageComponent implements OnInit, OnDestroy {
     })
   }
 
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
 }

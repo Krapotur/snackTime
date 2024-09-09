@@ -11,7 +11,7 @@ import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {LoaderComponent} from "../../shared/components/loader/loader.component";
 import {EmptyComponent} from "../../shared/components/empty/empty.component";
-import {Category, Position} from "../../shared/interfaces";
+import {Category, CategoryRoute, Position} from "../../shared/interfaces";
 import {Subscription} from "rxjs";
 import {MaterialService} from "../../shared/classes/material.service";
 import {PositionService} from "../../shared/services/position.service";
@@ -53,7 +53,7 @@ export class PositionsPageComponent implements OnInit, OnDestroy {
   isLoading = false
   isShowTemplate = false;
   isEmpty: boolean
-  activeRoute = 'form-position'
+  activeRoute: CategoryRoute
   dataSource: MatTableDataSource<Position>;
   displayedColumns: string[] = ['#', 'title', 'price', 'weight', 'proteins', 'fats', 'carbs', 'caloric', 'edit', 'status'];
   rSub: Subscription
@@ -123,6 +123,10 @@ export class PositionsPageComponent implements OnInit, OnDestroy {
         next: category => {
           this.category = category
           this.categoryTitle = category.title
+          this.activeRoute = {
+            id: category._id,
+            route: 'form-position'
+          }
           this.getPositionsCategoryByID(params['category'])
         },
         error: error => MaterialService.toast(error.error.error)

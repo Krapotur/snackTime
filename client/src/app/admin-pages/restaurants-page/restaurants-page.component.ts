@@ -48,6 +48,7 @@ export class RestaurantsPageComponent implements OnInit, OnDestroy {
   private router = inject(Router)
 
   kitchens: Kitchen[]
+  quantityRest = 0
   isLoading = false
   isShowTemplate = false;
   isEmpty: boolean
@@ -76,11 +77,11 @@ export class RestaurantsPageComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.rSub = this.restaurantService.getRestaurants().subscribe({
           next: restaurants => {
+            this.quantityRest = restaurants.length
             if (restaurants.length == 0) this.isEmpty = true
             this.isLoading = false
             restaurants.map(restaurant => restaurant.position = position++)
             this.dataSource = new MatTableDataSource<Restaurant>(restaurants)
-            // this.paginator._intl.itemsPerPageLabel = 'Количество позиций';
             this.dataSource.paginator = this.paginator;
           },
           error: error => {
@@ -119,5 +120,14 @@ export class RestaurantsPageComponent implements OnInit, OnDestroy {
       },
       error: error => MaterialService.toast(error.error.error)
     })
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 }

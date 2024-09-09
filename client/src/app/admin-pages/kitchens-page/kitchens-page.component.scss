@@ -1,46 +1,5 @@
 
 .main {
   width: 350px;
-
-  .table-bottom {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    padding: 5px 0 0 20px;
-    align-items: flex-start;
-  }
-
-}
-
-button {
-  position: absolute;
-  background-color: #F87839;
-  border-radius: 1px;
-  height: 40px;
-  color: white;
-  font-family: 'Lora', serif;
-}
-
-.container-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 35px;
-  width: 350px;
-
-  .row {
-    input {
-      width: 225px;
-      padding-left: 15px;
-    }
-  }
-
-  mat-form-field {
-    width: 300px;
-    padding-top: 20px;
-
-    span {
-      color: grey;
-    }
-  }
+  margin-top: 28px;
 }

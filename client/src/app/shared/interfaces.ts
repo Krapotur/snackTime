@@ -12,8 +12,8 @@ export interface AuthToken {
 
 export interface User {
   _id?: string,
-  status?: boolean,
   position?: number,
+  status?: boolean,
   firstName: string,
   lastName: string,
   login: string,
@@ -33,8 +33,8 @@ export interface Group {
 
 export interface Restaurant {
   _id?: string,
-  status?: boolean,
   position?: number,
+  status?: boolean,
   title: string,
   description: string,
   timeOpen: string,
@@ -47,15 +47,15 @@ export interface Restaurant {
 
 export interface Kitchen {
   _id?: string,
-  status?: boolean,
   position?: number,
+  status?: boolean,
   title: string,
   imgSrc?: string
 }
 
 export interface Category{
-  position?: number,
   _id?: string,
+  position?: number,
   status?: boolean,
   title: string,
   quantity?: number,
@@ -63,10 +63,10 @@ export interface Category{
 }
 
 export interface Position {
-  positionNum?: number,
   _id?: string,
-  title: string,
+  positionNum?: number,
   status?: boolean,
+  title: string,
   imgSrc: string,
   price: number,
   composition: string,
@@ -84,4 +84,9 @@ export interface Elem {
   title: string,
   route: string,
   formRoute: string
+}
+
+export interface CategoryRoute{
+  id: string,
+  route: string
 }

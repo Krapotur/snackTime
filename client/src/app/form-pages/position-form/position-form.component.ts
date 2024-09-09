@@ -86,7 +86,7 @@ export class PositionFormComponent implements OnInit, OnDestroy {
         Validators.max(5000)]),
       composition: new FormControl(position ? position.composition : '', [
         Validators.required,
-        Validators.minLength(50),
+        Validators.minLength(10),
         Validators.maxLength(250)]),
       weight: new FormControl(position ? position.weight : 0, [
         Validators.required,
@@ -205,7 +205,6 @@ export class PositionFormComponent implements OnInit, OnDestroy {
       })
     }
   }
-
 
   checkTitlePosition() {
     const title = this.form.get('title').value

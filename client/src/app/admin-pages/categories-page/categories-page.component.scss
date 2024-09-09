@@ -39,15 +39,15 @@ button {
       display: flex;
       cursor: pointer;
       flex-direction: column;
-      margin: 10px;
-      width: 200px;
+      margin: 5px;
+      width: 150px;
       -webkit-box-shadow: 0 0 10px -4px rgba(34, 60, 80, 0.2);
       -moz-box-shadow: 0 0 10px -4px rgba(34, 60, 80, 0.2);
       box-shadow: 0 0 10px -4px rgba(34, 60, 80, 0.2);
 
       .img-block {
-        height: 200px;
-        width: 200px;
+        height: 150px;
+        width: 150px;
 
         img {
           object-fit: cover;

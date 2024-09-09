@@ -1,16 +1,26 @@
-<p (click)="openCategoriesPage()">НАЗАД
-</p>
+<div class="back" (click)="openCategoriesPage()">
+  <div>
+    <img src="assets/icons/back.svg" alt="back">
+  </div>
+  <p>назад</p>
+</div>
+
 
 <div class="block">
   <div class="main">
     <div class="header">
       <h5>Позиции <span>({{ positions.length }})</span></h5>
-      <div *ngIf="!isEmpty">
-        <input matInput (keyup)="applyFilter($event)" placeholder="Что искать?" maxlength="10">
+      <div class="search">
+        <div *ngIf="!isEmpty && !isLoading">
+          <input matInput (keyup)="applyFilter($event)" placeholder="Что искать?" maxlength="10">
+        </div>
+        <div class="icon-finder" *ngIf="!isEmpty && !isLoading">
+          <img src="assets/icons/search-finder.svg" alt="back">
+        </div>
       </div>
     </div>
 
-    <app-empty [page]="activeRoute" *ngIf="isEmpty"></app-empty>
+    <app-empty [routeCategory]="activeRoute" *ngIf="isEmpty"></app-empty>
 
     <div *ngIf="!isEmpty">
       <div class="mat-elevation-z8" *ngIf="!isLoading">
@@ -19,56 +29,57 @@
             <!-- Position Column -->
             <ng-container matColumnDef="#">
               <th mat-header-cell *matHeaderCellDef> #</th>
-              <td mat-cell *matCellDef="let position">{{ position.positionNum }}</td>
+              <td mat-cell *matCellDef="let position">{{ position['positionNum'] }}</td>
             </ng-container>
 
             <!-- Title Column -->
             <ng-container matColumnDef="title">
               <th mat-header-cell *matHeaderCellDef> Название</th>
               <td mat-cell *matCellDef="let position"
-                  style="cursor:pointer;"
-                  (click)="openPage(position._id)"
-              >{{ position.title }}
+                  style="cursor:pointer"
+                  (click)="openPage(position['_id'])"
+              >{{ position['title'] }}
               </td>
             </ng-container>
 
             <!-- Price Column -->
             <ng-container matColumnDef="price">
               <th mat-header-cell *matHeaderCellDef> Цена</th>
-              <td mat-cell *matCellDef="let position">{{ position.price }}
+              <td mat-cell *matCellDef="let position">{{ position['price'] }}
               </td>
             </ng-container>
 
             <!-- Weight Column -->
             <ng-container matColumnDef="weight">
-              <th mat-header-cell *matHeaderCellDef> {{ categoryTitle !== 'Напитки' ? 'Вес(г.)' : 'Объем(л.)' }}</th>
+              <th mat-header-cell
+                  *matHeaderCellDef> {{ (categoryTitle !== ('Напитки' || 'Кофе')) ? 'Вес(г.)' : 'Объем(л.)' }}</th>
               <td mat-cell *matCellDef="let position">
-                {{ position.weight }}
+                {{ position['weight'] }}
               </td>
             </ng-container>
 
             <!-- Proteins Column -->
             <ng-container matColumnDef="proteins">
               <th mat-header-cell *matHeaderCellDef>Белки</th>
-              <td mat-cell *matCellDef="let position"> {{ position.proteins }}</td>
+              <td mat-cell *matCellDef="let position"> {{ position['proteins'] }}</td>
             </ng-container>
 
             <!-- Fats -->
             <ng-container matColumnDef="fats">
               <th mat-header-cell *matHeaderCellDef>Жиры</th>
-              <td mat-cell *matCellDef="let position"> {{ position.fats }}</td>
+              <td mat-cell *matCellDef="let position"> {{ position['fats'] }}</td>
             </ng-container>
 
             <!-- Carbs -->
             <ng-container matColumnDef="carbs">
               <th mat-header-cell *matHeaderCellDef>Углеводы</th>
-              <td mat-cell *matCellDef="let position"> {{ position.carbs }}</td>
+              <td mat-cell *matCellDef="let position"> {{ position['carbs'] }}</td>
             </ng-container>
 
             <!-- Caloric -->
             <ng-container matColumnDef="caloric">
               <th mat-header-cell *matHeaderCellDef>Калл. на 100г.</th>
-              <td mat-cell *matCellDef="let position"> {{ position.caloric }}</td>
+              <td mat-cell *matCellDef="let position"> {{ position['caloric'] }}</td>
             </ng-container>
 
             <!--            &lt;!&ndash; Restaurant &ndash;&gt;-->
@@ -81,9 +92,8 @@
             <ng-container matColumnDef="edit">
               <th mat-header-cell *matHeaderCellDef> Действие</th>
               <td mat-cell *matCellDef="let position">
-                <img ngSrc="assets/icons/edit.png"
-                     width="35" height="35" alt="edit"
-                     (click)="openPage(position._id)"
+                <img src="assets/icons/edit.png" style="width: 35px;height: 35px" alt="edit"
+                     (click)="openPage(position['_id'])"
                 >
               </td>
             </ng-container>
@@ -112,6 +122,7 @@
 
     <div class="table-bottom" *ngIf="!isEmpty">
       <button
+        *ngIf="!isEmpty && !isLoading"
         class="btn" extended="" mat-fab
         [disabled]="isShowTemplate"
         (click)="openPage()"

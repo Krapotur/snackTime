@@ -48,14 +48,14 @@ export class CategoriesPageComponent implements OnInit, OnDestroy {
 
   profile = {}
   categories: Category[] = []
-  cSub: Subscription
-  gSub: Subscription
   isLoading = false
   isEmpty: boolean
   isAdmin :boolean
   activeRoute = 'form-category'
   dataSource: MatTableDataSource<Category>;
   displayedColumns: string[] = ['#', 'title', 'edit', 'status'];
+  cSub: Subscription
+  gSub: Subscription
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
