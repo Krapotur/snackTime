@@ -14,6 +14,10 @@ const positionSchema = new Schema({
         type: String,
         default: '',
     },
+    isDrink:{
+        type: Boolean,
+        default: false,
+    },
     price: {
         type: Number,
         default: 0

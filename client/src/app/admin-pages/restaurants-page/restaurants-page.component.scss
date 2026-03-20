@@ -1,12 +1,10 @@
+.main {
+  margin-right: 30px;
+}
 
 .tables {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  width: 65vw;
+  flex-direction: column;
 }
-
-
-
-
-

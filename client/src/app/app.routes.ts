@@ -23,7 +23,7 @@ export const routes: Routes = [
     ]
   },
   {
-    path: 'st', component: SiteLayoutComponent, canActivate: [isAuthGuard], children: [
+    path: 'st', component: SiteLayoutComponent, children: [
       {path: '', redirectTo: '/st/users', pathMatch: 'full'},
       {path: 'dashboard', component: DashboardPageComponent},
       {path: 'overview', component: OverviewPageComponent},
