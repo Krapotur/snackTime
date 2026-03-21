@@ -67,6 +67,7 @@ export interface Position {
   _id?: string,
   positionNum?: number,
   status?: boolean,
+  isDrink: boolean,
   discount: number,
   title: string,
   imgSrc: string,

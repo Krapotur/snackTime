@@ -1,4 +1,4 @@
 module.exports = {
-    mongoURI: 'mongodb://127.0.0.1:27018/snack-Time',
+    mongoURI: 'mongodb://10.101.11.14:27018/snack-Time',
     jwt: 'dayfive'
 }

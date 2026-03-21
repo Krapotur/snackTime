@@ -1,22 +1,22 @@
-import {Component, inject, OnDestroy, OnInit, } from '@angular/core';
-import {CategoriesPageComponent} from "../categories-page/categories-page.component";
-import {MatTableDataSource, MatTableModule} from "@angular/material/table";
-import {MatPaginatorModule} from "@angular/material/paginator";
-import {MatButtonModule} from "@angular/material/button";
-import {NgIf, NgOptimizedImage} from "@angular/common";
-import {MatInputModule} from "@angular/material/input";
-import {MatSelectModule} from "@angular/material/select";
-import {ReactiveFormsModule} from "@angular/forms";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
-import {MatSlideToggleModule} from "@angular/material/slide-toggle";
-import {LoaderComponent} from "../../shared/components/loader/loader.component";
-import {EmptyComponent} from "../../shared/components/empty/empty.component";
-import {Category, CategoryRoute, Position} from "../../shared/interfaces";
-import {Subscription} from "rxjs";
-import {MaterialService} from "../../shared/classes/material.service";
-import {PositionService} from "../../shared/services/position.service";
-import {FilterRestaurantPipe} from "../../shared/pipes/filter-restaurant";
-import {CategoryService} from "../../shared/services/category.service";
+import { Component, inject, OnDestroy, OnInit, } from '@angular/core';
+import { CategoriesPageComponent } from "../categories-page/categories-page.component";
+import { MatTableDataSource, MatTableModule } from "@angular/material/table";
+import { MatPaginatorModule } from "@angular/material/paginator";
+import { MatButtonModule } from "@angular/material/button";
+import { NgIf, NgOptimizedImage } from "@angular/common";
+import { MatInputModule } from "@angular/material/input";
+import { MatSelectModule } from "@angular/material/select";
+import { ReactiveFormsModule } from "@angular/forms";
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { LoaderComponent } from "../../shared/components/loader/loader.component";
+import { EmptyComponent } from "../../shared/components/empty/empty.component";
+import { Category, CategoryRoute, Position } from "../../shared/interfaces";
+import { Subscription } from "rxjs";
+import { MaterialService } from "../../shared/classes/material.service";
+import { PositionService } from "../../shared/services/position.service";
+import { FilterRestaurantPipe } from "../../shared/pipes/filter-restaurant";
+import { CategoryService } from "../../shared/services/category.service";
 
 @Component({
   selector: 'app-positions-page',
@@ -55,7 +55,7 @@ export class PositionsPageComponent implements OnInit, OnDestroy {
   isEmpty: boolean
   activeRoute: CategoryRoute
   dataSource: MatTableDataSource<Position>;
-  displayedColumns: string[] = ['#', 'title', 'price', 'discount','weight', 'proteins', 'fats', 'carbs', 'caloric', 'edit', 'status'];
+  displayedColumns: string[] = ['#', 'title', 'price', 'discount', 'weight', 'proteins', 'fats', 'carbs', 'caloric', 'edit', 'status'];
   rSub: Subscription
   cSub: Subscription
   pSub: Subscription
@@ -77,10 +77,13 @@ export class PositionsPageComponent implements OnInit, OnDestroy {
 
     this.pSub = this.positionService.getPositionsByCategoryID(id).subscribe({
       next: positions => {
-        this.positions = positions.filter(position => position.restaurant === profile['rest'])
+        this.positions = positions.filter(position =>
+          position.restaurant === profile['rest']
+        )
+
         if (this.positions.length == 0) this.isEmpty = true
         this.isLoading = false
-        
+
         positions.map(position => position.positionNum = positionNum++)
         this.dataSource = new MatTableDataSource<Position>(this.positions)
       },

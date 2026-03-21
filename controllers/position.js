@@ -1,4 +1,5 @@
 const Position = require("../models/Position");
+const Category = require("../models/Category");
 const errorHandler = require("../utils/errorHandler");
 const bcrypt = require("bcryptjs");
 
@@ -30,6 +31,10 @@ module.exports.getById = async function (req, res) {
 
 module.exports.create = async function (req, res) {
 
+  const category = await Category.findOne({
+    _id: req.body.category
+  })
+
   const candidate = await Position.findOne({
     title: req.body.title,
     restaurant: req.body.restaurant,
@@ -44,6 +49,7 @@ module.exports.create = async function (req, res) {
       title: req.body.title,
       composition: req.body.composition,
       price: req.body.price,
+      isDrink: category.isDrink,
       weight: req.body.weight,
       discount: req.body.discount != null ?? 0,
       proteins: req.body.proteins != null ?? 0,
@@ -54,6 +60,9 @@ module.exports.create = async function (req, res) {
       restaurant: req.body.restaurant,
       imgSrc: req.file ? req.file.path : "",
     });
+
+  console.log(position)
+
 
     try {
       await position.save();
