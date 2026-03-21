@@ -29,7 +29,7 @@ module.exports.getById = async function (req, res) {
 };
 
 module.exports.create = async function (req, res) {
-    
+
   const candidate = await Position.findOne({
     title: req.body.title,
     restaurant: req.body.restaurant,
@@ -45,6 +45,7 @@ module.exports.create = async function (req, res) {
       composition: req.body.composition,
       price: req.body.price,
       weight: req.body.weight,
+      discount: req.body.discount != null ?? 0,
       proteins: req.body.proteins != null ?? 0,
       fats: req.body.fats != null ?? 0,
       carbs: req.body.carbs != null ?? 0,

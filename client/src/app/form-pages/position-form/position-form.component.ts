@@ -143,13 +143,16 @@ export class PositionFormComponent implements OnInit, OnDestroy {
         Validators.min(1),
         Validators.max(2000),
       ]),
-      isDrink: new FormControl(position ? position.isDrink : false),
+      discount: new FormControl(position ? position.discount : 0),
       composition: new FormControl(position ? position.composition : '', [
         Validators.required,
         Validators.minLength(10),
         Validators.maxLength(250),
       ]),
-      imgSrc: new FormControl('', Validators.required),
+      imgSrc: new FormControl(
+        position ? position.imgSrc : '',
+        Validators.required,
+      ),
     });
   }
 
@@ -197,7 +200,7 @@ export class PositionFormComponent implements OnInit, OnDestroy {
     fd.append('fats', this.form.get('fats').value);
     fd.append('carbs', this.form.get('carbs').value);
     fd.append('caloric', this.form.get('caloric').value);
-    fd.append('isDrink', this.form.get('isDrink').value);
+    fd.append('discount', this.form.get('discount').value);
     fd.append('category', this.categoryID);
     fd.append('restaurant', user['rest']);
 

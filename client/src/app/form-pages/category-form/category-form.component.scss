@@ -32,3 +32,13 @@ $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
     }
   }
 }
+
+.checkbox {
+  width: 70%;
+  margin: 25px 0px;
+  padding: 10px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 0px 8px 0px rgba(34, 60, 80, 0.2);
+  -moz-box-shadow: 0px 0px 8px 0px rgba(34, 60, 80, 0.2);
+  box-shadow: 0px 0px 8px 0px rgba(34, 60, 80, 0.2);
+}

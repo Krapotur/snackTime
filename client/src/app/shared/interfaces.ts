@@ -55,6 +55,7 @@ export interface Kitchen {
 
 export interface Category{
   _id?: string,
+  isDrink: boolean,
   position?: number,
   status?: boolean,
   title: string,
@@ -66,7 +67,7 @@ export interface Position {
   _id?: string,
   positionNum?: number,
   status?: boolean,
-  isDrink: boolean,
+  discount: number,
   title: string,
   imgSrc: string,
   price: number,

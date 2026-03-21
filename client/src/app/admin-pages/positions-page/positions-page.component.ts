@@ -55,7 +55,7 @@ export class PositionsPageComponent implements OnInit, OnDestroy {
   isEmpty: boolean
   activeRoute: CategoryRoute
   dataSource: MatTableDataSource<Position>;
-  displayedColumns: string[] = ['#', 'title', 'price', 'weight', 'proteins', 'fats', 'carbs', 'caloric', 'edit', 'status'];
+  displayedColumns: string[] = ['#', 'title', 'price', 'discount','weight', 'proteins', 'fats', 'carbs', 'caloric', 'edit', 'status'];
   rSub: Subscription
   cSub: Subscription
   pSub: Subscription
@@ -74,11 +74,13 @@ export class PositionsPageComponent implements OnInit, OnDestroy {
     this.isLoading = true
     let positionNum = 1
     let profile = JSON.parse(localStorage.getItem('profile'))
+
     this.pSub = this.positionService.getPositionsByCategoryID(id).subscribe({
       next: positions => {
         this.positions = positions.filter(position => position.restaurant === profile['rest'])
         if (this.positions.length == 0) this.isEmpty = true
         this.isLoading = false
+        
         positions.map(position => position.positionNum = positionNum++)
         this.dataSource = new MatTableDataSource<Position>(this.positions)
       },
