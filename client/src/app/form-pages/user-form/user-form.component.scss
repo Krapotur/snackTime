@@ -1,4 +1,3 @@
-
 .container-block {
   width: 600px;
 
@@ -6,6 +5,8 @@
     display: flex;
     flex-direction: row;
     margin-top: 20px;
+    align-items: flex-start;
+    justify-content: center;
   }
 
   .container-left {
@@ -13,7 +14,7 @@
     flex-direction: column;
   }
 
-  .container-right{
+  .container-right {
     display: flex;
     flex-direction: column;
     margin-left: 50px;
@@ -21,7 +22,7 @@
   }
 }
 
-.row .col.s6{
+.row .col.s6 {
   width: 200px;
   margin-bottom: 0;
   padding: 0;
@@ -32,11 +33,11 @@
   }
 }
 
-label{
+label {
   padding-top: 10px;
 }
 
-mat-form-field{
+mat-form-field {
   margin-top: 5px;
 }
 
@@ -45,7 +46,7 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
 
-.btn-psw{
+.btn-psw {
   width: 145px;
   height: 40px;
   border-radius: 0;
@@ -55,22 +56,23 @@ input::-webkit-inner-spin-button {
   margin-top: 15px;
 }
 
-.btn-group{
+.btn-group {
   width: 76%;
 
-  .btn-save{
+  .btn-save {
     margin-left: 10px;
   }
 }
 
-.container-change-psw{
+.container-change-psw {
   position: absolute;
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-direction: column;
-  left: 42%;
+  left: 48%;
   top: 10%;
-  width: 300px;
+  width: 350px;
   box-shadow: grey 0 2px 5px;
   background-color: white;
   padding: 0 0 10px 0;
@@ -87,7 +89,7 @@ input::-webkit-inner-spin-button {
     font-family: 'Lora', serif;
   }
 
-  span{
+  span {
     padding-left: 10px;
   }
 }

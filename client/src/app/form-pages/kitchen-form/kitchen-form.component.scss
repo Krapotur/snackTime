@@ -6,30 +6,18 @@ $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
   user-select: none;
 }
 
-.blur {
-  filter: blur(5px);
+.row {
+  input {
+    width: 225px;
+    padding-left: 15px;
+  }
 }
 
-.container-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 35px;
-  width: 350px;
+mat-form-field {
+  width: 300px;
+  padding-top: 20px;
 
-  .row {
-    input {
-      width: 225px;
-      padding-left: 15px;
-    }
-  }
-
-  mat-form-field {
-    width: 300px;
-    padding-top: 20px;
-
-    span {
-      color: grey;
-    }
+  span {
+    color: grey;
   }
 }

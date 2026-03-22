@@ -117,26 +117,12 @@ export class PositionFormComponent implements OnInit, OnDestroy {
       ]),
       proteins: new FormControl(
         position ? position.proteins : 0,
-        //    [
-        //   Validators.required,
-        //   Validators.min(0),
-        //   Validators.max(300),
-        // ]
       ),
       fats: new FormControl(
         position ? position.fats : 0,
-        //   [
-        //   Validators.required,
-        //   Validators.min(0),
-        //   Validators.max(300),
-        // ]
       ),
       carbs: new FormControl(
         position ? position.carbs : 0,
-        //  [
-        // Validators.required,
-        // Validators.min(0),
-        // Validators.max(300)]
       ),
       caloric: new FormControl(position ? position.caloric : 0, [
         Validators.required,
@@ -195,12 +181,12 @@ export class PositionFormComponent implements OnInit, OnDestroy {
     fd.append('title', this.form.get('title').value);
     fd.append('price', this.form.get('price').value);
     fd.append('composition', this.form.get('composition').value);
-    fd.append('weight', this.form.get('weight').value);
-    fd.append('proteins', this.form.get('proteins').value);
-    fd.append('fats', this.form.get('fats').value);
-    fd.append('carbs', this.form.get('carbs').value);
+    fd.append('weight', this.form.get('weight').value ?? 0);
+    fd.append('proteins', this.form.get('proteins').value ?? 0);
+    fd.append('fats', this.form.get('fats').value ?? 0);
+    fd.append('carbs', this.form.get('carbs').value ?? 0);
     fd.append('caloric', this.form.get('caloric').value);
-    fd.append('discount', this.form.get('discount').value);
+    fd.append('discount', this.form.get('discount').value ?? 0);
     fd.append('category', this.categoryID);
     fd.append('restaurant', user['rest']);
 

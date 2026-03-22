@@ -30,11 +30,11 @@ module.exports.getById = async function (req, res) {
 };
 
 module.exports.create = async function (req, res) {
-
+  console.log(req.body)
   const category = await Category.findOne({
     _id: req.body.category
   })
-
+  console.log(category)
   const candidate = await Position.findOne({
     title: req.body.title,
     restaurant: req.body.restaurant,
@@ -51,10 +51,10 @@ module.exports.create = async function (req, res) {
       price: req.body.price,
       isDrink: category.isDrink,
       weight: req.body.weight,
-      discount: req.body.discount != null ?? 0,
-      proteins: req.body.proteins != null ?? 0,
-      fats: req.body.fats != null ?? 0,
-      carbs: req.body.carbs != null ?? 0,
+      discount: req.body.discount,
+      proteins: req.body.proteins,
+      fats: req.body.fats,
+      carbs: req.body.carbs,
       caloric: req.body.caloric,
       category: req.body.category,
       restaurant: req.body.restaurant,

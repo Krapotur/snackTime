@@ -1,5 +1,5 @@
-<div class="main-container">
-  <div class="container-block">
+<div class="container-block">
+  <div class="title-row">
     <h3>
       {{ position && positionID.length ? position.title : "Новая позиция" }}
     </h3>
@@ -20,6 +20,12 @@
         />
       </svg>
     </div>
+  </div>
+
+  <!--Template for Delete-->
+  <app-delete-template *ngIf="isDelete" [elemIn]="elem"></app-delete-template>
+
+  <div [class]="isDelete ? 'blur' : ''">
     <form [formGroup]="form">
       <div class="container-form">
         <div class="row">
@@ -262,7 +268,8 @@
               max="100"
               [ngClass]="{
                 invalid:
-                  form.get('discount').invalid && form.get('discount')['touched'],
+                  form.get('discount').invalid &&
+                  form.get('discount')['touched'],
               }"
             />
           </div>
@@ -366,7 +373,3 @@
     </form>
   </div>
 </div>
-
-<!--Template for Delete-->
-
-<app-delete-template *ngIf="isDelete" [elemIn]="elem"></app-delete-template>
