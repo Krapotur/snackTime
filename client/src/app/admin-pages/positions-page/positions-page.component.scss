@@ -28,11 +28,11 @@
 .block {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   width: 75vw;
 
   .category {
-    margin-top: 15px;
+    margin-left: 30px;
     user-select: none;
 
     h5 {
@@ -41,7 +41,6 @@
     }
 
     .img-block {
-      margin-top: 20px;
       height: 200px;
       width: 200px;
 
@@ -49,7 +48,6 @@
         object-fit: cover;
         height: 100%;
         width: 100%;
-        border-radius: 5px;
 
         -webkit-box-shadow: 0 0 10px -4px rgba(34, 60, 80, 0.2);
         -moz-box-shadow: 0 0 10px -4px rgba(34, 60, 80, 0.2);

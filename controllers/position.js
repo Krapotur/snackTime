@@ -30,11 +30,13 @@ module.exports.getById = async function (req, res) {
 };
 
 module.exports.create = async function (req, res) {
-  console.log(req.body)
+  console.log(req.body);
+
   const category = await Category.findOne({
-    _id: req.body.category
-  })
-  console.log(category)
+    _id: req.body.category,
+  });
+  console.log(category);
+  
   const candidate = await Position.findOne({
     title: req.body.title,
     restaurant: req.body.restaurant,
@@ -49,7 +51,7 @@ module.exports.create = async function (req, res) {
       title: req.body.title,
       composition: req.body.composition,
       price: req.body.price,
-      isDrink: category.isDrink,
+      isDrink: await category.isDrink,
       weight: req.body.weight,
       discount: req.body.discount,
       proteins: req.body.proteins,
@@ -61,8 +63,7 @@ module.exports.create = async function (req, res) {
       imgSrc: req.file ? req.file.path : "",
     });
 
-  console.log(position)
-
+    console.log(position);
 
     try {
       await position.save();
