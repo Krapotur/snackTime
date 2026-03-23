@@ -87,8 +87,8 @@
             <img
               (click)="triggerClick()"
               [class]="isDelete ? 'dn' : ''"
-              src="../assets/icons/add-photo.png"
-              alt="edit"
+              [src]="kitchen.imgSrc ?? '../assets/icons/add-photo.png'"
+              alt="image"
             />
           </div>
         </div>

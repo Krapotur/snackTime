@@ -1,9 +1,7 @@
 $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
 
-* {
-  font-family: $lora;
-  margin: 0;
-  user-select: none;
+:host{
+  margin: 0 auto;
 }
 
 .row {

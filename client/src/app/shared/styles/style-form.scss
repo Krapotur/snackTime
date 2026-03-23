@@ -63,12 +63,17 @@
 
     img {
       width: 50px;
+      height: 50px;
       cursor: pointer;
+      border-radius: 10px;
       transition-duration: 0.5s;
     }
 
     img:hover {
-      transform: rotate(360deg);
+      transform: scale(1.1);
+      -webkit-box-shadow: 0px 0px 8px 0px rgba(34, 60, 80, 0.362);
+      -moz-box-shadow: 0px 0px 8px 0px rgba(34, 60, 80, 0.362);
+      box-shadow: 0px 0px 8px 0px rgba(34, 60, 80, 0.362);
     }
 
     span {
@@ -81,7 +86,6 @@
 }
 
 ////////////////////////////// Add Image ///////////////////////////////////
-
 .container-block {
   user-select: none;
   display: flex;
@@ -117,8 +121,7 @@
     }
 
     svg:hover {
-      height: 21px;
-      width: 21px;
+      transform: scale(1.1);
     }
   }
 

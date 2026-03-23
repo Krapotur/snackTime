@@ -76,6 +76,7 @@ h3 {
     padding: 1.0em 0;
     color: $white-off;
     font: 400 11px $lora;
+
     text: {
       align: center;
       transform: uppercase;
@@ -143,7 +144,7 @@ h3 {
   }
 }
 
-.active a{
+.active a {
   color: #F87839;
 }
 
@@ -157,9 +158,10 @@ h3 {
   gap: 20px;
 }
 
-.container-right{
+.container-right {
+  width: 100%;
   margin: 30px;
-  // margin: 0 auto;
+  display: flex;
 }
 
 .mat-mdc-slide-toggle.mat-warn {
