@@ -144,7 +144,7 @@
         </mat-form-field>
 
         <div class="time-block">
-          <p>Режим работы</p>
+          <p>Среднее время подачи блюда(мин.)</p>
           <div class="time-inputs">
             <div class="row">
               <mat-form-field>
@@ -182,11 +182,10 @@
               form.get('timeClose').hasError('required') &&
               form.get('timeClose')['touched']
             "
-            >*Укажите время работы ресторана
+            >*Укажите время готовки блюда
           </span>
         </div>
 
-        <hr />
 
         <div class="img-block">
           <label [for]="inputImg">Выберите изображение </label>
@@ -210,7 +209,6 @@
           </div>
         </div>
 
-        <hr />
 
         <div class="btn-group">
           <button

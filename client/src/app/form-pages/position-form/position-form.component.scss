@@ -1,8 +1,7 @@
-.container-center{
-  width: 100vw;
-  display: flex;
-  // margin: 0 auto;
+:host {
+  margin: 0 auto;
 }
+
 .row {
   input {
     width: 245px;

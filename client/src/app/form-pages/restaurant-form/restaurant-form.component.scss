@@ -52,11 +52,11 @@ mat-form-field {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 5px 5px;
+  padding: 20px 5px 10px;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
   border-radius: 3px;
+  margin: 10px 0 20px;
 }
-
 
 .time-inputs {
   display: flex;
@@ -71,10 +71,6 @@ mat-form-field {
   input {
     width: 60px;
   }
-}
-
-hr {
-  height: 2px;
 }
 
 .mdc-text-field--filled:not(.mdc-text-field--disabled) {
