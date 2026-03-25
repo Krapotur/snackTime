@@ -54,7 +54,7 @@ export class RestaurantsPageComponent implements OnInit, OnDestroy {
   isEmpty: boolean
   activeRoute = 'form-restaurant'
   dataSource: MatTableDataSource<Restaurant>;
-  displayedColumns: string[] = ['#', 'title', 'kitchen', 'rating', 'workTime', 'edit', 'status'];
+  displayedColumns: string[] = ['#', 'title', 'kitchen', 'workTime', 'edit', 'status'];
   rSub: Subscription
   kSub: Subscription
 

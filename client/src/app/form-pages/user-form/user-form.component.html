@@ -341,7 +341,7 @@
         <div *ngIf="form.enabled" class="img-block">
           <label [for]="inputImg">Изображение </label>
           <div class="img-group">
-            <span *ngIf="image || (user ? user.imgSrc : false)"
+            <span *ngIf="image "
               >Изображение загружено!</span
             >
             <input
@@ -353,8 +353,11 @@
             />
             <img
               (click)="triggerClick()"
-              [class]="isDelete ? 'dn' : ''"
-              src="../assets/icons/add-photo.png"
+              [class]="[
+                isDelete ? 'dn' : '',
+                user.imgSrc.length ? 'img-true' : 'img-icon',
+              ]"
+               src="../assets/icons/add-photo.png"
               alt="image"
             />
           </div>
@@ -471,7 +474,8 @@
         class="error"
         *ngIf="
           formPsw.get('password').value !== formPsw.get('pswConfirm').value &&
-          formPsw.get('pswConfirm')['touched'] && formPsw.get('pswConfirm').value.length > 0 
+          formPsw.get('pswConfirm')['touched'] &&
+          formPsw.get('pswConfirm').value.length > 0
         "
         >*Пароли не совпадают
       </span>

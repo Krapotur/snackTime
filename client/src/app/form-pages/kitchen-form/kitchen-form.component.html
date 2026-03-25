@@ -24,7 +24,7 @@
 
   <!--Template for Delete-->
   <app-delete-template *ngIf="isDelete" [elemIn]="elem"></app-delete-template>
-  
+
   <div [class]="isDelete ? 'blur' : ''">
     <form [formGroup]="form">
       <div class="container-form">
@@ -74,7 +74,7 @@
         <div class="img-block">
           <label [for]="inputImg">Выберите изображение </label>
           <div class="img-group">
-            <span *ngIf="image || image || (kitchen ? kitchen.imgSrc : false)"
+            <span *ngIf="image"
               >Изображение загружено!</span
             >
             <input
@@ -86,8 +86,11 @@
             />
             <img
               (click)="triggerClick()"
-              [class]="isDelete ? 'dn' : ''"
-              src="../assets/icons/add-photo.png"
+              [class]="[
+                isDelete ? 'dn' : '',
+                kitchen.imgSrc ? 'img-true' : 'img-icon',
+              ]"
+              [src]="kitchen.imgSrc ?? '../assets/icons/add-photo.png'"
               alt="image"
             />
           </div>

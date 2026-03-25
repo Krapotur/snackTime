@@ -327,9 +327,7 @@
             >Выберите изображение
           </label>
           <div class="img-group">
-            <span *ngIf="image || (position ? position.imgSrc : false)"
-              >Изображение загружено!</span
-            >
+            <span *ngIf="image">Изображение загружено!</span>
             <input
               type="file"
               class="dn"
@@ -339,8 +337,11 @@
             />
             <img
               (click)="triggerClick()"
-              [class]="isDelete ? 'dn' : ''"
-              src="../assets/icons/add-photo.png"
+              [class]="[
+                isDelete ? 'dn' : '',
+                position.imgSrc.length ? 'img-true' : 'img-icon',
+              ]"
+              [src]="position.imgSrc ?? '../assets/icons/add-photo.png'"
               alt="image"
             />
           </div>
