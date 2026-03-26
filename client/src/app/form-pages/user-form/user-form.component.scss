@@ -1,16 +1,15 @@
-:host{
+:host {
   margin: 0 auto;
 }
 
 .container-block {
-  width: 600px;
 
-  .container-form {
+  .container-row {
     display: flex;
     flex-direction: row;
-    margin-top: 20px;
     align-items: flex-start;
     justify-content: center;
+    padding: 40px 70px;
   }
 
   .container-left {

@@ -26,7 +26,7 @@
   <app-delete-template *ngIf="isDelete" [elemIn]="elem"></app-delete-template>
 
   <form [formGroup]="form">
-    <div class="container-form">
+    <div class="container-row">
       <div class="container-left">
         <div class="row">
           <div class="input-field col s6">
@@ -355,9 +355,9 @@
               (click)="triggerClick()"
               [class]="[
                 isDelete ? 'dn' : '',
-                user.imgSrc.length ? 'img-true' : 'img-icon',
+                user != null && user.imgSrc.length > 0 ? 'img-true' : 'img-icon',
               ]"
-               src="../assets/icons/add-photo.png"
+              [src]="user != null && user.imgSrc.length > 0 ? user.imgSrc : '../assets/icons/add-photo.png'"
               alt="image"
             />
           </div>

@@ -339,9 +339,15 @@
               (click)="triggerClick()"
               [class]="[
                 isDelete ? 'dn' : '',
-                position.imgSrc.length ? 'img-true' : 'img-icon',
+                position != null && position.imgSrc.length > 0
+                  ? 'img-true'
+                  : 'img-icon',
               ]"
-              [src]="position.imgSrc ?? '../assets/icons/add-photo.png'"
+              [src]="
+                position != null && position.imgSrc.length > 0
+                  ? position.imgSrc
+                  : '../assets/icons/add-photo.png'
+              "
               alt="image"
             />
           </div>

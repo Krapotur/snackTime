@@ -86,9 +86,15 @@
               (click)="triggerClick()"
               [class]="[
                 isDelete ? 'dn' : '',
-                category.imgSrc.length ? 'img-true' : 'img-icon',
+                category != null && category.imgSrc.length > 0
+                  ? 'img-true'
+                  : 'img-icon',
               ]"
-              [src]="category.imgSrc ?? '../assets/icons/add-photo.png'"
+              [src]="
+                category != null && category.imgSrc.length > 0
+                  ? category.imgSrc
+                  : '../assets/icons/add-photo.png'
+              "
               alt="image"
             />
           </div>
