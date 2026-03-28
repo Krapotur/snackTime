@@ -31,4 +31,8 @@ export class PositionService {
     return this.http.patch<{ message: string }>(`/api/positions/${id}`, fd ? fd : position)
   }
 
+  updateStatus(fd: FormData, position?: Position, id?: string): Observable<{ message: string }> {
+    return this.http.patch<{ message: string }>(`/api/positions/update-status/${id}`, fd ? fd : position)
+  }
+
 }

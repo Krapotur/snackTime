@@ -59,6 +59,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     '../../shared/styles/style-form.scss',
   ],
 })
+
 export class PositionFormComponent implements OnInit, OnDestroy {
   private positionService = inject(PositionService);
   private router = inject(Router);
@@ -70,6 +71,7 @@ export class PositionFormComponent implements OnInit, OnDestroy {
   positionID: string = '';
   categoryID: string = '';
   image: File;
+  imageUrl: string | null = null;
   pSub: Subscription;
   cSub: Subscription;
   position: Position;
@@ -115,25 +117,18 @@ export class PositionFormComponent implements OnInit, OnDestroy {
         Validators.min(0),
         Validators.max(2000),
       ]),
-      proteins: new FormControl(
-        position ? position.proteins : 0,
-      ),
-      fats: new FormControl(
-        position ? position.fats : 0,
-      ),
-      carbs: new FormControl(
-        position ? position.carbs : 0,
-      ),
+      proteins: new FormControl(position ? position.proteins : 0),
+      fats: new FormControl(position ? position.fats : 0),
+      carbs: new FormControl(position ? position.carbs : 0),
       caloric: new FormControl(position ? position.caloric : 0, [
         Validators.required,
-        Validators.min(1),
+        Validators.min(0),
         Validators.max(2000),
       ]),
       discount: new FormControl(position ? position.discount : 0),
       composition: new FormControl(position ? position.composition : '', [
         Validators.required,
         Validators.minLength(10),
-        Validators.maxLength(250),
       ]),
       imgSrc: new FormControl(
         position ? position.imgSrc : '',
@@ -144,10 +139,28 @@ export class PositionFormComponent implements OnInit, OnDestroy {
 
   uploadImg($event: any) {
     this.image = $event.target.files[0];
+    this.getImageFromFile();
+    console.log('error', this.isError);
+    console.log('isDelete', this.isDelete);
+    console.log('form', this.form.invalid);
   }
 
   triggerClick() {
     this.inputImgRef.nativeElement.click();
+    this.getImageFromFile();
+  }
+
+  getImageFromFile(): void {
+    console.log('ssssssssssssssss');
+    if (this.image) {
+      const reader = new FileReader();
+
+      reader.onload = (e: any) => {
+        this.imageUrl = e.target.result;
+      };
+
+      reader.readAsDataURL(this.image);
+    }
   }
 
   getPositions() {

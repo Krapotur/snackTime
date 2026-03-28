@@ -120,7 +120,7 @@ export class UsersPageComponent implements OnInit, OnDestroy {
       status: !user.status,
     }
 
-    this.userService.update(null, newUser, user._id).subscribe({
+    this.userService.updateStatus(null, newUser, user._id).subscribe({
       next: message => {
         MaterialService.toast(message.message);
         this.getUsers()

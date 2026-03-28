@@ -115,7 +115,7 @@ export class PositionsPageComponent implements OnInit, OnDestroy {
       status: !position.status,
     }
 
-    this.positionService.update(null, newPosition, newPosition._id).subscribe({
+    this.positionService.updateStatus(null, newPosition, newPosition._id).subscribe({
       next: message => MaterialService.toast(message.message),
       error:
         error => MaterialService.toast(error.error.error)

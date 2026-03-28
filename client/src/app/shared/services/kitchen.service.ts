@@ -26,5 +26,9 @@ export class KitchenService {
   update(fd?: FormData, kitchen?: Kitchen, id?: string): Observable<{ message: string }> {
     return this.http.patch<{ message: string }>(`/api/kitchens/${id}`, fd ? fd : kitchen)
   }
+ 
+  updateStatus(fd?: FormData, kitchen?: Kitchen, id?: string): Observable<{ message: string }> {
+    return this.http.patch<{ message: string }>(`/api/kitchens/update-status/${id}`, fd ? fd : kitchen)
+  }
 
 }

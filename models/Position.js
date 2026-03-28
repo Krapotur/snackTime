@@ -47,6 +47,9 @@ const positionSchema = new Schema({
         type: Number,
         default: 100
     },
+    createdAt:{
+        type: String
+    },
     category:{
         ref: 'categories',
         type: Schema.Types.ObjectId

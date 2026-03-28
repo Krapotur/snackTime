@@ -96,7 +96,7 @@ export class CategoriesPageComponent implements OnInit, OnDestroy {
       status: !category.status
     }
 
-    this.cSub = this.categoryService.update(null, newCategory, newCategory._id).subscribe({
+    this.cSub = this.categoryService.updateStatus(null, newCategory, newCategory._id).subscribe({
       next: message => {
         MaterialService.toast(message.message);
         this.getCategories()

@@ -87,7 +87,7 @@ export class KitchensPageComponent implements OnInit, OnDestroy {
       status: !kitchen.status
     }
 
-    this.kSub = this.kitchenService.update(null, newKitchen, newKitchen._id).subscribe({
+    this.kSub = this.kitchenService.updateStatus(null, newKitchen, newKitchen._id).subscribe({
       next: message => {
         MaterialService.toast(message.message);
         this.getKitchens()

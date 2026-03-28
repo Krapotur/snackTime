@@ -25,4 +25,8 @@ export class UserService {
   update(fd: FormData, user?: User, id?: string): Observable<{ message: string }> {
     return this.http.patch<{ message: string }>(`/api/users/${id}`, fd ? fd : user)
   }
+  
+  updateStatus(fd: FormData, user?: User, id?: string): Observable<{ message: string }> {
+    return this.http.patch<{ message: string }>(`/api/users/update-status/${id}`, fd ? fd : user)
+  }
 }

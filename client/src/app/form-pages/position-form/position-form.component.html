@@ -89,7 +89,7 @@
 
           <div class="row">
             <div class="input-field col s6">
-              <label class="active" for="price">Вес</label>
+              <label class="active" for="weight">Вес</label>
               <input
                 id="weight"
                 type="number"
@@ -130,13 +130,6 @@
                 id="proteins"
                 type="number"
                 formControlName="proteins"
-                min="0"
-                max="300"
-                [ngClass]="{
-                  invalid:
-                    form.get('proteins').invalid &&
-                    form.get('proteins')['touched'],
-                }"
               />
             </div>
           </div>
@@ -148,12 +141,6 @@
                 id="fats"
                 type="number"
                 formControlName="fats"
-                min="0"
-                max="300"
-                [ngClass]="{
-                  invalid:
-                    form.get('fats').invalid && form.get('fats')['touched'],
-                }"
               />
             </div>
           </div>
@@ -161,17 +148,7 @@
           <div class="row">
             <div class="input-field col s6">
               <label class="active" for="carbs">У</label>
-              <input
-                id="carbs"
-                type="number"
-                formControlName="carbs"
-                min="0"
-                max="300"
-                [ngClass]="{
-                  invalid:
-                    form.get('carbs').invalid && form.get('carbs')['touched'],
-                }"
-              />
+              <input id="carbs" type="number" formControlName="carbs" />
             </div>
           </div>
         </div>
@@ -194,7 +171,7 @@
           >*Макс. цена: 5 000
         </span>
 
-        <span
+        <!-- <span
           class="error"
           *ngIf="
             form.get('proteins').hasError('required') &&
@@ -208,32 +185,27 @@
             form.get('proteins').hasError('max') &&
             form.get('proteins')['touched']
           "
-          >**Макс. количество: 300
-        </span>
+          >*Макс. количество: 300
+        </span> -->
 
         <span
           class="error"
           *ngIf="
-            (form.get('weight').hasError('required') &&
-              form.get('weight')['touched']) ||
-            (form.get('caloric').hasError('required') &&
-              form.get('caloric')['touched'])
+            form.get('weight').hasError('required') &&
+            form.get('weight')['touched']
           "
           >*Укажите
           {{ form.get("weight").hasError("required") ? "вес" : "калл." }}
         </span>
-        <span
-          class="error"
-          *ngIf="
-            (form.get('weight').hasError('max') ||
-              form.get('caloric').hasError('max')) &&
-            (form.get('weight')['touched'] || form.get('caloric')['touched'])
-          "
-          >*Макс. {{ form.get("weight").hasError("max") ? "вес" : "калл." }}: 2
-          000
-        </span>
 
-        <span
+        @if (form.get("weight").hasError("max")) {
+          <span class="error"
+            >*Макс. {{ form.get("weight").hasError("max") ? "вес" : "калл." }} 2
+            000
+          </span>
+        }
+
+        <!-- <span
           class="error"
           *ngIf="
             (form.get('fats').hasError('required') &&
@@ -243,9 +215,9 @@
           "
           >*Укажите количество
           {{ form.get("fats").hasError("required") ? "жиров" : "углеводов" }}
-        </span>
+        </span> -->
 
-        <span
+        <!-- <span
           class="error"
           *ngIf="
             (form.get('fats').hasError('max') && form.get('fats')['touched']) ||
@@ -253,8 +225,7 @@
           "
           >*Макс. количество
           {{ form.get("fats").hasError("max") ? "жиров" : "углеводов" }}: 300
-        </span>
-
+        </span> -->
         <!--          Validation errors-->
 
         <div class="row">
@@ -264,13 +235,7 @@
               id="discount"
               type="number"
               formControlName="discount"
-              min="0"
-              max="100"
-              [ngClass]="{
-                invalid:
-                  form.get('discount').invalid &&
-                  form.get('discount')['touched'],
-              }"
+            
             />
           </div>
         </div>
@@ -297,30 +262,28 @@
             placeholder="Опишите состав"
             formControlName="composition"
           ></textarea>
-          <span
-            class="error"
-            *ngIf="
-              form.get('composition').hasError('required') &&
-              form.get('composition')['touched']
-            "
-            >*Опишите состав
-          </span>
-          <span
-            class="error"
-            *ngIf="
-              form.get('composition').hasError('minlength') &&
-              form.get('composition')['touched']
-            "
-            >*Еще немного информации...
-            {{
-              this.form.get("composition").errors["minlength"].actualLength +
-                "/" +
-                this.form.get("composition").errors["minlength"].requiredLength
-            }}
-          </span>
+          @if (
+            form.get("composition").hasError("required") &&
+            form.get("composition")["touched"]
+          ) {
+            <span class="error">*Опишите состав</span>
+          }
+          @if (
+            form.get("composition").hasError("minlength") &&
+            form.get("composition")["touched"]
+          ) {
+            <span class="error"
+              >*Еще немного информации...
+              <!-- {{
+                this.form.get("composition").errors["composition"]
+                  .actualLength +
+                  "/" +
+                  this.form.get("composition").errors["composition"]
+                    .requiredLength
+              }} -->
+            </span>
+          }
         </div>
-
-        <!--          <hr>-->
 
         <div class="img-block">
           <label [for]="inputImg" style="font-family: &quot;Lora&quot;, serif"
@@ -344,7 +307,7 @@
                   : 'img-icon',
               ]"
               [src]="
-                position != null && position.imgSrc.length > 0
+               position != null && position.imgSrc.length > 0
                   ? position.imgSrc
                   : '../assets/icons/add-photo.png'
               "
