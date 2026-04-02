@@ -86,15 +86,9 @@
               (click)="triggerClick()"
               [class]="[
                 isDelete ? 'dn' : '',
-                kitchen != null && kitchen.imgSrc.length > 0
-                  ? 'img-true'
-                  : 'img-icon',
+                kitchen.imgSrc ? 'img-true' : 'img-icon',
               ]"
-              [src]="
-                kitchen != null && kitchen.imgSrc.length > 0
-                  ? kitchen.imgSrc
-                  : '../assets/icons/add-photo.png'
-              "
+              [src]="kitchen.imgSrc ?? '../assets/icons/add-photo.png'"
               alt="image"
             />
           </div>

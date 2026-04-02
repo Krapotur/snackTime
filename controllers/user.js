@@ -26,24 +26,24 @@ module.exports.delete = async function (req, res) {
   try {
     const user = await User.findOne({ _id: req.params.id });
     await User.deleteOne({ _id: req.params.id });
-    res
-      .status(200)
-      .json({
-        message: `Пользователь "${user.lastName + " " + user.firstName}" удален`,
-      });
+    res.status(200).json({
+      message: `Пользователь "${user.lastName + " " + user.firstName}" удален`,
+    });
   } catch (e) {
     errorHandler(res, e);
   }
 };
 
 module.exports.create = async function (req, res) {
-  if (await User.findOne({ login: req.body.login })) {
+  console.log(req.body)
+  const candidate = await User.findOne({ login: req.body.login });
+  if (candidate) {
     res.status(409).json({
       message: `Логин ${req.body.login} уже занят`,
     });
   }
 
-  if (await User.findOne({ phone: req.body.phone })) {
+  if (candidate) {
     res.status(409).json({
       message: `Номер ${req.body.phone} уже занят`,
     });
@@ -52,15 +52,15 @@ module.exports.create = async function (req, res) {
     const password = req.body.password ? req.body.password : "";
 
     const user = new User({
-      lastName: req.body.lastName ? req.body.lastName : "",
-      firstName: req.body.firstName ? req.body.firstName : "",
-      phone: req.body.phone ? req.body.phone : "",
-      email: req.body.email ? req.body.email : "",
-      login: req.body.login ? req.body.login : "",
+      lastName: req.body.lastName ?? "",
+      firstName: req.body.firstName ?? "",
+      phone: req.body.phone ?? "",
+      email: req.body.email ?? "",
+      login: req.body.login ?? "",
       password: password.length > 0 ? bcrypt.hashSync(password, salt) : "",
-      restaurant: req.body.restaurant ? req.body.restaurant : null,
-      group: req.body.group ? req.body.group : "",
-      imgSrc: req.file ? req.file.path : "",
+      restaurant: req.body.restaurant ?? "",
+      group: req.body.group ?? "",
+      imgSrc: req.file ?? "",
     });
 
     try {

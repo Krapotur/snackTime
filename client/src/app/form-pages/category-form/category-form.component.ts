@@ -118,7 +118,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
           id: category._id,
           title: category.title,
           route: 'assortment',
-          formRoute: 'category',
+          formRoute: 'categories',
         };
         this.category = category;
         this.generateForm(category);
@@ -128,9 +128,14 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    const userID = localStorage.getItem('userID');
+
+    console.log('userID', userID);
     const fd = new FormData();
 
-    if (this.image) fd.append('image', this.image, this.image.name);
+    if (this.image) {
+      fd.append('image', this.image, this.image.name);
+    }
     fd.append('title', this.form.get('title').value);
 
     if (this.categoryID) {
@@ -144,6 +149,8 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
           error: (error) => MaterialService.toast(error.error.message),
         });
     } else {
+      let user = JSON.parse(localStorage.getItem('profile'));
+      fd.append('user', user['userID']);
       this.cSub = this.categoryService.create(fd).subscribe({
         next: (message) => {
           MaterialService.toast(message.message);

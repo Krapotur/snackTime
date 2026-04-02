@@ -22,7 +22,8 @@ module.exports.login = async function (req, res) {
                     token: `Bearer ${token}`,
                     userName: candidate.lastName + ' ' + candidate.firstName,
                     group: candidate.group,
-                    rest: candidate.restaurant
+                    rest: candidate.restaurant,
+                    user: candidate._id
                 }
                 res.status(200).json(userToken)
 

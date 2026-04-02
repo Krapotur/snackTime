@@ -12,6 +12,7 @@ module.exports.getAll = async function (req, res) {
 };
 
 module.exports.create = async function (req, res) {
+  console.log(req.body)
   const candidate = await Category.findOne({ title: req.body.title });
 
   if (candidate) {
@@ -22,6 +23,7 @@ module.exports.create = async function (req, res) {
     const category = new Category({
       title: req.body.title,
       imgSrc: req.file ? req.file.path : "",
+      user: req.body.user,
     });
 
     try {

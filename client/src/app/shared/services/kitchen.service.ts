@@ -31,4 +31,7 @@ export class KitchenService {
     return this.http.patch<{ message: string }>(`/api/kitchens/update-status/${id}`, fd ? fd : kitchen)
   }
 
+  delete(id: string): Observable<{ message: string }> {
+      return this.http.delete<{ message: string }>(`/api/categories/${id}`)
+    }
 }

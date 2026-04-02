@@ -355,7 +355,7 @@
               (click)="triggerClick()"
               [class]="[
                 isDelete ? 'dn' : '',
-                user != null && user.imgSrc.length > 0 ? 'img-true' : 'img-icon',
+                user != null && user.imgSrc? 'img-true' : 'img-icon',
               ]"
               [src]="user != null && user.imgSrc.length > 0 ? user.imgSrc : '../assets/icons/add-photo.png'"
               alt="image"

@@ -22,7 +22,8 @@ export class AuthService {
           localStorage.setItem('profile', JSON.stringify({
             userName: authToken.userName,
             group: authToken.group,
-            rest: authToken.rest
+            rest: authToken.rest,
+            userID: authToken.user
           }))
         }))
   }

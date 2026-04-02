@@ -10,7 +10,6 @@ export class SharedDelService {
   private http = inject(HttpClient)
 
   delete(elem: Elem): Observable<{ message: string }> {
-    return this.http.delete<{ message: string }>(`/api/${elem.formRoute.includes('kitchen') ?
-                                                            'kitchens' : elem.route}/${elem.id}`)
+    return this.http.delete<{ message: string }>(`/api/${elem.formRoute}/${elem.id}`)
   }
 }

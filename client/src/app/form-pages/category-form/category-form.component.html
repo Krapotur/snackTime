@@ -72,7 +72,7 @@
         </div>
 
         <div class="img-block">
-          <label [for]="inputImg">Выберите изображение </label>
+          <label>Выберите изображение </label>
           <div class="img-group">
             <span *ngIf="image">Изображение загружено!</span>
             <input
@@ -86,15 +86,9 @@
               (click)="triggerClick()"
               [class]="[
                 isDelete ? 'dn' : '',
-                category != null && category.imgSrc.length > 0
-                  ? 'img-true'
-                  : 'img-icon',
+                category.imgSrc ? 'img-true' : 'img-icon',
               ]"
-              [src]="
-                category != null && category.imgSrc.length > 0
-                  ? category.imgSrc
-                  : '../assets/icons/add-photo.png'
-              "
+              [src]="category.imgSrc ?? '../assets/icons/add-photo.png'"
               alt="image"
             />
           </div>

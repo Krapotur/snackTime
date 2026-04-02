@@ -7,7 +7,8 @@ export interface AuthToken {
   token: string
   userName: string
   group: string
-  rest: string
+  rest: string,
+  user:string, 
 }
 
 export interface User {

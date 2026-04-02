@@ -98,7 +98,7 @@ export class KitchenFormComponent implements OnInit, OnDestroy {
           id: kitchen._id,
           title: kitchen.title,
           route: 'restaurants',
-          formRoute: 'kitchen'
+          formRoute: 'kitchens'
         }
         this.kitchen = kitchen
         this.generateForm(this.kitchen)
