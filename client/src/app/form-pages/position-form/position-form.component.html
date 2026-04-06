@@ -126,22 +126,14 @@
           <div class="row">
             <div class="input-field col s6">
               <label class="active" for="proteins">Б</label>
-              <input
-                id="proteins"
-                type="number"
-                formControlName="proteins"
-              />
+              <input id="proteins" type="number" formControlName="proteins" />
             </div>
           </div>
 
           <div class="row">
             <div class="input-field col s6">
               <label class="active" for="fats">Ж</label>
-              <input
-                id="fats"
-                type="number"
-                formControlName="fats"
-              />
+              <input id="fats" type="number" formControlName="fats" />
             </div>
           </div>
 
@@ -231,13 +223,12 @@
         <div class="row">
           <div class="input-field col s6">
             <label class="active" for="discount">Скидка %</label>
-            <input
-              id="discount"
-              type="number"
-              formControlName="discount"
-            
-            />
+            <input id="discount" type="number" formControlName="discount" />
           </div>
+        </div>
+
+        <div class="checkbox" [class.dn]="position && !position.status">
+          <mat-checkbox formControlName="isPopular">Хит</mat-checkbox>
         </div>
 
         <div class="description-block">
@@ -300,16 +291,14 @@
             />
             <img
               (click)="triggerClick()"
-              [class]="[
-                isDelete ? 'dn' : '',
-                position != null && position.imgSrc.length > 0
-                  ? 'img-true'
-                  : 'img-icon',
-              ]"
+              [class.dn]="isDelete"
+              [class.img-true]="position && position.status"
+              [class.img-icon]="position && !position.status"
               [src]="
-               position != null && position.imgSrc.length > 0
+                position && position.status
                   ? position.imgSrc
-                  : '../assets/icons/add-photo.png'
+                  : '
+                ../assets/icons/add-photo.png'
               "
               alt="image"
             />

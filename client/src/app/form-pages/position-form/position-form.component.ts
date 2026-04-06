@@ -59,7 +59,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     '../../shared/styles/style-form.scss',
   ],
 })
-
 export class PositionFormComponent implements OnInit, OnDestroy {
   private positionService = inject(PositionService);
   private router = inject(Router);
@@ -74,7 +73,7 @@ export class PositionFormComponent implements OnInit, OnDestroy {
   imageUrl: string | null = null;
   pSub: Subscription;
   cSub: Subscription;
-  position: Position;
+  position: Position | null;
   positions: Position[] = [];
   categories: Category[] = [];
   elem: Elem;
@@ -125,6 +124,7 @@ export class PositionFormComponent implements OnInit, OnDestroy {
         Validators.min(0),
         Validators.max(2000),
       ]),
+      isPopular: new FormControl(position ? position.isPopular : false),
       discount: new FormControl(position ? position.discount : 0),
       composition: new FormControl(position ? position.composition : '', [
         Validators.required,
@@ -199,6 +199,7 @@ export class PositionFormComponent implements OnInit, OnDestroy {
     fd.append('fats', this.form.get('fats').value ?? 0);
     fd.append('carbs', this.form.get('carbs').value ?? 0);
     fd.append('caloric', this.form.get('caloric').value);
+    fd.append('isPopular', this.form.get('isPopular').value ?? false);
     fd.append('discount', this.form.get('discount').value ?? 0);
     fd.append('category', this.categoryID);
     fd.append('restaurant', user['rest']);

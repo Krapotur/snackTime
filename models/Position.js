@@ -17,6 +17,9 @@ const positionSchema = new Schema({
     isDrink:{
         type: Boolean,
     },
+    isPopular:{
+        type: Boolean,
+    },
     price: {
         type: Number,
         default: 0
