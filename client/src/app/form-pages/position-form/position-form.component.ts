@@ -177,7 +177,7 @@ export class PositionFormComponent implements OnInit, OnDestroy {
           id: position._id,
           title: position.title,
           route: 'positions',
-          formRoute: 'position',
+          formRoute: 'positions',
         };
         this.position = position;
         this.generateForm(this.position);
