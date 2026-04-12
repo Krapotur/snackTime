@@ -22,7 +22,8 @@
 
   <!--Template for Delete-->
   <app-delete-template *ngIf="isDelete" [elemIn]="elem"></app-delete-template>
-  <div [class]="isDelete ? 'blur' : ''">
+
+  <div>
     <form [formGroup]="form">
       <div class="container-form">
         <div class="row">

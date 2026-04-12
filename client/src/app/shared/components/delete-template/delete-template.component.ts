@@ -20,30 +20,28 @@ export class DeleteTemplateComponent implements OnInit, OnDestroy {
 
   title = '';
   dSub: Subscription;
+  isDelete = false
 
   @Input() elemIn: Elem;
 
   ngOnInit() {
     this.title = this.elemIn.title;
+    console.log(this.elemIn);
   }
 
   ngOnDestroy() {
     if (this.dSub) this.dSub.unsubscribe();
   }
 
-  openPage() {
-    this.router.navigateByUrl('/').then(() => {
-      void this.router.navigate([
-        `st/form-${this.elemIn.formRoute}/${this.elemIn.id}`,
-      ]);
-    });
+  cancel() {
+     this.sharedService.updateData(false);
   }
 
   delete() {
     this.dSub = this.sharedService.delete(this.elemIn).subscribe({
       next: (message) => {
         MaterialService.toast(message.message);
-         void this.router.navigate(['st/assortment'])
+        void this.router.navigate(['st/assortment']);
       },
       error: (error) => MaterialService.toast(error.error.message()),
     });

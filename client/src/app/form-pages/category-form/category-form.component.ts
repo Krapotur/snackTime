@@ -2,6 +2,7 @@ import {
   Component,
   ElementRef,
   inject,
+  Input,
   OnDestroy,
   OnInit,
   ViewChild,
@@ -31,6 +32,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { CategoryService } from '../../shared/services/category.service';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { SharedDelService } from '../../shared/services/shared-del.service';
 
 @Component({
   selector: 'app-category-form',
@@ -55,11 +57,11 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 })
 export class CategoryFormComponent implements OnInit, OnDestroy {
   private categoryService = inject(CategoryService);
+  private sharedDelService = inject(SharedDelService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
   form: FormGroup;
-  isDelete = false;
   isError = false;
   categoryID: string = '';
   image: File;
@@ -67,6 +69,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
   category: Category;
   categories: Category[] = [];
   elem: Elem;
+  isDelete = false;
 
   @ViewChild('inputImg') inputImgRef: ElementRef;
 
@@ -78,6 +81,11 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
     this.generateForm();
     this.getCategoryByID();
     this.getCategories();
+
+    this.sharedDelService.sharedData$.subscribe((value) => {
+      this.isDelete = value;
+      this.isDelete ? this.form.disable() : this.form.enable();
+    });
   }
 
   ngOnDestroy() {
@@ -178,6 +186,6 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
 
   openDelTemplate() {
     this.isDelete = true;
-    this.form.disable();
+    this.isDelete ? this.form.disable() : this.form.enable();
   }
 }
