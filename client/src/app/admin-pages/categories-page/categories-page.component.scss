@@ -1,7 +1,44 @@
+* {
+  font-family: 'Lora', serif;
+}
+
+.row-between {
+  display: flex;
+  justify-content: space-between;
+
+  .btn-edit {
+    border: 1px solid rgba(128, 128, 128, 0.238);
+    background-color: white;
+    color: black;
+    border-radius: 1px;
+    padding: 0 10px;
+    font-size: 15px;
+  }
+
+  .btn-edit:hover {
+    color: #F57C23;
+    padding: 0 10px;
+    font-size: 15px;
+  }
+}
+
+.pos-absolute {
+  cursor: pointer;
+  position: absolute;
+  top: 30px;
+  right: 100px;
+
+  img {
+    height: 30px;
+    width: 30px;
+  }
+
+  img:hover{
+    transform: scale(1.05);
+  }
+}
 
 .main {
-  width: 350px;
-
   .table-bottom {
     position: relative;
     display: flex;
@@ -13,33 +50,52 @@
 }
 
 button {
-  position: absolute;
   background-color: #F87839;
   border-radius: 1px;
   height: 40px;
   color: white;
-  font-family: 'Lora', serif;
 }
 
 ///////// Cards //////////
 
 .main {
-  h2 {
-    font-family: 'Lora', serif;
-    font-size: 30px;
-    margin: 0;
-  }
-
   .category-cards {
     display: flex;
     flex-wrap: nowrap;
     margin-top: 20px;
+    gap: 10px;
+
+    .add-card {
+      cursor: pointer;
+      width: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      -webkit-box-shadow: 0 0 10px -4px rgba(34, 60, 80, 0.2);
+      -moz-box-shadow: 0 0 10px -4px rgba(34, 60, 80, 0.2);
+      box-shadow: 0 0 10px -4px rgba(34, 60, 80, 0.2);
+
+      p {
+        font-size: 18px;
+      }
+    }
+
+    .add-card:hover {
+      -webkit-box-shadow: 0 0 20px 0 rgba(34, 80, 39, 0.2);
+      -moz-box-shadow: 0 0 20px 0 rgba(34, 80, 39, 0.2);
+      box-shadow: 0 0 20px 0 rgba(34, 80, 39, 0.2);
+
+      p {
+        font-size: 18px;
+        font-weight: bold;
+        color: #F57C23;
+      }
+    }
 
     .category-card {
       display: flex;
       cursor: pointer;
       flex-direction: column;
-      margin: 5px;
       width: 150px;
       -webkit-box-shadow: 0 0 10px -4px rgba(34, 60, 80, 0.2);
       -moz-box-shadow: 0 0 10px -4px rgba(34, 60, 80, 0.2);
@@ -48,6 +104,7 @@ button {
       .img-block {
         height: 150px;
         width: 150px;
+        border-bottom: 5px solid #F57C23;
 
         img {
           object-fit: cover;
@@ -60,7 +117,6 @@ button {
         padding: 0 0 5px 15px;
         font-size: 15px;
         font-weight: bold;
-        font-family: 'Lora', serif;
       }
     }
 

@@ -1,6 +1,22 @@
+<div class="row-between">
+  <h5>Категории<span>({{ categories.length }})</span></h5>
+
+  @if(!isAdmin) {
+  <div class="pos-absolute">
+    <button class="btn-edit" (click)="isAdmin=!isAdmin">
+      Редактировать
+    </button>
+  </div>
+  }@else {
+  <div class="pos-absolute" (click)="isAdmin=!isAdmin">
+    <img src="../../../assets/icons/plitka.png" alt="Plitka">
+  </div>
+  }
+
+</div>
+
 <!--Table-->
 <div class="main" *ngIf="isAdmin">
-  <h5>Категории<span>({{ categories.length }})</span></h5>
   <app-empty [page]="activeRoute" *ngIf="isEmpty"></app-empty>
 
   <div *ngIf="!isEmpty">
@@ -17,9 +33,8 @@
           <!-- Title Column -->
           <ng-container matColumnDef="title">
             <th mat-header-cell *matHeaderCellDef> Название</th>
-            <td mat-cell *matCellDef="let category" style="cursor: pointer"
-                (click)="openPositions(category['_id'])"
-            >{{ category.title }}
+            <td mat-cell *matCellDef="let category" style="cursor: pointer" (click)="openPositions(category['_id'])">{{
+              category.title }}
             </td>
           </ng-container>
 
@@ -28,8 +43,7 @@
             <th mat-header-cell *matHeaderCellDef> Действие</th>
             <td mat-cell *matCellDef="let category">
               <img src="assets/icons/edit.png" style="width: 35px; height: 35px" alt="edit"
-                   (click)="openPage(category['_id'])"
-              >
+                (click)="openPage(category['_id'])">
             </td>
           </ng-container>
 
@@ -38,8 +52,7 @@
             <th mat-header-cell *matHeaderCellDef> Статус</th>
             <td mat-cell *matCellDef="let category">
               <mat-slide-toggle [checked]="category.status" color="warn"
-                                (click)="changeStatus(category)"
-              ></mat-slide-toggle>
+                (click)="changeStatus(category)"></mat-slide-toggle>
             </td>
 
           </ng-container>
@@ -49,26 +62,24 @@
         </table>
       </section>
     </div>
-    <button
-      class="btn" extended="" mat-fab
-      routerLink="/st/form-category"
-    >
-      Добавить
-    </button>
+
   </div>
+  <button class="btn" extended="" mat-fab routerLink="/st/form-category">
+    Добавить
+  </button>
 </div>
 
 
 <div class="main" *ngIf="!isAdmin">
-  <h2>Категории</h2>
   <div class="category-cards">
-    <div class="category-card" *ngFor="let category of categories"
-         (click)="openPositions(category['_id'])"
-    >
+    <div class="category-card" *ngFor="let category of categories" (click)="openPositions(category['_id'])">
       <div class="img-block">
         <img [src]="category.imgSrc" alt="">
       </div>
       <p>{{ category.title }}</p>
+    </div>
+    <div class="add-card" routerLink="/st/form-category">
+      <p>Добавить</p>
     </div>
   </div>
 
