@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.get('/', controller.getAll);
 router.get('/:id', controller.getById);
+router.get('/restaurant/:id', controller.getCategoriesByRestaurantId);
 router.post('/', passport.authenticate('jwt', {session: false}), upload.single('image'), controller.create);
 router.patch('/:id', passport.authenticate('jwt', {session: false}), upload.single('image'), controller.update);
 router.patch('/update-status/:id', passport.authenticate('jwt', {session: false}), upload.single('image'), controller.updateStatus);

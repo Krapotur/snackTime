@@ -1,22 +1,22 @@
-import {Component, inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {EmptyComponent} from "../../shared/components/empty/empty.component";
-import {LoaderComponent} from "../../shared/components/loader/loader.component";
-import {MatTableDataSource, MatTableModule} from "@angular/material/table";
-import {MatButtonModule} from "@angular/material/button";
-import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
-import {MatSlideToggleModule} from "@angular/material/slide-toggle";
-import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
-import {Router, RouterLink} from "@angular/router";
-import {Subscription} from "rxjs";
-import {Category} from "../../shared/interfaces";
-import {MaterialService} from "../../shared/classes/material.service";
-import {MatInputModule} from "@angular/material/input";
-import {MatSelectModule} from "@angular/material/select";
-import {ReactiveFormsModule} from "@angular/forms";
-import {SortPlacePipe} from "../../shared/pipes/sort-place.pipe";
-import {CategoryService} from "../../shared/services/category.service";
-import {UserService} from "../../shared/services/user.service";
-import {GroupService} from "../../shared/services/group.service";
+import { Component, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { EmptyComponent } from "../../shared/components/empty/empty.component";
+import { LoaderComponent } from "../../shared/components/loader/loader.component";
+import { MatTableDataSource, MatTableModule } from "@angular/material/table";
+import { MatButtonModule } from "@angular/material/button";
+import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator";
+import { MatSlideToggleModule } from "@angular/material/slide-toggle";
+import { NgForOf, NgIf, NgOptimizedImage } from "@angular/common";
+import { Router, RouterLink } from "@angular/router";
+import { Subscription } from "rxjs";
+import { Category } from "../../shared/interfaces";
+import { MaterialService } from "../../shared/classes/material.service";
+import { MatInputModule } from "@angular/material/input";
+import { MatSelectModule } from "@angular/material/select";
+import { ReactiveFormsModule } from "@angular/forms";
+import { SortPlacePipe } from "../../shared/pipes/sort-place.pipe";
+import { CategoryService } from "../../shared/services/category.service";
+import { UserService } from "../../shared/services/user.service";
+import { GroupService } from "../../shared/services/group.service";
 
 @Component({
   selector: 'app-categories-page',
@@ -50,7 +50,7 @@ export class CategoriesPageComponent implements OnInit, OnDestroy {
   categories: Category[] = []
   isLoading = false
   isEmpty: boolean
-  isAdmin :boolean
+  isAdmin = false
   activeRoute = 'form-category'
   dataSource: MatTableDataSource<Category>;
   displayedColumns: string[] = ['#', 'title', 'edit', 'status'];
@@ -62,6 +62,8 @@ export class CategoriesPageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getGroupById()
     this.getCategories()
+
+    console.log('admin',this.isAdmin)
   }
 
   ngOnDestroy() {
@@ -70,10 +72,11 @@ export class CategoriesPageComponent implements OnInit, OnDestroy {
   }
 
   getCategories() {
+    let profile = JSON.parse(localStorage.getItem('profile'))
     let position = 1
     this.isLoading = true
 
-    this.cSub = this.categoryService.getCategories().subscribe({
+    this.cSub = this.categoryService.getCategories(profile['rest'], profile['group']).subscribe({
       next: categories => {
         if (categories.length == 0) this.isEmpty = true
         this.isLoading = false
@@ -115,6 +118,7 @@ export class CategoriesPageComponent implements OnInit, OnDestroy {
 
   getGroupById() {
     let profile = JSON.parse(localStorage.getItem('profile'))
+    console.log('profile.group', profile.group)
     this.gSub = this.groupService.getGroupByID(profile.group).subscribe({
       next: group => this.isAdmin = group.alias === 'administrator',
       error: error => MaterialService.toast(error.error.error)

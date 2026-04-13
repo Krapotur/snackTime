@@ -1,9 +1,31 @@
 const Category = require("../models/Category");
+const Group = require("../models/Group");
+const Restaurant = require("../models/Restaurant");
 const errorHandler = require("../utils/errorHandler");
 
 module.exports.getAll = async function (req, res) {
+  console.log(req.params)
   try {
-    await Category.find().then((categories) =>
+    const group = await Group.findOne({ _id: req.params.groupID })
+    const restaurant = await Restaurant.findOne({ _id: req.params.restaurantID })
+
+    await Category.find().then((categories) => {
+      if (group.alias === 'administrator') {
+        res.status(200).json(categories);
+      } else {
+        categories.filter((category) => category.restaurant == restaurant._id);
+        res.status(200).json(categories);
+      }
+    }
+    );
+  } catch (e) {
+    errorHandler(res, e);
+  }
+};
+
+module.exports.getCategoriesByRestaurantId = async function (req, res) {
+  try {
+    await Category.find({ restaurant: req.params.id }).then((categories) =>
       res.status(200).json(categories),
     );
   } catch (e) {
@@ -12,7 +34,6 @@ module.exports.getAll = async function (req, res) {
 };
 
 module.exports.create = async function (req, res) {
-  console.log(req.body)
   const candidate = await Category.findOne({ title: req.body.title });
 
   if (candidate) {
@@ -23,7 +44,7 @@ module.exports.create = async function (req, res) {
     const category = new Category({
       title: req.body.title,
       imgSrc: req.file ? req.file.path : "",
-      user: req.body.user,
+      restaurant: req.body.restaurant,
     });
 
     try {

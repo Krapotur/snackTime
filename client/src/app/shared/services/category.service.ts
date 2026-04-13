@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Category, Kitchen } from '../interfaces';
 
 @Injectable({
@@ -9,8 +9,20 @@ import { Category, Kitchen } from '../interfaces';
 export class CategoryService {
   private http = inject(HttpClient);
 
-  getCategories(): Observable<Category[]> {
-    return this.http.get<Category[]>('/api/categories');
+
+  getCategories(restaurantID?: string, groupID?: string): Observable<Category[]> {
+    let params = new HttpParams().set('restaurantID', restaurantID)
+      .set('groupID', groupID)
+
+    console.log(params)
+
+    return this.http.get<Category[]>(`/api/categories/`, {
+      params: params
+    });
+  }
+
+  getCategoriesByRestaurantID(id: string): Observable<Category[]> {
+    return this.http.get<Category[]>(`/api/categories/restaurant/${id}`);
   }
 
   getCategoryByID(id: string): Observable<Category> {

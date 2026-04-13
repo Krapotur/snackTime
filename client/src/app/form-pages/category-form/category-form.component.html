@@ -85,11 +85,15 @@
             />
             <img
               (click)="triggerClick()"
-              [class]="[
-                isDelete ? 'dn' : '',
-                category.imgSrc ? 'img-true' : 'img-icon',
-              ]"
-              [src]="category.imgSrc ?? '../assets/icons/add-photo.png'"
+             [class.dn]="isDelete"
+              [class.img-true]="category && category.status"
+              [class.img-icon]="category && !category.status"
+              [src]="
+                category && category.status
+                  ? category.imgSrc
+                  : '
+                ../assets/icons/add-photo.png'
+              "
               alt="image"
             />
           </div>

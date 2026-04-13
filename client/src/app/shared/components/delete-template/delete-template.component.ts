@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-delete-template',
   standalone: true,
-  imports: [MatFabButton, NgIf],
+  imports: [MatFabButton],
   templateUrl: './delete-template.component.html',
   styleUrl: './delete-template.component.scss',
 })
@@ -26,7 +26,6 @@ export class DeleteTemplateComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.title = this.elemIn.title;
-    console.log(this.elemIn);
   }
 
   ngOnDestroy() {
