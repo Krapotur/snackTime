@@ -6,8 +6,8 @@ const errorHandler = require("../utils/errorHandler");
 module.exports.getAll = async function (req, res) {
   console.log(req.params)
   try {
-    const group = await Group.findOne({ _id: req.params.groupID })
-    const restaurant = await Restaurant.findOne({ _id: req.params.restaurantID })
+    const group = await Group.findOne({ _id: req.query.groupID })
+    const restaurant = await Restaurant.findOne({ _id: req.query.restaurantID })
 
     await Category.find().then((categories) => {
       if (group.alias === 'administrator') {

@@ -142,14 +142,11 @@
         <div class="img-block">
           <label [for]="inputImg">Выберите изображение </label>
           <div class="img-group">
-            <span *ngIf="image">Изображение загружено!</span>
             <input type="file" class="dn" formControlName="imgSrc" #inputImg (change)="uploadImg($event)" />
-            <img (click)="triggerClick()" [class.dn]="isDelete" [class.img-true]="restaurant && restaurant.status"
+            <img (click)="inputImg.click()" [class.dn]="isDelete" [class.img-true]="restaurant && restaurant.status"
               [class.img-icon]="restaurant && !restaurant.status" [src]="
-                restaurant && restaurant.status
-                  ? restaurant.imgSrc
-                  : '
-                ../assets/icons/add-photo.png'
+                  restaurant?.imgSrc ?? uploadedImgLink() ??
+                   '../assets/icons/add-photo.png'
               " alt="image" />
           </div>
         </div>

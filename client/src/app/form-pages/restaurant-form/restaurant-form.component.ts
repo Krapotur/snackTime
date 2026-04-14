@@ -1,8 +1,10 @@
 import {
   Component,
+  computed,
   ElementRef,
   OnDestroy,
   OnInit,
+  signal,
   ViewChild,
 } from '@angular/core';
 import {
@@ -56,7 +58,8 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
   restaurants: Restaurant[];
   restaurant: Restaurant;
   elem: Elem;
-  image: File;
+  image = signal<File | null>(null);
+  uploadedImgLink = computed(() => this.image() ? URL.createObjectURL(this.image()) : null)
   isError = false;
   isDelete = false;
   restaurantID: string;
@@ -64,14 +67,13 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
 
   hours = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
 
-  @ViewChild('inputImg') inputImgRef: ElementRef;
-
   constructor(
     private kitchenService: KitchenService,
     private restaurantService: RestaurantService,
     private router: Router,
     private route: ActivatedRoute,
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.restaurantID = this.route.snapshot.params['id']
@@ -157,17 +159,13 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
   }
 
   uploadImg($event: any) {
-    this.image = $event.target.files[0];
-  }
-
-  triggerClick() {
-    this.inputImgRef.nativeElement.click();
+    this.image.set($event.target.files[0] as File);
   }
 
   onSubmit() {
     const fd = new FormData();
 
-    if (this.image) fd.append('image', this.image, this.image.name);
+    if (this.image) fd.append('image', this.image(), this.image.name);
 
     fd.append('title', this.form.get('title').value);
     fd.append('description', this.form.get('description').value);
@@ -211,9 +209,9 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
     if (title.length > 5) {
       this.restaurants.some(
         (restaurant) =>
-          (this.isError =
-            title.toLowerCase() == restaurant.title.toLocaleLowerCase() &&
-            restaurant._id !== this.restaurantID),
+        (this.isError =
+          title.toLowerCase() == restaurant.title.toLocaleLowerCase() &&
+          restaurant._id !== this.restaurantID),
       );
     }
   }
