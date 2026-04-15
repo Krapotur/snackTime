@@ -4,20 +4,10 @@
       {{ position && positionID.length ? position.title : "Новая позиция" }}
     </h3>
     <div class="img-del" *ngIf="positionID">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="20"
-        height="20"
-        data-name="Layer 1"
-        viewBox="0 0 24 24"
-        (click)="openDelTemplate()"
-        *ngIf="!isDelete"
-      >
-        <path
-          d="M17 4V2a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H2v2h2v15a3 3 0 0 0 3 3h10a3
-         3 0 0 0 3-3V6h2V4Zm-6 13H9v-6h2Zm4 0h-2v-6h2Zm0-13H9V2h6Z"
-          fill="white"
-        />
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" data-name="Layer 1" viewBox="0 0 24 24"
+        (click)="openDelTemplate()" *ngIf="!isDelete">
+        <path d="M17 4V2a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H2v2h2v15a3 3 0 0 0 3 3h10a3
+         3 0 0 0 3-3V6h2V4Zm-6 13H9v-6h2Zm4 0h-2v-6h2Zm0-13H9V2h6Z" fill="white" />
       </svg>
     </div>
   </div>
@@ -31,93 +21,58 @@
         <div class="row">
           <div class="input-field col s6">
             <label class="active" for="title">Название</label>
-            <input
-              id="title"
-              type="text"
-              formControlName="title"
-              [ngClass]="{
+            <input id="title" type="text" formControlName="title" [ngClass]="{
                 invalid:
                   form.get('title').invalid && form.get('title')['touched'],
-              }"
-              (keyup)="checkTitlePosition()"
-            />
+              }" (keyup)="checkTitlePosition()" />
           </div>
         </div>
         <span class="error" *ngIf="isError">*Название уже занято </span>
-        <span
-          class="error"
-          *ngIf="
+        <span class="error" *ngIf="
             form.get('title').hasError('required') &&
             form.get('title')['touched']
-          "
-          >*Введите название
+          ">*Введите название
         </span>
-        <span
-          class="error"
-          *ngIf="
+        <span class="error" *ngIf="
             form.get('title').hasError('minlength') &&
             form.get('title')['touched']
-          "
-          >*Не менее 3х символов
+          ">*Не менее 3х символов
         </span>
-        <span
-          class="error"
-          *ngIf="
+        <span class="error" *ngIf="
             form.get('title').hasError('maxlength') &&
             form.get('title')['touched']
-          "
-          >*Слишком длинное название
+          ">*Слишком длинное название
         </span>
 
         <div class="items-row">
           <div class="row">
             <div class="input-field col s6">
               <label class="active" for="price">Цена</label>
-              <input
-                id="price"
-                type="number"
-                formControlName="price"
-                min="0"
-                max="5000"
-                [ngClass]="{
+              <input id="price" type="number" formControlName="price" min="0" max="5000" [ngClass]="{
                   invalid:
                     form.get('price').invalid && form.get('price')['touched'],
-                }"
-              />
+                }" />
             </div>
           </div>
 
           <div class="row">
             <div class="input-field col s6">
               <label class="active" for="weight">Вес</label>
-              <input
-                id="weight"
-                type="number"
-                formControlName="weight"
-                min="0"
-                max="2000"
-                [ngClass]="{
+              <input id="weight" type="number" formControlName="weight" min="0" max="2000" [ngClass]="{
                   invalid:
                     form.get('weight').invalid && form.get('weight')['touched'],
-                }"
-              />
+                }" />
             </div>
           </div>
 
           <div class="row">
             <div class="input-field col s6">
               <label class="active" for="caloric">Ккал.</label>
-              <input
-                id="caloric"
-                type="number"
-                formControlName="caloric"
-                max="2000"
-                [ngClass]="{
+              <input id="caloric" type="number" formControlName="caloric" max="2000" [ngClass]="{
                   invalid:
                     form.get('caloric').invalid &&
                     form.get('caloric')['touched'],
-                }"
-              />
+                }" />
             </div>
           </div>
         </div>
@@ -147,20 +102,14 @@
 
         <!--          Validation errors-->
 
-        <span
-          class="error"
-          *ngIf="
+        <span class="error" *ngIf="
             form.get('price').hasError('required') &&
             form.get('price')['touched']
-          "
-          >*Укажите стоимость
+          ">*Укажите стоимость
         </span>
-        <span
-          class="error"
-          *ngIf="
+        <span class="error" *ngIf="
             form.get('price').hasError('max') && form.get('price')['touched']
-          "
-          >*Макс. цена: 5 000
+          ">*Макс. цена: 5 000
         </span>
 
         <!-- <span
@@ -180,21 +129,17 @@
           >*Макс. количество: 300
         </span> -->
 
-        <span
-          class="error"
-          *ngIf="
+        <span class="error" *ngIf="
             form.get('weight').hasError('required') &&
             form.get('weight')['touched']
-          "
-          >*Укажите
+          ">*Укажите
           {{ form.get("weight").hasError("required") ? "вес" : "калл." }}
         </span>
 
         @if (form.get("weight").hasError("max")) {
-          <span class="error"
-            >*Макс. {{ form.get("weight").hasError("max") ? "вес" : "калл." }} 2
-            000
-          </span>
+        <span class="error">*Макс. {{ form.get("weight").hasError("max") ? "вес" : "калл." }} 2
+          000
+        </span>
         }
 
         <!-- <span
@@ -232,97 +177,57 @@
         </div>
 
         <div class="description-block">
-          <label
-            for="textarea"
-            style="padding-left: 10px; font-family: &quot;Lora&quot;, serif"
-            [ngClass]="{
+          <label for="textarea" style="padding-left: 10px; font-family: &quot;Lora&quot;, serif" [ngClass]="{
               invalid:
                 form.get('composition').invalid &&
                 form.get('composition')['touched'],
-            }"
-            >Состав</label
-          >
-          <textarea
-            id="textarea"
-            maxlength="300"
-            [ngClass]="{
+            }">Состав</label>
+          <textarea id="textarea" maxlength="300" [ngClass]="{
               invalid:
                 form.get('composition').invalid &&
                 form.get('composition')['touched'],
-            }"
-            placeholder="Опишите состав"
-            formControlName="composition"
-          ></textarea>
+            }" placeholder="Опишите состав" formControlName="composition"></textarea>
           @if (
-            form.get("composition").hasError("required") &&
-            form.get("composition")["touched"]
+          form.get("composition").hasError("required") &&
+          form.get("composition")["touched"]
           ) {
-            <span class="error">*Опишите состав</span>
+          <span class="error">*Опишите состав</span>
           }
           @if (
-            form.get("composition").hasError("minlength") &&
-            form.get("composition")["touched"]
+          form.get("composition").hasError("minlength") &&
+          form.get("composition")["touched"]
           ) {
-            <span class="error"
-              >*Еще немного информации...
-              <!-- {{
+          <span class="error">*Еще немного информации...
+            <!-- {{
                 this.form.get("composition").errors["composition"]
                   .actualLength +
                   "/" +
                   this.form.get("composition").errors["composition"]
                     .requiredLength
               }} -->
-            </span>
+          </span>
           }
         </div>
 
         <div class="img-block">
-          <label [for]="inputImg" style="font-family: &quot;Lora&quot;, serif"
-            >Выберите изображение
+          <label [for]="inputImg" style="font-family: &quot;Lora&quot;, serif">Выберите изображение
           </label>
           <div class="img-group">
-            <span *ngIf="image">Изображение загружено!</span>
-            <input
-              type="file"
-              class="dn"
-              formControlName="imgSrc"
-              #inputImg
-              (change)="uploadImg($event)"
-            />
-            <img
-              (click)="triggerClick()"
-              [class.dn]="isDelete"
-              [class.img-true]="position && position.status"
-              [class.img-icon]="position && !position.status"
-              [src]="
-                position && position.status
-                  ? position.imgSrc
-                  : '
-                ../assets/icons/add-photo.png'
-              "
-              alt="image"
-            />
+            <input type="file" class="dn" formControlName="imgSrc" #inputImg (change)="uploadImg($event)" />
+            <img (click)="inputImg.click()" [class.dn]="isDelete" [class.img-true]="position || uploadedImgLink()"
+              [class.img-icon]="!position && !uploadedImgLink()" [src]="
+                position?.imgSrc ?? uploadedImgLink() ??
+                   '../assets/icons/add-photo.png'
+              " alt="image" />
           </div>
         </div>
 
         <div class="btn-group">
-          <button
-            class="btn-cancel"
-            extended=""
-            mat-fab
-            [disabled]="isDelete"
-            (click)="openPositionsPage()"
-          >
+          <button class="btn-cancel" extended="" mat-fab [disabled]="isDelete" (click)="openPositionsPage()">
             Отмена
           </button>
-          <button
-            type="submit"
-            class="btn-save"
-            extended=""
-            mat-fab
-            [disabled]="form.invalid || isError || isDelete"
-            (click)="onSubmit()"
-          >
+          <button type="submit" class="btn-save" extended="" mat-fab [disabled]="form.invalid || isError || isDelete"
+            (click)="onSubmit()">
             Сохранить
           </button>
         </div>

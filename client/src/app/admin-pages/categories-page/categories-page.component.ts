@@ -13,9 +13,7 @@ import { MaterialService } from "../../shared/classes/material.service";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { ReactiveFormsModule } from "@angular/forms";
-import { SortPlacePipe } from "../../shared/pipes/sort-place.pipe";
 import { CategoryService } from "../../shared/services/category.service";
-import { UserService } from "../../shared/services/user.service";
 import { GroupService } from "../../shared/services/group.service";
 
 @Component({
@@ -31,9 +29,7 @@ import { GroupService } from "../../shared/services/group.service";
     ReactiveFormsModule,
     RouterLink,
     MatSlideToggleModule,
-    NgOptimizedImage,
     RouterLink,
-    SortPlacePipe,
     EmptyComponent,
     LoaderComponent,
     NgForOf
@@ -47,7 +43,7 @@ export class CategoriesPageComponent implements OnInit, OnDestroy {
   private groupService = inject(GroupService)
 
   profile = {}
-  categories: Category[] = []
+  categories: Category[];
   isLoading = false
   isEmpty: boolean
   isAdmin = false
@@ -62,8 +58,6 @@ export class CategoriesPageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getGroupById()
     this.getCategories()
-
-    console.log('admin',this.isAdmin)
   }
 
   ngOnDestroy() {
@@ -118,7 +112,7 @@ export class CategoriesPageComponent implements OnInit, OnDestroy {
 
   getGroupById() {
     let profile = JSON.parse(localStorage.getItem('profile'))
-    console.log('profile.group', profile.group)
+
     this.gSub = this.groupService.getGroupByID(profile.group).subscribe({
       next: group => this.isAdmin = group.alias === 'administrator',
       error: error => MaterialService.toast(error.error.error)

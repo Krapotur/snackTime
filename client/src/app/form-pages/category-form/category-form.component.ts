@@ -1,10 +1,12 @@
 import {
   Component,
+  computed,
   ElementRef,
   inject,
   Input,
   OnDestroy,
   OnInit,
+  signal,
   ViewChild,
 } from '@angular/core';
 import { DeleteTemplateComponent } from '../../shared/components/delete-template/delete-template.component';
@@ -63,24 +65,21 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
   isError = false;
-  categoryID: string = '';
-  image: File;
+  categoryID: string;
+  image = signal<File | null>(null);
+  uploadedImgLink = computed(() => this.image() ? URL.createObjectURL(this.image()) : null)
   cSub: Subscription;
   category: Category;
   categories: Category[] = [];
   elem: Elem;
   isDelete = false;
 
-  @ViewChild('inputImg') inputImgRef: ElementRef;
-
   ngOnInit() {
-    this.categoryID = this.route.snapshot.params['id']
-      ? this.route.snapshot.params['id']
-      : '';
-
+    if (this.route.snapshot.params['id']) {
+      this.categoryID = this.route.snapshot.params['id']
+      this.getCategoryByID();
+    }
     this.generateForm();
-    this.getCategoryByID();
-    this.getCategories();
 
     this.sharedDelService.sharedData$.subscribe((value) => {
       this.isDelete = value;
@@ -105,11 +104,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
   }
 
   uploadImg($event: any) {
-    this.image = $event.target.files[0];
-  }
-
-  triggerClick() {
-    this.inputImgRef.nativeElement.click();
+    this.image.set($event.target.files[0] as File);
   }
 
   getCategories() {
@@ -141,7 +136,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
     const fd = new FormData();
 
     if (this.image) {
-      fd.append('image', this.image, this.image.name);
+      fd.append('image', this.image(), this.image.name);
     }
     fd.append('title', this.form.get('title').value);
 

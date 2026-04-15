@@ -69,12 +69,9 @@
           >*Слишком длинное название
         </span>
 
-        <!-- <hr> -->
-
         <div class="img-block">
           <label [for]="inputImg">Выберите изображение </label>
           <div class="img-group">
-            <span *ngIf="image">Изображение загружено!</span>
             <input
               type="file"
               class="dn"
@@ -82,19 +79,14 @@
               #inputImg
               (change)="uploadImg($event)"
             />
-            <img
-              (click)="triggerClick()"
-              [class]="[
-                isDelete ? 'dn' : '',
-                kitchen.imgSrc ? 'img-true' : 'img-icon',
-              ]"
-              [src]="kitchen.imgSrc ?? '../assets/icons/add-photo.png'"
-              alt="image"
-            />
+            <img (click)="inputImg.click()" [class.dn]="isDelete" 
+            [class.img-true]="kitchen || uploadedImgLink()"
+            [class.img-icon]="!kitchen && !uploadedImgLink()" 
+            [src]="kitchen?.imgSrc ?? uploadedImgLink() ??
+                   '../assets/icons/add-photo.png'
+              " alt="image" />
           </div>
-        </div>
-
-        <hr />
+        </div> 
 
         <div class="btn-group">
           <button

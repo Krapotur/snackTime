@@ -75,6 +75,7 @@ module.exports.update = async function (req, res) {
 }
 
 module.exports.delete = async function (req, res) {
+    console.log(req.params)
     try {
         const restaurant = await Restaurant.findOne({_id: req.params.id})
         await Restaurant.deleteOne({_id: req.params.id})

@@ -1,17 +1,17 @@
-import {Component, ElementRef, inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {FilterKitchenPipe} from "../../shared/pipes/filter-kitchen.pipe";
-import {MatButtonModule} from "@angular/material/button";
-import {MatFormFieldModule} from "@angular/material/form-field";
-import {MatSelectModule} from "@angular/material/select";
-import {AsyncPipe, NgClass, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
-import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import { Subscription} from "rxjs";
-import {MatOptionModule} from "@angular/material/core";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
-import {Elem, Kitchen} from "../../shared/interfaces";
-import {KitchenService} from "../../shared/services/kitchen.service";
-import {MaterialService} from "../../shared/classes/material.service";
-import {DeleteTemplateComponent} from "../../shared/components/delete-template/delete-template.component";
+import { Component, computed, ElementRef, inject, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
+import { FilterKitchenPipe } from "../../shared/pipes/filter-kitchen.pipe";
+import { MatButtonModule } from "@angular/material/button";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatSelectModule } from "@angular/material/select";
+import { AsyncPipe, NgClass, NgForOf, NgIf, NgOptimizedImage } from "@angular/common";
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
+import { Subscription } from "rxjs";
+import { MatOptionModule } from "@angular/material/core";
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
+import { Elem, Kitchen } from "../../shared/interfaces";
+import { KitchenService } from "../../shared/services/kitchen.service";
+import { MaterialService } from "../../shared/classes/material.service";
+import { DeleteTemplateComponent } from "../../shared/components/delete-template/delete-template.component";
 
 @Component({
   selector: 'app-kitchen-form',
@@ -23,13 +23,8 @@ import {DeleteTemplateComponent} from "../../shared/components/delete-template/d
     MatFormFieldModule,
     MatOptionModule,
     MatSelectModule,
-    NgForOf,
     NgIf,
-    RouterLink,
     NgClass,
-    FilterKitchenPipe,
-    NgOptimizedImage,
-    AsyncPipe,
     DeleteTemplateComponent,
   ],
   templateUrl: './kitchen-form.component.html',
@@ -44,22 +39,22 @@ export class KitchenFormComponent implements OnInit, OnDestroy {
   isDelete = false
   isError = false
   kitchenID: string = ''
-  image: File
+  image = signal<File | null>(null);
+  uploadedImgLink = computed(() => this.image() ? URL.createObjectURL(this.image()) : null)
+  cSub: Subscription;
   kSub: Subscription
   kitchen: Kitchen
   kitchens: Kitchen[] = []
   elem: Elem
 
-  @ViewChild('inputImg') inputImgRef: ElementRef
-
   ngOnInit() {
-    this.kitchenID = this.route.snapshot.params['id'] ?
-      this.route.snapshot.params['id']
-      : ''
-
+    if (this.route.snapshot.params['id']) {
+      this.kitchenID = this.route.snapshot.params['id']
+      this.getKitchenById()
+    }
+    
+    this.getKitchens();
     this.generateForm()
-    this.getKitchenById()
-    this.getKitchens()
   }
 
   ngOnDestroy() {
@@ -72,16 +67,12 @@ export class KitchenFormComponent implements OnInit, OnDestroy {
         Validators.required,
         Validators.minLength(3),
         Validators.maxLength(16)]),
-      imgSrc: new FormControl( '', Validators.required)
+      imgSrc: new FormControl('', Validators.required)
     })
   }
 
   uploadImg($event: any) {
-    this.image = $event.target.files[0]
-  }
-
-  triggerClick() {
-    this.inputImgRef.nativeElement.click()
+    this.image.set($event.target.files[0] as File);
   }
 
   getKitchens() {
@@ -110,9 +101,8 @@ export class KitchenFormComponent implements OnInit, OnDestroy {
   onSubmit() {
     const fd = new FormData()
 
-    if (this.image) fd.append('image', this.image, this.image.name)
+    if (this.image) fd.append('image', this.image(), this.image.name)
     fd.append('title', this.form.get('title').value)
-
 
     if (this.kitchenID) {
       setTimeout(() => {
@@ -138,14 +128,14 @@ export class KitchenFormComponent implements OnInit, OnDestroy {
   }
 
   openRestaurantsPage() {
-   void this.router.navigate(['st/restaurants'])
+    void this.router.navigate(['st/restaurants'])
   }
 
   checkTitleKitchen() {
     const title = this.form.get('title').value
     if (title.length > 5) {
       this.isError = this.kitchens.some(kitchen => title.toLowerCase() == kitchen.title.toLowerCase() &&
-      kitchen._id !== this.kitchenID)
+        kitchen._id !== this.kitchenID)
     }
   }
 

@@ -1,28 +1,24 @@
 import { Component, inject, OnDestroy, OnInit, } from '@angular/core';
-import { CategoriesPageComponent } from "../categories-page/categories-page.component";
 import { MatTableDataSource, MatTableModule } from "@angular/material/table";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatButtonModule } from "@angular/material/button";
-import { NgIf, NgOptimizedImage } from "@angular/common";
+import { NgIf } from "@angular/common";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
 import { ReactiveFormsModule } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { MatSlideToggleModule } from "@angular/material/slide-toggle";
-import { LoaderComponent } from "../../shared/components/loader/loader.component";
 import { EmptyComponent } from "../../shared/components/empty/empty.component";
 import { Category, CategoryRoute, Position } from "../../shared/interfaces";
 import { Subscription } from "rxjs";
 import { MaterialService } from "../../shared/classes/material.service";
 import { PositionService } from "../../shared/services/position.service";
-import { FilterRestaurantPipe } from "../../shared/pipes/filter-restaurant";
 import { CategoryService } from "../../shared/services/category.service";
 
 @Component({
   selector: 'app-positions-page',
   standalone: true,
   imports: [
-    CategoriesPageComponent,
     MatTableModule,
     MatPaginatorModule,
     MatButtonModule,
@@ -32,10 +28,7 @@ import { CategoryService } from "../../shared/services/category.service";
     ReactiveFormsModule,
     RouterLink,
     MatSlideToggleModule,
-    NgOptimizedImage,
-    LoaderComponent,
     EmptyComponent,
-    FilterRestaurantPipe,
   ],
   templateUrl: './positions-page.component.html',
   styleUrls: ['../../shared/styles/style-table.scss', './positions-page.component.scss']

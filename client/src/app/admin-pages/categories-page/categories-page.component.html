@@ -1,13 +1,13 @@
 <div class="row-between">
-  <h5>Категории<span>({{ categories.length }})</span></h5>
+  <h5>Категории<span>({{ categories?.length }})</span></h5>
 
-  @if(!isAdmin) {
+  @if(!isAdmin && categories) {
   <div class="pos-absolute">
     <button class="btn-edit" (click)="isAdmin=!isAdmin">
       Редактировать
     </button>
   </div>
-  }@else {
+  }@else if(categories){
   <div class="pos-absolute" (click)="isAdmin=!isAdmin">
     <img src="../../../assets/icons/plitka.png" alt="Plitka">
   </div>
@@ -16,8 +16,11 @@
 </div>
 
 <!--Table-->
-<div class="main" *ngIf="isAdmin">
-  <app-empty [page]="activeRoute" *ngIf="isEmpty"></app-empty>
+@if(isAdmin){
+<div class="main">
+  @if(isEmpty){
+  <app-empty [page]="activeRoute"></app-empty>
+  }
 
   <div *ngIf="!isEmpty">
     <div class="mat-elevation-z8">
@@ -62,13 +65,14 @@
         </table>
       </section>
     </div>
-
   </div>
+  
+  @if(!categories){
   <button class="btn" extended="" mat-fab routerLink="/st/form-category">
     Добавить
-  </button>
+  </button>}
 </div>
-
+}
 
 <div class="main" *ngIf="!isAdmin">
   <div class="category-cards">
@@ -78,11 +82,12 @@
       </div>
       <p>{{ category.title }}</p>
     </div>
+    @if(categories?.length){
     <div class="add-card" routerLink="/st/form-category">
       <p>Добавить</p>
     </div>
+    }
   </div>
-
 </div>
 
 

@@ -4,7 +4,6 @@ const Restaurant = require("../models/Restaurant");
 const errorHandler = require("../utils/errorHandler");
 
 module.exports.getAll = async function (req, res) {
-  console.log(req.params)
   try {
     const group = await Group.findOne({ _id: req.query.groupID })
     const restaurant = await Restaurant.findOne({ _id: req.query.restaurantID })

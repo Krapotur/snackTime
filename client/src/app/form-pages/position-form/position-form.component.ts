@@ -1,10 +1,10 @@
 import {
   Component,
-  ElementRef,
+  computed,
   inject,
   OnDestroy,
   OnInit,
-  ViewChild,
+  signal,
 } from '@angular/core';
 import { DeleteTemplateComponent } from '../../shared/components/delete-template/delete-template.component';
 import {
@@ -16,11 +16,8 @@ import {
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import {
-  AsyncPipe,
   NgClass,
-  NgForOf,
   NgIf,
-  NgOptimizedImage,
 } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -30,7 +27,6 @@ import { PositionService } from '../../shared/services/position.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
-import { FilterKitchenPipe } from '../../shared/pipes/filter-kitchen.pipe';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
@@ -44,14 +40,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatCheckboxModule,
     MatOptionModule,
     MatSelectModule,
-    NgForOf,
     NgIf,
-    RouterLink,
     NgClass,
-    NgOptimizedImage,
-    AsyncPipe,
     DeleteTemplateComponent,
-    FilterKitchenPipe,
   ],
   templateUrl: './position-form.component.html',
   styleUrls: [
@@ -69,29 +60,26 @@ export class PositionFormComponent implements OnInit, OnDestroy {
   isError = false;
   positionID: string = '';
   categoryID: string = '';
-  image: File;
+  image = signal<File | null>(null);
+  uploadedImgLink = computed(() => this.image() ? URL.createObjectURL(this.image()) : null)
   imageUrl: string | null = null;
   pSub: Subscription;
   cSub: Subscription;
   position: Position | null;
-  positions: Position[] = [];
-  categories: Category[] = [];
+  positions: Position[];
   elem: Elem;
 
-  @ViewChild('inputImg') inputImgRef: ElementRef;
-
   ngOnInit() {
-    this.positionID = this.route.snapshot.params['id']
-      ? this.route.snapshot.params['id']
-      : '';
+    if (this.route.snapshot.params['id']) {
+      this.position = this.route.snapshot.params['id']
+      this.getPositionById();
+    }
 
     this.route.queryParams.subscribe((params) => {
       if (params['category']) this.categoryID = params['category'];
     });
 
     this.generateForm();
-    this.getPositionById();
-    this.getPositions();
   }
 
   ngOnDestroy() {
@@ -138,33 +126,11 @@ export class PositionFormComponent implements OnInit, OnDestroy {
   }
 
   uploadImg($event: any) {
-    this.image = $event.target.files[0];
-    this.getImageFromFile();
-    console.log('error', this.isError);
-    console.log('isDelete', this.isDelete);
-    console.log('form', this.form.invalid);
+    this.image.set($event.target.files[0] as File);
   }
 
-  triggerClick() {
-    this.inputImgRef.nativeElement.click();
-    this.getImageFromFile();
-  }
-
-  getImageFromFile(): void {
-    console.log('ssssssssssssssss');
-    if (this.image) {
-      const reader = new FileReader();
-
-      reader.onload = (e: any) => {
-        this.imageUrl = e.target.result;
-      };
-
-      reader.readAsDataURL(this.image);
-    }
-  }
-
-  getPositions() {
-    this.pSub = this.positionService.getPositions().subscribe({
+  getPositionsByCategory() {
+    this.pSub = this.positionService.getPositionsByCategoryID(this.categoryID).subscribe({
       next: (positions) => (this.positions = positions),
       error: (error) => MaterialService.toast(error.error.message),
     });
@@ -190,7 +156,7 @@ export class PositionFormComponent implements OnInit, OnDestroy {
     let user = JSON.parse(localStorage.getItem('profile'));
     const fd = new FormData();
 
-    if (this.image) fd.append('image', this.image, this.image.name);
+    if (this.image) fd.append('image', this.image(), this.image.name);
     fd.append('title', this.form.get('title').value);
     fd.append('price', this.form.get('price').value);
     fd.append('composition', this.form.get('composition').value);
@@ -238,9 +204,7 @@ export class PositionFormComponent implements OnInit, OnDestroy {
       if (params['category']) {
         void this.router.navigate(['st/positions'], {
           queryParams: {
-            category: this.categoryID.length
-              ? this.categoryID
-              : this.position.category,
+            category: this.categoryID ?? this.position.category,
           },
         });
       } else void this.router.navigate(['st/assortment']);
@@ -256,6 +220,7 @@ export class PositionFormComponent implements OnInit, OnDestroy {
   }
 
   checkTitlePosition() {
+    this.getPositionsByCategory();
     const title = this.form.get('title').value;
     if (title.length > 5) {
       this.isError = this.positions.some(

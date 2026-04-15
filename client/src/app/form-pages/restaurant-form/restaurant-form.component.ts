@@ -150,7 +150,7 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
           id: restaurant._id,
           title: restaurant.title,
           route: 'restaurants',
-          formRoute: 'restaurant',
+          formRoute: 'restaurants',
         };
         this.restaurant = restaurant;
       },

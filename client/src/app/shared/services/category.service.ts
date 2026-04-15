@@ -14,8 +14,6 @@ export class CategoryService {
     let params = new HttpParams().set('restaurantID', restaurantID)
       .set('groupID', groupID)
 
-    console.log(params)
-
     return this.http.get<Category[]>(`/api/categories/`, {
       params: params
     });
