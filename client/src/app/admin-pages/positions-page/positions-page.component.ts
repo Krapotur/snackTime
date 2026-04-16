@@ -26,7 +26,6 @@ import { CategoryService } from "../../shared/services/category.service";
     MatInputModule,
     MatSelectModule,
     ReactiveFormsModule,
-    RouterLink,
     MatSlideToggleModule,
     EmptyComponent,
   ],
