@@ -1,13 +1,10 @@
 import {
   Component,
   computed,
-  ElementRef,
   inject,
-  Input,
   OnDestroy,
   OnInit,
   signal,
-  ViewChild,
 } from '@angular/core';
 import { DeleteTemplateComponent } from '../../shared/components/delete-template/delete-template.component';
 import {
@@ -19,11 +16,8 @@ import {
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import {
-  AsyncPipe,
   NgClass,
-  NgForOf,
   NgIf,
-  NgOptimizedImage,
 } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -131,8 +125,6 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    const userID = localStorage.getItem('userID');
-
     const fd = new FormData();
 
     if (this.image) {

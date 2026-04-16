@@ -1,95 +1,112 @@
 <div class="row-between">
-  <h5>Категории<span>({{ categories?.length }})</span></h5>
+  <h5>
+    Категории<span>({{ categories?.length }})</span>
+  </h5>
 
-  @if(!isAdmin && categories) {
-  <div class="pos-absolute">
-    <button class="btn-edit" (click)="isAdmin=!isAdmin">
-      Редактировать
-    </button>
-  </div>
-  }@else if(categories){
-  <div class="pos-absolute" (click)="isAdmin=!isAdmin">
-    <img src="../../../assets/icons/plitka.png" alt="Plitka">
-  </div>
+  @if (!isAdmin && categories) {
+    <div class="pos-absolute">
+      <button class="btn-edit" (click)="isAdmin = !isAdmin">
+        Редактировать
+      </button>
+    </div>
+  } @else if (categories) {
+    <div class="pos-absolute" (click)="isAdmin = !isAdmin">
+      <img src="../../../assets/icons/plitka.png" alt="Plitka" />
+    </div>
   }
-
 </div>
 
 <!--Table-->
-@if(isAdmin){
-<div class="main">
-  @if(isEmpty){
-  <app-empty [page]="activeRoute"></app-empty>
-  }
+@if (isAdmin) {
+  <div class="main">
+    @if (isEmpty) {
+      <app-empty [page]="activeRoute"></app-empty>
+    }
 
-  <div *ngIf="!isEmpty">
-    <div class="mat-elevation-z8">
-      <section class="table-section mat-elevation-z8" tabindex="0">
+    <div *ngIf="!isEmpty">
+      <div class="mat-elevation-z8">
+        <section class="table-section mat-elevation-z8" tabindex="0">
+          <table mat-table [dataSource]="dataSource">
+            <!-- Position Column -->
+            <ng-container matColumnDef="#">
+              <th mat-header-cell *matHeaderCellDef>#</th>
+              <td mat-cell *matCellDef="let category">
+                {{ category.position }}
+              </td>
+            </ng-container>
 
-        <table mat-table [dataSource]="dataSource">
-          <!-- Position Column -->
-          <ng-container matColumnDef="#">
-            <th mat-header-cell *matHeaderCellDef> #</th>
-            <td mat-cell *matCellDef="let category">{{ category.position }}</td>
-          </ng-container>
+            <!-- Title Column -->
+            <ng-container matColumnDef="title">
+              <th mat-header-cell *matHeaderCellDef>Название</th>
+              <td
+                mat-cell
+                *matCellDef="let category"
+                style="cursor: pointer"
+                (click)="openPositions(category['_id'])"
+              >
+                {{ category.title }}
+              </td>
+            </ng-container>
 
-          <!-- Title Column -->
-          <ng-container matColumnDef="title">
-            <th mat-header-cell *matHeaderCellDef> Название</th>
-            <td mat-cell *matCellDef="let category" style="cursor: pointer" (click)="openPositions(category['_id'])">{{
-              category.title }}
-            </td>
-          </ng-container>
+            <!-- Edit Column -->
+            <ng-container matColumnDef="edit">
+              <th mat-header-cell *matHeaderCellDef>Действие</th>
+              <td mat-cell *matCellDef="let category">
+                <img
+                  src="assets/icons/edit.png"
+                  style="width: 35px; height: 35px"
+                  alt="edit"
+                  (click)="openPage(category['_id'])"
+                />
+              </td>
+            </ng-container>
 
-          <!-- Edit Column -->
-          <ng-container matColumnDef="edit">
-            <th mat-header-cell *matHeaderCellDef> Действие</th>
-            <td mat-cell *matCellDef="let category">
-              <img src="assets/icons/edit.png" style="width: 35px; height: 35px" alt="edit"
-                (click)="openPage(category['_id'])">
-            </td>
-          </ng-container>
+            <!-- Status Column -->
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef>Статус</th>
+              <td mat-cell *matCellDef="let category">
+                <mat-slide-toggle
+                  [checked]="category.status"
+                  color="warn"
+                  (click)="changeStatus(category)"
+                ></mat-slide-toggle>
+              </td>
+            </ng-container>
 
-          <!-- Status Column -->
-          <ng-container matColumnDef="status">
-            <th mat-header-cell *matHeaderCellDef> Статус</th>
-            <td mat-cell *matCellDef="let category">
-              <mat-slide-toggle [checked]="category.status" color="warn"
-                (click)="changeStatus(category)"></mat-slide-toggle>
-            </td>
-
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-      </section>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </section>
+      </div>
     </div>
+
+    @if (categories?.length) {
+      <button class="btn" extended="" mat-fab routerLink="/st/form-category">
+        Добавить
+      </button>
+    }
   </div>
-  
-  @if(!categories){
-  <button class="btn" extended="" mat-fab routerLink="/st/form-category">
-    Добавить
-  </button>}
-</div>
 }
 
 <div class="main" *ngIf="!isAdmin">
   <div class="category-cards">
-    <div class="category-card" *ngFor="let category of categories" (click)="openPositions(category['_id'])">
+    <div
+      class="category-card"
+      *ngFor="let category of categories"
+      (click)="openPositions(category['_id'])"
+    >
       <div class="img-block">
-        <img [src]="category.imgSrc" alt="">
+        <img [src]="category.imgSrc" alt="" />
       </div>
       <p>{{ category.title }}</p>
     </div>
-    @if(categories?.length){
-    <div class="add-card" routerLink="/st/form-category">
-      <p>Добавить</p>
-    </div>
+    @if (categories?.length) {
+      <div class="add-card" routerLink="/st/form-category">
+        <p>Добавить</p>
+      </div>
     }
   </div>
 </div>
-
 
 <div class="center">
   <app-loader *ngIf="isLoading"></app-loader>

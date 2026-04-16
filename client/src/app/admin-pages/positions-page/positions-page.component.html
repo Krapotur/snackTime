@@ -150,17 +150,11 @@
     </div>
 
     <div class="table-bottom" *ngIf="!isEmpty">
-      <button
-        *ngIf="!isEmpty && !isLoading"
-        class="btn"
-        extended=""
-        mat-fab
-        [disabled]="isShowTemplate"
-        (click)="openPage()"
-        routerLink="/st/form-position"
-      >
-        Добавить
-      </button>
+      @if (positions?.length) {
+        <button class="btn" extended="" mat-fab (click)="openPage()">
+          Добавить
+        </button>
+      }
     </div>
   </div>
 

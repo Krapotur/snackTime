@@ -15,19 +15,17 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import {
-  NgClass,
-  NgIf,
-} from '@angular/common';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { NgClass, NgIf } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { Category, Elem, Position } from '../../shared/interfaces';
+import { Elem, Position } from '../../shared/interfaces';
 import { MaterialService } from '../../shared/classes/material.service';
 import { PositionService } from '../../shared/services/position.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { SharedDelService } from '../../shared/services/shared-del.service';
 
 @Component({
   selector: 'app-position-form',
@@ -52,6 +50,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 })
 export class PositionFormComponent implements OnInit, OnDestroy {
   private positionService = inject(PositionService);
+  private sharedDelService = inject(SharedDelService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
@@ -61,7 +60,9 @@ export class PositionFormComponent implements OnInit, OnDestroy {
   positionID: string = '';
   categoryID: string = '';
   image = signal<File | null>(null);
-  uploadedImgLink = computed(() => this.image() ? URL.createObjectURL(this.image()) : null)
+  uploadedImgLink = computed(() =>
+    this.image() ? URL.createObjectURL(this.image()) : null,
+  );
   imageUrl: string | null = null;
   pSub: Subscription;
   cSub: Subscription;
@@ -71,7 +72,7 @@ export class PositionFormComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     if (this.route.snapshot.params['id']) {
-      this.position = this.route.snapshot.params['id']
+      this.positionID = this.route.snapshot.params['id'];
       this.getPositionById();
     }
 
@@ -80,6 +81,11 @@ export class PositionFormComponent implements OnInit, OnDestroy {
     });
 
     this.generateForm();
+
+    this.sharedDelService.sharedData$.subscribe((value) => {
+      this.isDelete = value;
+      this.isDelete ? this.form.disable() : this.form.enable();
+    });
   }
 
   ngOnDestroy() {
@@ -89,29 +95,29 @@ export class PositionFormComponent implements OnInit, OnDestroy {
 
   generateForm(position?: Position) {
     this.form = new FormGroup({
-      title: new FormControl(position ? position.title : '', [
+      title: new FormControl(position?.title ?? null, [
         Validators.required,
         Validators.minLength(3),
         Validators.maxLength(30),
       ]),
-      price: new FormControl(position ? position.price : 0, [
+      price: new FormControl(position?.price ?? null, [
         Validators.required,
         Validators.min(0),
         Validators.max(5000),
       ]),
-      weight: new FormControl(position ? position.weight : 0, [
+      weight: new FormControl(position?.weight ?? null, [
+        Validators.required,
+        Validators.min(20),
+        Validators.max(2000),
+      ]),
+      caloric: new FormControl(position?.caloric ?? 0, [
         Validators.required,
         Validators.min(0),
         Validators.max(2000),
       ]),
-      proteins: new FormControl(position ? position.proteins : 0),
+      proteins: new FormControl(position?.proteins ?? 0),
       fats: new FormControl(position ? position.fats : 0),
       carbs: new FormControl(position ? position.carbs : 0),
-      caloric: new FormControl(position ? position.caloric : 0, [
-        Validators.required,
-        Validators.min(0),
-        Validators.max(2000),
-      ]),
       isPopular: new FormControl(position ? position.isPopular : false),
       discount: new FormControl(position ? position.discount : 0),
       composition: new FormControl(position ? position.composition : '', [
@@ -130,10 +136,12 @@ export class PositionFormComponent implements OnInit, OnDestroy {
   }
 
   getPositionsByCategory() {
-    this.pSub = this.positionService.getPositionsByCategoryID(this.categoryID).subscribe({
-      next: (positions) => (this.positions = positions),
-      error: (error) => MaterialService.toast(error.error.message),
-    });
+    this.pSub = this.positionService
+      .getPositionsByCategoryID(this.categoryID)
+      .subscribe({
+        next: (positions) => (this.positions = positions),
+        error: (error) => MaterialService.toast(error.error.message),
+      });
   }
 
   getPositionById() {
