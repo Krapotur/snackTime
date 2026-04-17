@@ -102,7 +102,7 @@ export class PositionFormComponent implements OnInit, OnDestroy {
       ]),
       price: new FormControl(position?.price ?? null, [
         Validators.required,
-        Validators.min(0),
+        Validators.min(10),
         Validators.max(5000),
       ]),
       weight: new FormControl(position?.weight ?? null, [
@@ -111,13 +111,21 @@ export class PositionFormComponent implements OnInit, OnDestroy {
         Validators.max(2000),
       ]),
       caloric: new FormControl(position?.caloric ?? 0, [
-        Validators.required,
         Validators.min(0),
-        Validators.max(2000),
+        Validators.max(1000),
       ]),
-      proteins: new FormControl(position?.proteins ?? 0),
-      fats: new FormControl(position ? position.fats : 0),
-      carbs: new FormControl(position ? position.carbs : 0),
+      proteins: new FormControl(position?.proteins ?? 0, [
+        Validators.min(0),
+        Validators.max(300),
+      ]),
+      fats: new FormControl(position ? position.fats : 0, [
+        Validators.min(0),
+        Validators.max(300),
+      ]),
+      carbs: new FormControl(position ? position.carbs : 0, [
+        Validators.min(0),
+        Validators.max(300),
+      ]),
       isPopular: new FormControl(position ? position.isPopular : false),
       discount: new FormControl(position ? position.discount : 0),
       composition: new FormControl(position ? position.composition : '', [

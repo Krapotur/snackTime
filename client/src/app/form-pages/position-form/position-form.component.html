@@ -37,37 +37,12 @@
               formControlName="title"
               [ngClass]="{
                 invalid:
-                  form.get('title').invalid && form.get('title')['touched'],
+                  form.get('title')?.invalid && form.get('title')?.touched,
               }"
               (keyup)="checkTitlePosition()"
             />
           </div>
         </div>
-        <span class="error" *ngIf="isError">*Название уже занято </span>
-        <span
-          class="error"
-          *ngIf="
-            form.get('title').hasError('required') &&
-            form.get('title')['touched']
-          "
-          >*Введите название
-        </span>
-        <span
-          class="error"
-          *ngIf="
-            form.get('title').hasError('minlength') &&
-            form.get('title')['touched']
-          "
-          >*Не менее 3х символов
-        </span>
-        <span
-          class="error"
-          *ngIf="
-            form.get('title').hasError('maxlength') &&
-            form.get('title')['touched']
-          "
-          >*Слишком длинное название
-        </span>
 
         <div class="items-row">
           <div class="row">
@@ -81,7 +56,7 @@
                 max="5000"
                 [ngClass]="{
                   invalid:
-                    form.get('price').invalid && form.get('price')['touched'],
+                    form.get('price')?.invalid && form.get('price')?.touched,
                 }"
               />
             </div>
@@ -98,7 +73,7 @@
                 max="2000"
                 [ngClass]="{
                   invalid:
-                    form.get('weight').invalid && form.get('weight')['touched'],
+                    form.get('weight')?.invalid && form.get('weight')?.touched,
                 }"
               />
             </div>
@@ -111,11 +86,12 @@
                 id="caloric"
                 type="number"
                 formControlName="caloric"
+                min="0"
                 max="2000"
                 [ngClass]="{
                   invalid:
-                    form.get('caloric').invalid &&
-                    form.get('caloric')['touched'],
+                    form.get('caloric')?.invalid &&
+                    form.get('caloric')?.touched,
                 }"
               />
             </div>
@@ -126,105 +102,221 @@
           <div class="row">
             <div class="input-field col s6">
               <label class="active" for="proteins">Б</label>
-              <input id="proteins" type="number" formControlName="proteins" />
+              <input
+                id="proteins"
+                type="number"
+                formControlName="proteins"
+                min="0"
+                max="300"
+                [ngClass]="{
+                  invalid:
+                    form.get('proteins')?.invalid &&
+                    form.get('proteins')?.touched,
+                }"
+              />
             </div>
           </div>
 
           <div class="row">
             <div class="input-field col s6">
               <label class="active" for="fats">Ж</label>
-              <input id="fats" type="number" formControlName="fats" />
+              <input
+                id="fats"
+                type="number"
+                formControlName="fats"
+                min="0"
+                max="300"
+                [ngClass]="{
+                  invalid:
+                    form.get('fats')?.invalid && form.get('fats')?.touched,
+                }"
+              />
             </div>
           </div>
 
           <div class="row">
             <div class="input-field col s6">
               <label class="active" for="carbs">У</label>
-              <input id="carbs" type="number" formControlName="carbs" />
+              <input
+                id="carbs"
+                type="number"
+                formControlName="carbs"
+                min="0"
+                max="300"
+                [ngClass]="{
+                  invalid:
+                    form.get('carbs')?.invalid && form.get('carbs')?.touched,
+                }"
+              />
             </div>
           </div>
         </div>
 
         <!--          Validation errors-->
 
+        <!-- Validation for Title -->
+        <span class="error" *ngIf="isError">*Название уже занято </span>
+
         <span
           class="error"
           *ngIf="
-            form.get('price').hasError('required') &&
-            form.get('price')['touched']
+            form.get('title')?.hasError('required') &&
+            form.get('title')?.touched
           "
-          >*Укажите стоимость
+          >*Введите название
         </span>
         <span
           class="error"
           *ngIf="
-            form.get('price').hasError('max') && form.get('price')['touched']
+            form.get('title')?.hasError('minlength') &&
+            form.get('title')?.touched
           "
-          >*Макс. цена: 5 000
+          >*Не менее
+          {{ form.get("title")?.errors?.["minlength"]?.requiredLength }}х
+          символов
+        </span>
+        <span
+          class="error"
+          *ngIf="
+            form.get('title')?.hasError('maxlength') &&
+            form.get('title')?.touched
+          "
+          >*Слишком длинное название:
+          {{ form.get("title")?.errors?.["maxlength"]?.actualLength }}/{{
+            form.get("title")?.errors?.["maxlength"]?.requiredLength
+          }}
+        </span>
+        <!-- Validation for Title -->
+
+        <!-- Validation for Price -->
+        <span
+          class="error"
+          *ngIf="
+            form.get('price')?.hasError('required') &&
+            form.get('price')?.touched
+          "
+          >*Укажите цену
         </span>
 
         <span
           class="error"
           *ngIf="
-            form.get('proteins').hasError('max') &&
-            form.get('proteins')['touched']
+            form.get('price')?.hasError('min') && form.get('price')?.touched
           "
-          >*Макс. количество: 300
+          >*Мин. цена: {{ form.get("price")?.errors?.["min"]?.min }}
         </span>
 
         <span
           class="error"
           *ngIf="
-            form.get('weight').hasError('required') &&
-            form.get('weight')['touched']
+            form.get('price')?.hasError('max') && form.get('price')?.touched
           "
-          >*Укажите
-          {{ form.get("weight").hasError("required") ? "вес" : "калл." }}
+          >*Макс. цена: {{ form.get("price")?.errors?.["max"]?.max }}
         </span>
+        <!-- Validation for Price -->
 
-        @if (form.get("weight").hasError("max")) {
-          <span class="error"
-            >*Макс. {{ form.get("weight").hasError("max") ? "вес" : "калл." }} 2
-            000
-          </span>
-        } @else if (form.get("weight").hasError("min")) {
-          <span class="error"
-            >*Мин. {{ form.get("weight").hasError("min") ? "вес" : "калл." }} 2
-            000
-          </span>
-        }
-
-         <span
+        <!-- Validation for Weight -->
+        <span
           class="error"
           *ngIf="
-            form.get('c').hasError('required') &&
-            form.get('weight')['touched']
+            form.get('weight')?.hasError('required') &&
+            form.get('weight')?.touched
           "
-          >*Укажите
-          {{ form.get("weight").hasError("required") ? "вес" : "калл." }}
+          >*Укажите вес
         </span>
 
         <span
           class="error"
           *ngIf="
-            (form.get('fats').hasError('required') &&
-              form.get('fats')['touched']) ||
-            (form.get('carbs').hasError('required') &&
-              form.get('carbs')['touched'])
+            form.get('weight')?.hasError('min') && form.get('weight')?.touched
           "
-          >*Укажите количество
-          {{ form.get("fats").hasError("required") ? "жиров" : "углеводов" }}
+          >*Мин. вес: {{ form.get("weight")?.errors?.["min"]?.min }}
         </span>
 
         <span
           class="error"
           *ngIf="
-            (form.get('fats').hasError('max') && form.get('fats')['touched']) ||
-            (form.get('carbs').hasError('max') && form.get('carbs')['touched'])
+            form.get('weight')?.hasError('max') && form.get('weight')?.touched
           "
-          >*Макс. количество
-          {{ form.get("fats").hasError("max") ? "жиров" : "углеводов" }}: 300
+          >*Макс. вес: {{ form.get("weight")?.errors?.["max"]?.max }}
         </span>
+        <!-- Validation for Weight -->
+
+        <!-- Validation for Сaloric -->
+        <span
+          class="error"
+          *ngIf="
+            form.get('caloric')?.hasError('min') && form.get('caloric')?.touched
+          "
+          >*Мин. количество ккал:
+          {{ form.get("caloric")?.errors?.["min"]?.min }}
+        </span>
+
+        <span
+          class="error"
+          *ngIf="
+            form.get('caloric')?.hasError('max') && form.get('caloric')?.touched
+          "
+          >*Макс. количество ккал:
+          {{ form.get("caloric")?.errors?.["max"]?.max }}
+        </span>
+        <!-- Validation for Сaloric -->
+
+        <!-- Validation for Protein -->
+        <span
+          class="error"
+          *ngIf="
+            form.get('proteins')?.hasError('min') &&
+            form.get('proteins')?.touched
+          "
+          >*Мин. количество протеинов:
+          {{ form.get("proteins")?.errors?.["min"]?.min }}
+        </span>
+
+        <span
+          class="error"
+          *ngIf="
+            form.get('proteins')?.hasError('max') &&
+            form.get('proteins')?.touched
+          "
+          >*Макс. количество протеинов:
+          {{ form.get("proteins")?.errors?.["max"]?.max }}
+        </span>
+        <!-- Validation for Protein -->
+
+        <!-- Validation for Fats -->
+        <span
+          class="error"
+          *ngIf="form.get('fats')?.hasError('min') && form.get('fats')?.touched"
+          >*Мин. количество жиров:
+          {{ form.get("fats")?.errors?.["min"]?.min }}
+        </span>
+
+        <span
+          class="error"
+          *ngIf="form.get('fats')?.hasError('max') && form.get('fats')?.touched"
+          >*Макс. количество жиров:
+          {{ form.get("fats")?.errors?.["max"]?.max }}
+        </span>
+        <!-- Validation for Fats -->
+
+        <!-- Validation for Сarbs -->
+        <span
+          class="error"
+          *ngIf="form.get('carbs')?.hasError('min') && form.get('carbs')?.touched"
+          >*Мин. количество углеводов:
+          {{ form.get("fats")?.errors?.["min"]?.min }}
+        </span>
+
+        <span
+          class="error"
+          *ngIf="form.get('carbs')?.hasError('max') && form.get('carbs')?.touched"
+          >*Макс. количество углеводов:
+          {{ form.get("carbs")?.errors?.["max"]?.max }}
+        </span>
+        <!-- Validation for Сarbs -->
+
+
         <!--          Validation errors-->
 
         <div class="row">
@@ -244,8 +336,8 @@
             style="padding-left: 10px; font-family: &quot;Lora&quot;, serif"
             [ngClass]="{
               invalid:
-                form.get('composition').invalid &&
-                form.get('composition')['touched'],
+                form.get('composition')?.invalid &&
+                form.get('composition')?.touched,
             }"
             >Состав</label
           >
@@ -254,32 +346,35 @@
             maxlength="300"
             [ngClass]="{
               invalid:
-                form.get('composition').invalid &&
-                form.get('composition')['touched'],
+                form.get('composition')?.invalid &&
+                form.get('composition')?.touched,
             }"
             placeholder="Опишите состав"
             formControlName="composition"
           ></textarea>
           @if (
-            form.get("composition").hasError("required") &&
-            form.get("composition")["touched"]
+            form.get("composition")?.hasError("required") &&
+            form.get("composition")?.touched
           ) {
             <span class="error">*Опишите состав</span>
           }
           @if (
-            form.get("composition").hasError("minlength") &&
-            form.get("composition")["touched"]
+            form.get("composition")?.hasError("minlength") &&
+            form.get("composition")?.touched
           ) {
             <span class="error">*Еще немного информации... </span>
           }
         </div>
 
         <div class="img-block">
-          <label [for]="inputImg" style="font-family: &quot;Lora&quot;, serif"
+          <label
+            for="position-image"
+            style="font-family: &quot;Lora&quot;, serif"
             >Выберите изображение
           </label>
           <div class="img-group">
             <input
+              id="position-image"
               type="file"
               class="dn"
               formControlName="imgSrc"
