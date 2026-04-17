@@ -303,19 +303,22 @@
         <!-- Validation for Сarbs -->
         <span
           class="error"
-          *ngIf="form.get('carbs')?.hasError('min') && form.get('carbs')?.touched"
+          *ngIf="
+            form.get('carbs')?.hasError('min') && form.get('carbs')?.touched
+          "
           >*Мин. количество углеводов:
           {{ form.get("fats")?.errors?.["min"]?.min }}
         </span>
 
         <span
           class="error"
-          *ngIf="form.get('carbs')?.hasError('max') && form.get('carbs')?.touched"
+          *ngIf="
+            form.get('carbs')?.hasError('max') && form.get('carbs')?.touched
+          "
           >*Макс. количество углеводов:
           {{ form.get("carbs")?.errors?.["max"]?.max }}
         </span>
         <!-- Validation for Сarbs -->
-
 
         <!--          Validation errors-->
 
@@ -352,18 +355,41 @@
             placeholder="Опишите состав"
             formControlName="composition"
           ></textarea>
-          @if (
-            form.get("composition")?.hasError("required") &&
-            form.get("composition")?.touched
-          ) {
-            <span class="error">*Опишите состав</span>
-          }
-          @if (
-            form.get("composition")?.hasError("minlength") &&
-            form.get("composition")?.touched
-          ) {
-            <span class="error">*Еще немного информации... </span>
-          }
+
+          <!-- Validation for Сomposition -->
+          <span
+            class="error"
+            *ngIf="
+              form.get('composition')?.hasError('required') &&
+              form.get('composition')?.touched
+            "
+            >*Введите название
+          </span>
+          <span
+            class="error"
+            *ngIf="
+              form.get('composition')?.hasError('minlength') &&
+              form.get('composition')?.touched
+            "
+            >*Не менее
+            {{
+              form.get("composition")?.errors?.["minlength"]?.requiredLength
+            }}х символов
+          </span>
+          <span
+            class="error"
+            *ngIf="
+              form.get('composition')?.hasError('maxlength') &&
+              form.get('composition')?.touched
+            "
+            >*Слишком длинное название:
+            {{
+              form.get("composition")?.errors?.["maxlength"]?.actualLength
+            }}/{{
+              form.get("composition")?.errors?.["maxlength"]?.requiredLength
+            }}
+          </span>
+          <!-- Validation for Сomposition -->
         </div>
 
         <div class="img-block">

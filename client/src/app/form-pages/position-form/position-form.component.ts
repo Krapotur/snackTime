@@ -131,11 +131,9 @@ export class PositionFormComponent implements OnInit, OnDestroy {
       composition: new FormControl(position ? position.composition : '', [
         Validators.required,
         Validators.minLength(10),
+        Validators.maxLength(250),
       ]),
-      imgSrc: new FormControl(
-        position?.imgSrc ?? '',
-        Validators.required,
-      ),
+      imgSrc: new FormControl(position?.imgSrc ?? '', Validators.required),
     });
   }
 

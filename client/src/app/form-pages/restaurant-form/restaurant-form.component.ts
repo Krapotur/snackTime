@@ -1,12 +1,4 @@
-import {
-  Component,
-  computed,
-  ElementRef,
-  OnDestroy,
-  OnInit,
-  signal,
-  ViewChild,
-} from '@angular/core';
+import { Component, computed, OnDestroy, OnInit, signal } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -17,13 +9,13 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatOptionModule } from '@angular/material/core';
-import { NgClass, NgForOf, NgIf, NgOptimizedImage } from '@angular/common';
+import { NgClass, NgForOf, NgIf } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import { Elem, Kitchen, Restaurant } from '../../shared/interfaces';
 import { Subscription } from 'rxjs';
 import { KitchenService } from '../../shared/services/kitchen.service';
 import { MaterialService } from '../../shared/classes/material.service';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RestaurantService } from '../../shared/services/restaurant.service';
 import { FilterKitchenPipe } from '../../shared/pipes/filter-kitchen.pipe';
 import { DeleteTemplateComponent } from '../../shared/components/delete-template/delete-template.component';
@@ -59,7 +51,9 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
   restaurant: Restaurant;
   elem: Elem;
   image = signal<File | null>(null);
-  uploadedImgLink = computed(() => this.image() ? URL.createObjectURL(this.image()) : null)
+  uploadedImgLink = computed(() =>
+    this.image() ? URL.createObjectURL(this.image()) : null,
+  );
   isError = false;
   isDelete = false;
   restaurantID: string;
@@ -72,8 +66,7 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
     private restaurantService: RestaurantService,
     private router: Router,
     private route: ActivatedRoute,
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.restaurantID = this.route.snapshot.params['id']
@@ -93,36 +86,26 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
 
   generateForm(restaurant?: Restaurant) {
     this.form = new FormGroup({
-      title: new FormControl(restaurant ? restaurant.title : '', [
+      title: new FormControl(restaurant?.title ?? '', [
         Validators.required,
         Validators.minLength(3),
         Validators.maxLength(16),
       ]),
-      description: new FormControl(restaurant ? restaurant.description : '', [
+      description: new FormControl(restaurant?.description ?? '', [
         Validators.required,
         Validators.minLength(50),
       ]),
-      timeOpen: new FormControl(
-        restaurant ? restaurant.timeOpen : 0,
-        Validators.required,
-      ),
+      timeOpen: new FormControl(restaurant?.timeOpen ?? 0, Validators.required),
       timeClose: new FormControl(
-        restaurant ? restaurant.timeClose : 0,
+        restaurant?.timeClose ?? 0,
         Validators.required,
       ),
-      kitchen: new FormControl(
-        restaurant ? restaurant.kitchen : '',
-        Validators.required,
-      ),
+      kitchen: new FormControl(restaurant?.kitchen ?? '', Validators.required),
       typePlace: new FormControl(
-        restaurant
-          ? restaurant.typePlace == 'restaurant'
-            ? 'Ресторан'
-            : 'Кафе'
-          : '',
+        restaurant?.typePlace ?? '',
         Validators.required,
       ),
-      imgSrc: new FormControl('', Validators.required),
+      imgSrc: new FormControl(restaurant?.imgSrc ?? '', Validators.required),
     });
   }
 
@@ -209,9 +192,9 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
     if (title.length > 5) {
       this.restaurants.some(
         (restaurant) =>
-        (this.isError =
-          title.toLowerCase() == restaurant.title.toLocaleLowerCase() &&
-          restaurant._id !== this.restaurantID),
+          (this.isError =
+            title.toLowerCase() == restaurant.title.toLocaleLowerCase() &&
+            restaurant._id !== this.restaurantID),
       );
     }
   }

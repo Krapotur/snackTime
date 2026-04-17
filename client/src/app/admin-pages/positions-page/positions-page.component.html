@@ -63,9 +63,9 @@
 
             <!-- Discount Column -->
             <ng-container matColumnDef="discount">
-              <th mat-header-cell *matHeaderCellDef>Скидка</th>
+              <th mat-header-cell *matHeaderCellDef>Скидка %</th>
               <td mat-cell *matCellDef="let position" style="color: red">
-                {{ position["discount"] }}%
+                {{ position["discount"] > 0 ?  position["discount"] : 'нет'  }}
               </td>
             </ng-container>
 
