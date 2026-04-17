@@ -193,7 +193,10 @@ export class UserFormComponent implements OnInit, OnDestroy {
       fd.append('restaurant', this.form.get('restaurant').value);
     }
 
+    console.log('fd before', fd)
+
     if (!this.user) {
+      console.log(fd)
       this.uSub = this.userService.create(fd).subscribe({
         next: (message) => {
           MaterialService.toast(message.message);

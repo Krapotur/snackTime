@@ -93,7 +93,9 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
       ]),
       description: new FormControl(restaurant?.description ?? '', [
         Validators.required,
-        Validators.minLength(50),
+        Validators.minLength(20),
+        Validators.maxLength(100),
+
       ]),
       timeOpen: new FormControl(restaurant?.timeOpen ?? 0, Validators.required),
       timeClose: new FormControl(

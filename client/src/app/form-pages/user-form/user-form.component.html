@@ -37,8 +37,8 @@
               formControlName="lastName"
               [ngClass]="{
                 invalid:
-                  this.form.get('lastName').invalid &&
-                  this.form.get('lastName')['touched'],
+                  form.get('lastName')?.invalid &&
+                  form.get('lastName')?.touched,
               }"
             />
           </div>
@@ -46,24 +46,24 @@
         <span
           class="error"
           *ngIf="
-            form.get('lastName').hasError('required') &&
-            form.get('lastName')['touched']
+            form.get('lastName')?.hasError('required') &&
+            form.get('lastName')?.touched
           "
           >*Введите фамилию
         </span>
         <span
           class="error"
           *ngIf="
-            form.get('lastName').hasError('minlength') &&
-            form.get('lastName')['touched']
+            form.get('lastName')?.hasError('minlength') &&
+            form.get('lastName')?.touched
           "
           >*Не менее 3х символов
         </span>
         <span
           class="error"
           *ngIf="
-            form.get('lastName').hasError('maxlength') &&
-            form.get('lastName')['touched']
+            form.get('lastName')?.hasError('maxlength') &&
+            form.get('lastName')?.touched
           "
           >*Слишком длинная фамилия
         </span>
@@ -77,8 +77,8 @@
               formControlName="firstName"
               [ngClass]="{
                 invalid:
-                  this.form.get('firstName').invalid &&
-                  this.form.get('firstName')['touched'],
+                  form.get('firstName')?.invalid &&
+                  form.get('firstName')?.touched,
               }"
             />
           </div>
@@ -86,24 +86,24 @@
         <span
           class="error"
           *ngIf="
-            form.get('firstName').hasError('required') &&
-            form.get('firstName')['touched']
+            form.get('firstName')?.hasError('required') &&
+            form.get('firstName')?.touched
           "
           >*Введите имя
         </span>
         <span
           class="error"
           *ngIf="
-            form.get('firstName').hasError('minlength') &&
-            form.get('firstName')['touched']
+            form.get('firstName')?.hasError('minlength') &&
+            form.get('firstName')?.touched
           "
           >*Не менее 3х символов
         </span>
         <span
           class="error"
           *ngIf="
-            form.get('firstName').hasError('maxlength') &&
-            form.get('firstName')['touched']
+            form.get('firstName')?.hasError('maxlength') &&
+            form.get('firstName')?.touched
           "
           >*Слишком длинное имя
         </span>
@@ -117,8 +117,8 @@
               formControlName="email"
               [ngClass]="{
                 invalid:
-                  this.form.get('email').invalid &&
-                  this.form.get('email')['touched'],
+                  form.get('email')?.invalid &&
+                  form.get('email')?.touched,
               }"
             />
           </div>
@@ -126,7 +126,7 @@
         <span
           class="error"
           *ngIf="
-            form.get('email').hasError('email') && form.get('email')['touched']
+            form.get('email')?.hasError('email') && form.get('email')?.touched
           "
           >*Неверный формат
         </span>
@@ -140,8 +140,8 @@
               formControlName="phone"
               [ngClass]="{
                 invalid:
-                  this.form.get('phone').invalid &&
-                  this.form.get('phone')['touched'],
+                  form.get('phone')?.invalid &&
+                  form.get('phone')?.touched,
               }"
             />
           </div>
@@ -149,16 +149,16 @@
         <span
           class="error"
           *ngIf="
-            form.get('phone').hasError('required') &&
-            form.get('phone')['touched']
+            form.get('phone')?.hasError('required') &&
+            form.get('phone')?.touched
           "
           >*Введите телефон
         </span>
         <span
           class="error"
           *ngIf="
-            (form.get('phone').hasError('pattern') || !checkValidNumber()) &&
-            form.get('phone')['touched']
+            (form.get('phone')?.hasError('pattern') || !checkValidNumber()) &&
+            form.get('phone')?.touched
           "
           >*Укажите в формате 79XX ... .. ..
         </span>
@@ -180,8 +180,8 @@
         <span
           class="error"
           *ngIf="
-            form.get('group').hasError('required') &&
-            form.get('group')['touched']
+            form.get('group')?.hasError('required') &&
+            form.get('group')?.touched
           "
           >*Выберите группу
         </span>
@@ -220,7 +220,7 @@
               formControlName="login"
               [ngClass]="{
                 invalid:
-                  form.get('login').invalid && form.get('login')['touched'],
+                  form.get('login')?.invalid && form.get('login')?.touched,
               }"
               (keyup)="checkLogin()"
             />
@@ -230,24 +230,24 @@
         ><span
           class="error"
           *ngIf="
-            form.get('login').hasError('required') &&
-            form.get('login')['touched']
+            form.get('login')?.hasError('required') &&
+            form.get('login')?.touched
           "
           >*Придумайте логин
         </span>
         <span
           class="error"
           *ngIf="
-            form.get('login').hasError('minlength') &&
-            form.get('login')['touched']
+            form.get('login')?.hasError('minlength') &&
+            form.get('login')?.touched
           "
           >*Не менее 3 символов
         </span>
         <span
           class="error"
           *ngIf="
-            form.get('login').hasError('maxlength') &&
-            form.get('login')['touched']
+            form.get('login')?.hasError('maxlength') &&
+            form.get('login')?.touched
           "
           >*Не более 10 символов
         </span>
@@ -273,8 +273,8 @@
                 formControlName="password"
                 [ngClass]="{
                   invalid:
-                    form.get('password').invalid &&
-                    form.get('password')['touched'],
+                    form.get('password')?.invalid &&
+                    form.get('password')?.touched,
                 }"
               />
             </div>
@@ -282,24 +282,24 @@
           <span
             class="error"
             *ngIf="
-              form.get('password').hasError('required') &&
-              form.get('password')['touched']
+              form.get('password')?.hasError('required') &&
+              form.get('password')?.touched
             "
             >*Введите пароль
           </span>
           <span
             class="error"
             *ngIf="
-              form.get('password').hasError('minlength') &&
-              form.get('password')['touched']
+              form.get('password')?.hasError('minlength') &&
+              form.get('password')?.touched
             "
             >*Не менее 7 символов
           </span>
-          <span class="error" *ngIf="form.get('password').hasError('maxlength')"
+          <span class="error" *ngIf="form.get('password')?.hasError('maxlength')"
             >*Не более 15 символов
           </span>
 
-          <div class="row" *ngIf="form.get('password').valid">
+          <div class="row" *ngIf="form.get('password')?.valid">
             <div class="input-field col s6">
               <label class="active" for="pswConfirm"
                 >*Подтверждение пароля</label
@@ -310,8 +310,8 @@
                 formControlName="pswConfirm"
                 [ngClass]="{
                   invalid:
-                    form.get('pswConfirm').invalid &&
-                    form.get('pswConfirm')['touched'],
+                    form.get('pswConfirm')?.invalid &&
+                    form.get('pswConfirm')?.touched,
                 }"
               />
             </div>
@@ -320,8 +320,8 @@
             <span
               class="error"
               *ngIf="
-                form.get('pswConfirm').hasError('required') &&
-                form.get('pswConfirm')['touched']
+                form.get('pswConfirm')?.hasError('required') &&
+                form.get('pswConfirm')?.touched
               "
               >*Подтвердите пароль
             </span>
@@ -331,7 +331,7 @@
               class="error"
               *ngIf="
                 checkValidConfirmPsw() &&
-                !form.get('pswConfirm').hasError('required')
+                !form.get('pswConfirm')?.hasError('required')
               "
               >*Пароли не совпадают
             </span>
@@ -339,12 +339,13 @@
         </div>
 
         <div *ngIf="form.enabled" class="img-block">
-          <label [for]="inputImg">Изображение </label>
+          <label for="user-image">Изображение </label>
           <div class="img-group">
             <span *ngIf="image "
               >Изображение загружено!</span
             >
             <input
+              id="user-image"
               type="file"
               class="dn"
               formControlName="imgSrc"
@@ -422,8 +423,8 @@
             formControlName="password"
             [ngClass]="{
               invalid:
-                formPsw.get('password').invalid &&
-                formPsw.get('password')['touched'],
+                formPsw.get('password')?.invalid &&
+                formPsw.get('password')?.touched,
             }"
           />
         </div>
@@ -431,20 +432,20 @@
       <span
         class="error"
         *ngIf="
-          formPsw.get('password').hasError('required') &&
-          formPsw.get('password')['touched']
+          formPsw.get('password')?.hasError('required') &&
+          formPsw.get('password')?.touched
         "
         >*Введите пароль
       </span>
       <span
         class="error"
         *ngIf="
-          formPsw.get('password').hasError('minlength') &&
-          formPsw.get('password')['touched']
+          formPsw.get('password')?.hasError('minlength') &&
+          formPsw.get('password')?.touched
         "
         >*Не менее 7 символов
       </span>
-      <span class="error" *ngIf="formPsw.get('password').hasError('maxlength')"
+      <span class="error" *ngIf="formPsw.get('password')?.hasError('maxlength')"
         >*Не более 15 символов
       </span>
 
@@ -456,8 +457,8 @@
             formControlName="pswConfirm"
             [ngClass]="{
               invalid:
-                formPsw.get('pswConfirm').invalid &&
-                formPsw.get('pswConfirm')['touched'],
+                formPsw.get('pswConfirm')?.invalid &&
+                formPsw.get('pswConfirm')?.touched,
             }"
           />
         </div>
@@ -465,17 +466,17 @@
       <span
         class="error"
         *ngIf="
-          formPsw.get('pswConfirm').hasError('required') &&
-          formPsw.get('pswConfirm')['touched']
+          formPsw.get('pswConfirm')?.hasError('required') &&
+          formPsw.get('pswConfirm')?.touched
         "
         >*Подтвердите пароль
       </span>
       <span
         class="error"
         *ngIf="
-          formPsw.get('password').value !== formPsw.get('pswConfirm').value &&
-          formPsw.get('pswConfirm')['touched'] &&
-          formPsw.get('pswConfirm').value.length > 0
+          formPsw.get('password')?.value !== formPsw.get('pswConfirm')?.value &&
+          formPsw.get('pswConfirm')?.touched &&
+          formPsw.get('pswConfirm')?.value?.length > 0
         "
         >*Пароли не совпадают
       </span>
@@ -498,7 +499,7 @@
         mat-fab
         [disabled]="
           formPsw.invalid ||
-          formPsw.get('password').value !== formPsw.get('pswConfirm').value
+          formPsw.get('password')?.value !== formPsw.get('pswConfirm')?.value
         "
         (click)="updatePassword()"
       >
