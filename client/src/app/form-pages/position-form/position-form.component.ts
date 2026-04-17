@@ -126,9 +126,6 @@ export class PositionFormComponent implements OnInit, OnDestroy {
         Validators.min(0),
         Validators.max(300),
       ]),
-      proteins: new FormControl(position?.proteins ?? 0),
-      fats: new FormControl(position ? position.fats : 0),
-      carbs: new FormControl(position ? position.carbs : 0),
       isPopular: new FormControl(position ? position.isPopular : false),
       discount: new FormControl(position ? position.discount : 0),
       composition: new FormControl(position ? position.composition : '', [
