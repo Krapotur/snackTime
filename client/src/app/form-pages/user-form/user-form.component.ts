@@ -65,23 +65,23 @@ export class UserFormComponent implements OnInit, OnDestroy {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
-  form: FormGroup;
-  formPsw: FormGroup;
-  rSub: Subscription;
-  uSub: Subscription;
-  gSub: Subscription;
+  form!: FormGroup;
+  formPsw: FormGroup | null = null;
+  rSub?: Subscription;
+  uSub?: Subscription;
+  gSub?: Subscription;
   restaurants: Restaurant[] = [];
   groups: Group[] = [];
   user: User | undefined;
   users: User[] = [];
   isDelete = false;
-  userID: string;
-  elem: Elem;
-  image: File;
+  userID = '';
+  elem!: Elem;
+  image: File | null = null;
   isChecked = true;
   isError = false;
 
-  @ViewChild('inputImg') inputImgRef: ElementRef;
+  @ViewChild('inputImg') inputImgRef?: ElementRef;
 
   ngOnInit() {
     this.userID = this.route.snapshot.params['id']
@@ -97,37 +97,38 @@ export class UserFormComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.rSub) this.rSub.unsubscribe();
     if (this.uSub) this.uSub.unsubscribe();
+    if (this.gSub) this.gSub.unsubscribe();
   }
 
   generateForm(user?: User) {
     this.form = new FormGroup({
-      lastName: new FormControl(user ? user.lastName : '', [
+      lastName: new FormControl(user?.lastName ?? '', [
         Validators.required,
         Validators.minLength(3),
         Validators.maxLength(10),
       ]),
-      firstName: new FormControl(user ? user.firstName : '', [
+      firstName: new FormControl(user?.firstName ?? '', [
         Validators.required,
         Validators.minLength(3),
         Validators.maxLength(10),
       ]),
-      login: new FormControl(user ? user.login : '', [
+      login: new FormControl(user?.login ?? '', [
         Validators.required,
         Validators.minLength(3),
         Validators.maxLength(10),
       ]),
-      email: new FormControl(user ? user.email : '', [
+      email: new FormControl(user?.email ?? '', [
         Validators.email,
         Validators.minLength(3),
         Validators.maxLength(40),
       ]),
-      phone: new FormControl(user ? user.phone : '', [
+      phone: new FormControl(user?.phone ?? '', [
         Validators.required,
         Validators.pattern('^((\\+7?)|0)?[0-9]{11}$'),
       ]),
-      group: new FormControl(user ? user.group : '', Validators.required),
-      restaurant: new FormControl(user ? user.restaurant : ''),
-      imgSrc: new FormControl(''),
+      group: new FormControl(user?.group ?? '', Validators.required),
+      restaurant: new FormControl(user?.restaurant ?? ''),
+      imgSrc: new FormControl(user?.imgSrc ?? ''),
     });
 
     if (this.userID.length == 0) {
@@ -159,10 +160,11 @@ export class UserFormComponent implements OnInit, OnDestroy {
   }
 
   updatePassword() {
-    delete this.user.status;
-    let user: User = {
-      ...this.user,
-      password: this.formPsw.get('pswConfirm').value,
+    if (!this.user || !this.formPsw) return;
+    const { status, ...safeUser } = this.user;
+    const user: User = {
+      ...safeUser,
+      password: this.formPsw.get('pswConfirm')?.value,
     };
 
     this.uSub = this.userService.update(null, user, user._id).subscribe({
@@ -179,24 +181,22 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
     if (this.image) fd.append('image', this.image, this.image.name);
 
-    fd.append('lastName', this.form.get('lastName').value);
-    fd.append('firstName', this.form.get('firstName').value);
-    fd.append('login', this.form.get('login').value);
-    fd.append('email', this.form.get('email').value);
-    fd.append('phone', this.form.get('phone').value);
-    fd.append('group', this.form.get('group').value);
+    fd.append('lastName', this.form.get('lastName')?.value ?? '');
+    fd.append('firstName', this.form.get('firstName')?.value ?? '');
+    fd.append('login', this.form.get('login')?.value ?? '');
+    fd.append('email', this.form.get('email')?.value ?? '');
+    fd.append('phone', this.form.get('phone')?.value ?? '');
+    fd.append('group', this.form.get('group')?.value ?? '');
     if (this.form.get('password')) {
-      fd.append('password', this.form.get('password').value);
+      fd.append('password', this.form.get('password')?.value ?? '');
     }
 
-    if (this.isChecked && this.form.get('restaurant').value.length > 0) {
-      fd.append('restaurant', this.form.get('restaurant').value);
+    const restaurantValue = this.form.get('restaurant')?.value;
+    if (this.isChecked && restaurantValue?.length > 0) {
+      fd.append('restaurant', restaurantValue);
     }
-
-    console.log('fd before', fd)
 
     if (!this.user) {
-      console.log(fd)
       this.uSub = this.userService.create(fd).subscribe({
         next: (message) => {
           MaterialService.toast(message.message);
@@ -263,11 +263,10 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
   uploadImg($event: any) {
     this.image = $event.target.files[0];
-    console.log(this.image);
   }
 
   triggerClick() {
-    this.inputImgRef.nativeElement.click();
+    this.inputImgRef?.nativeElement.click();
   }
 
   openUsersPage() {
@@ -282,22 +281,24 @@ export class UserFormComponent implements OnInit, OnDestroy {
 
   checkValidNumber(): boolean {
     let isTrue = true;
-    if (this.form.get('phone').value) {
-      isTrue = this.form.get('phone').value.toString().charAt(0) == '7';
+    if (this.form.get('phone')?.value) {
+      isTrue = this.form.get('phone')?.value.toString().charAt(0) == '7';
     }
     return isTrue;
   }
 
   checkValidConfirmPsw(): boolean {
+    const password = this.form.get('password');
+    const pswConfirm = this.form.get('pswConfirm');
+    if (!password || !pswConfirm) return false;
     return (
-      this.form.get('password').value !== this.form.get('pswConfirm').value &&
-      this.form.get('pswConfirm')['touched']
+      password.value !== pswConfirm.value && pswConfirm.touched
     );
   }
 
   checkLogin() {
-    const login = this.form.get('login').value;
-    if (login.length >= 2) {
+    const login = this.form.get('login')?.value;
+    if (typeof login === 'string' && login.length >= 2) {
       this.isError = this.users.some(
         (user) =>
           login.toLowerCase() == user.login.toLowerCase() &&
