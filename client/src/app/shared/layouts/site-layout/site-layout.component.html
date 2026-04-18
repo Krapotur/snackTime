@@ -24,15 +24,13 @@
             <li routerLinkActive="active"><a routerLink="/st/dashboard"
                                              *ngIf="isAdmin"
             >Главная</a></li>
-            <li routerLinkActive="active"><a routerLink="/st/overview"
-                                             *ngIf="!isAdmin"
-            >Аналитика</a></li>
+           
             <li routerLinkActive="active"><a routerLink="/st/users"
                                              *ngIf="isAdmin"
             >Пользователи</a></li>
             <li routerLinkActive="active"><a routerLink="/st/restaurants"
                                              *ngIf="isAdmin"
-            >Рестораны</a>
+            >Рестораны</a></li>
             <li routerLinkActive="active"><a routerLink="/st/assortment">Ассортимент</a></li>
             <li (click)="logout()"><a>Выйти</a></li>
           </ul>

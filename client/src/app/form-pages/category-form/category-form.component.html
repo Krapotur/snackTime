@@ -48,9 +48,10 @@
         </div>
 
         <div class="img-block">
-          <label>Выберите изображение </label>
+          <label for="category-image">Выберите изображение </label>
           <div class="img-group">
-            <input type="file" class="dn" formControlName="imgSrc" #inputImg (change)="uploadImg($event)" />
+            <input id="category-image" type="file" class="dn" formControlName="imgSrc" #inputImg
+              (change)="uploadImg($event)" />
             <img (click)="inputImg.click()" [class.dn]="isDelete" [class.img-true]="category || uploadedImgLink()"
               [class.img-icon]="!category && !uploadedImgLink()" [src]="
                 category?.imgSrc ?? uploadedImgLink() ??

@@ -9,30 +9,39 @@
     flex-direction: row;
     align-items: flex-start;
     justify-content: center;
-    padding: 40px 70px;
+    gap: 24px;
+    padding: 26px 26px 18px;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .container-left {
     display: flex;
     flex-direction: column;
+    width: 100%;
+    max-width: 340px;
   }
 
   .container-right {
     display: flex;
     flex-direction: column;
-    margin-left: 50px;
+    margin-left: 0;
     align-items: center;
+    width: 100%;
+    max-width: 340px;
   }
 }
 
 .row .col.s6 {
-  width: 200px;
+  width: 100%;
   margin-bottom: 0;
   padding: 0;
 
   input {
     margin: 5px 0;
-    padding-left: 5px;
+    padding-left: 10px;
+    width: 100%;
+    box-sizing: border-box;
   }
 }
 
@@ -42,6 +51,7 @@ label {
 
 mat-form-field {
   margin-top: 5px;
+  width: 100%;
 }
 
 input::-webkit-outer-spin-button,
@@ -50,36 +60,41 @@ input::-webkit-inner-spin-button {
 }
 
 .btn-psw {
-  width: 145px;
+  width: 100%;
+  max-width: 220px;
   height: 40px;
-  border-radius: 0;
+  border-radius: 10px;
   background-color: #26a69a;
   color: white;
   font-family: 'Lora', serif;
   margin-top: 15px;
+  box-shadow: 0 8px 16px rgba(28, 89, 82, 0.2);
 }
 
 .btn-group {
-  width: 76%;
+  width: 100%;
+  max-width: 820px;
 
   .btn-save {
-    margin-left: 10px;
+    margin-left: 0;
   }
 }
 
 .container-change-psw {
-  position: absolute;
+  position: fixed;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  left: 48%;
-  top: 10%;
-  width: 350px;
-  box-shadow: grey 0 2px 5px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(360px, 95vw);
+  border-radius: 14px;
+  box-shadow: 0 16px 34px rgba(22, 41, 78, 0.22);
   background-color: white;
   padding: 0 0 10px 0;
-  z-index: 1;
+  z-index: 1000;
 
   h3 {
     color: white;
@@ -94,5 +109,17 @@ input::-webkit-inner-spin-button {
 
   span {
     padding-left: 10px;
+  }
+}
+
+@media (max-width: 992px) {
+  .container-block .container-row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .container-block .container-left,
+  .container-block .container-right {
+    max-width: 360px;
   }
 }

@@ -6,16 +6,23 @@ $lora: 'Source Sans Pro', Lora, Arial, sans-serif;
 
 .row {
   input {
-    width: 225px;
-    padding-left: 15px;
+    width: 300px;
+    padding-left: 12px;
   }
 }
 
 mat-form-field {
-  width: 300px;
-  padding-top: 20px;
+  width: 320px;
+  padding-top: 12px;
 
   span {
     color: grey;
+  }
+}
+
+@media (max-width: 768px) {
+  .row input,
+  mat-form-field {
+    width: 100%;
   }
 }

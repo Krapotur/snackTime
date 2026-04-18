@@ -1,10 +1,40 @@
 .main {
-  margin-right: 30px;
+  margin-right: 20px;
+  width: 100%;
 }
 
 .tables {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  flex-direction: column;
+  flex-direction: row;
+  gap: 20px;
+  width: 100%;
+}
+
+.tables .main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+app-kitchens-page {
+  display: block;
+  width: 360px;
+  min-width: 300px;
+  background: #fff;
+  border: 1px solid #e8edf4;
+  border-radius: 14px;
+  padding: 14px;
+  box-shadow: 0 8px 20px rgba(24, 41, 74, 0.08);
+}
+
+@media (max-width: 1100px) {
+  .tables {
+    flex-direction: column;
+  }
+
+  app-kitchens-page {
+    width: 100%;
+    min-width: 0;
+  }
 }

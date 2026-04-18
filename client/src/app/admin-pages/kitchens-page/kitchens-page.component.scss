@@ -1,5 +1,22 @@
 
 .main {
-  width: 350px;
-  margin-top: 28px;
+  width: 100%;
+  margin-top: 0;
+
+  h5 {
+    margin: 0 0 8px;
+    font: 700 20px 'Lora', serif;
+    color: #293047;
+  }
+
+  .btn {
+    margin-top: 12px;
+    width: 100%;
+  }
+
+  .mat-elevation-z8 {
+    border-radius: 12px;
+    border: 1px solid #e9edf4;
+    box-shadow: none;
+  }
 }
