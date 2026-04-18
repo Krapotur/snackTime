@@ -5,18 +5,39 @@ const errorHandler = require("../utils/errorHandler");
 
 module.exports.getAll = async function (req, res) {
   try {
-    const group = await Group.findOne({ _id: req.query.groupID })
-    const restaurant = await Restaurant.findOne({ _id: req.query.restaurantID })
+    const { groupID, restaurantID } = req.query;
 
-    await Category.find().then((categories) => {
-      if (group.alias === 'administrator') {
-        res.status(200).json(categories);
-      } else {
-        categories.filter((category) => category.restaurant == restaurant._id);
-        res.status(200).json(categories);
+    // Angular can send "undefined" as string in query params.
+    const normalizedGroupID =
+      groupID && groupID !== "undefined" ? groupID : null;
+    const normalizedRestaurantID =
+      restaurantID && restaurantID !== "undefined" ? restaurantID : null;
+
+    // If group is admin -> return all categories.
+    if (normalizedGroupID) {
+      const group = await Group.findById(normalizedGroupID);
+      if (group?.alias === "administrator") {
+        const categories = await Category.find();
+        return res.status(200).json(categories);
       }
     }
-    );
+
+    // For non-admin users return categories for specific restaurant.
+    if (normalizedRestaurantID) {
+      const restaurant = await Restaurant.findById(normalizedRestaurantID);
+      if (!restaurant) {
+        return res.status(200).json([]);
+      }
+
+      const categories = await Category.find({
+        restaurant: restaurant._id,
+      });
+      return res.status(200).json(categories);
+    }
+
+    // Fallback: no filters passed.
+    const categories = await Category.find();
+    return res.status(200).json(categories);
   } catch (e) {
     errorHandler(res, e);
   }

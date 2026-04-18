@@ -177,6 +177,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    console.log('sssssssssssssssssssss')
     const fd = new FormData();
 
     if (this.image) fd.append('image', this.image, this.image.name);

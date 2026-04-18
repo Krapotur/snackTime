@@ -19,6 +19,7 @@ router.get(
 router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
+  upload.single("image"),
   controller.create,
 );
 router.patch(

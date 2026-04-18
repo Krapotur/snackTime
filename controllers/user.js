@@ -35,18 +35,20 @@ module.exports.delete = async function (req, res) {
 };
 
 module.exports.create = async function (req, res) {
-  console.log(req.body)
-  const candidate = await User.findOne({ login: req.body.login });
-  if (candidate) {
+  const candidateByLogin = await User.findOne({ login: req.body.login });
+  if (candidateByLogin) {
     res.status(409).json({
       message: `Логин ${req.body.login} уже занят`,
     });
+    return;
   }
 
-  if (candidate) {
+  const candidateByPhone = await User.findOne({ phone: req.body.phone });
+  if (candidateByPhone) {
     res.status(409).json({
       message: `Номер ${req.body.phone} уже занят`,
     });
+    return;
   } else {
     const salt = bcrypt.genSaltSync(10);
     const password = req.body.password ? req.body.password : "";
@@ -60,7 +62,7 @@ module.exports.create = async function (req, res) {
       password: password.length > 0 ? bcrypt.hashSync(password, salt) : "",
       restaurant: req.body.restaurant ?? "",
       group: req.body.group ?? "",
-      imgSrc: req.file ?? "",
+      imgSrc: req.file ? req.file.path : "",
     });
 
     try {

@@ -3,26 +3,26 @@
     Категории<span>({{ categories?.length }})</span>
   </h5>
 
-  @if (!isAdmin && categories) {
+  @if (!isAdmin && categories?.length) {
     <div class="pos-absolute">
       <button class="btn-edit" (click)="isAdmin = !isAdmin">
         Редактировать
       </button>
     </div>
-  } @else if (categories) {
+  } @else if (categories?.length) {
     <div class="pos-absolute" (click)="isAdmin = !isAdmin">
       <img src="../../../assets/icons/plitka.png" alt="Plitka" />
     </div>
   }
 </div>
 
+@if (isEmpty) {
+  <app-empty [page]="activeRoute"></app-empty>
+}
+
 <!--Table-->
 @if (isAdmin) {
   <div class="main">
-    @if (isEmpty) {
-      <app-empty [page]="activeRoute"></app-empty>
-    }
-
     <div *ngIf="!isEmpty">
       <div class="mat-elevation-z8">
         <section class="table-section mat-elevation-z8" tabindex="0">
@@ -44,7 +44,19 @@
                 style="cursor: pointer"
                 (click)="openPositions(category['_id'])"
               >
-                {{ category.title }}
+                {{ category?.title }}
+              </td>
+            </ng-container>
+         
+            <!-- Restaurant Column -->
+            <ng-container matColumnDef="restaurant">
+              <th mat-header-cell *matHeaderCellDef>Заведение</th>
+              <td
+                mat-cell
+                *matCellDef="let category"
+                style="cursor: pointer"
+              >
+                {{ category?.restaurant }}
               </td>
             </ng-container>
 
@@ -66,7 +78,7 @@
               <th mat-header-cell *matHeaderCellDef>Статус</th>
               <td mat-cell *matCellDef="let category">
                 <mat-slide-toggle
-                  [checked]="category.status"
+                  [checked]="category?.status"
                   color="warn"
                   (click)="changeStatus(category)"
                 ></mat-slide-toggle>

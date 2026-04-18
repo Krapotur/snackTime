@@ -49,7 +49,7 @@ export class CategoriesPageComponent implements OnInit, OnDestroy {
   isAdmin = false
   activeRoute = 'form-category'
   dataSource: MatTableDataSource<Category>;
-  displayedColumns: string[] = ['#', 'title', 'edit', 'status'];
+  displayedColumns: string[] = ['#', 'title', 'restaurant', 'edit', 'status'];
   cSub: Subscription
   gSub: Subscription
 
@@ -72,7 +72,7 @@ export class CategoriesPageComponent implements OnInit, OnDestroy {
 
     this.cSub = this.categoryService.getCategories(profile['rest'], profile['group']).subscribe({
       next: categories => {
-        if (categories.length == 0) this.isEmpty = true
+        if (categories.length === 0) this.isEmpty = true
         this.isLoading = false
         this.categories = categories
         categories.map(category => category.position = position++)
