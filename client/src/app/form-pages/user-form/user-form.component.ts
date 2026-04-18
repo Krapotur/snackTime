@@ -25,7 +25,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FilterKitchenPipe } from '../../shared/pipes/filter-kitchen.pipe';
 import { DeleteTemplateComponent } from '../../shared/components/delete-template/delete-template.component';
-import { FilterRestaurantPipe } from '../../shared/pipes/filter-restaurant';
+import { FilterRestaurantPipe } from '../../shared/pipes/filter-restaurant.pipe';
 import { UserService } from '../../shared/services/user.service';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { GroupService } from '../../shared/services/group.service';

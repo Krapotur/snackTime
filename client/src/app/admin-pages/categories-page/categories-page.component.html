@@ -49,14 +49,14 @@
             </ng-container>
          
             <!-- Restaurant Column -->
-            <ng-container matColumnDef="restaurant">
+            <ng-container matColumnDef="restaurant" *ngIf="isAdmin">
               <th mat-header-cell *matHeaderCellDef>Заведение</th>
               <td
                 mat-cell
                 *matCellDef="let category"
                 style="cursor: pointer"
               >
-                {{ category?.restaurant }}
+                {{ category?.restaurant | filterRestaurant: (restaurants || []) }}
               </td>
             </ng-container>
 

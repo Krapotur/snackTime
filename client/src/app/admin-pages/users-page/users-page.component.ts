@@ -15,7 +15,7 @@ import {MaterialService} from "../../shared/classes/material.service";
 import {LoaderComponent} from "../../shared/components/loader/loader.component";
 import {EmptyComponent} from "../../shared/components/empty/empty.component";
 import {RestaurantService} from "../../shared/services/restaurant.service";
-import {FilterRestaurantPipe} from "../../shared/pipes/filter-restaurant";
+import {FilterRestaurantPipe} from "../../shared/pipes/filter-restaurant.pipe";
 import {GroupService} from "../../shared/services/group.service";
 import {FilterGroupPipe} from "../../shared/pipes/filter-group.pipe";
 
