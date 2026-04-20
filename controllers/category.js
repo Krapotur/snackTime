@@ -1,4 +1,5 @@
 const Category = require("../models/Category");
+const Position = require("../models/Position");
 const Group = require("../models/Group");
 const Restaurant = require("../models/Restaurant");
 const errorHandler = require("../utils/errorHandler");
@@ -130,8 +131,14 @@ module.exports.updateStatus = async function (req, res) {
 module.exports.delete = async function (req, res) {
   try {
     const category = await Category.findOne({ _id: req.params.id });
-    await Category.deleteOne({ _id: req.params.id });
-    res.status(200).json({ message: `Категория "${category.title}" удалена` });
+    if (category) {
+      await Position.deleteMany({ category: category._id });
+      await Category.deleteOne({ _id: category._id });
+
+      res
+        .status(200)
+        .json({ message: `Категория "${category.title}" удалена` });
+    }
   } catch (e) {
     errorHandler(res, e);
   }

@@ -19,6 +19,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RestaurantService } from '../../shared/services/restaurant.service';
 import { FilterKitchenPipe } from '../../shared/pipes/filter-kitchen.pipe';
 import { DeleteTemplateComponent } from '../../shared/components/delete-template/delete-template.component';
+import { SortPlacePipe } from '../../shared/pipes/sort-place.pipe';
 
 @Component({
   selector: 'app-restaurant-form',
@@ -34,6 +35,7 @@ import { DeleteTemplateComponent } from '../../shared/components/delete-template
     NgIf,
     NgClass,
     FilterKitchenPipe,
+    SortPlacePipe,
     DeleteTemplateComponent,
   ],
   templateUrl: './restaurant-form.component.html',
@@ -46,6 +48,7 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
   form: FormGroup;
   kSub: Subscription;
   rSub: Subscription;
+  restaurantID: string;
   kitchens: Kitchen[] = [];
   restaurants: Restaurant[];
   restaurant: Restaurant;
@@ -56,7 +59,6 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
   );
   isError = false;
   isDelete = false;
-  restaurantID: string;
   sortPlaces = ['Ресторан', 'Кафе', 'Выпечка', 'Другое'];
 
   hours = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
@@ -69,12 +71,13 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.restaurantID = this.route.snapshot.params['id']
-      ? this.route.snapshot.params['id']
-      : '';
+    this.restaurantID = this.route.snapshot.params['id'] ?? '';
+
+    if (this.restaurantID) {
+      this.getRestaurantById();
+    }
 
     this.generateForm();
-    this.getRestaurantById();
     this.getKitchens();
     this.getRestaurants();
   }
@@ -95,7 +98,6 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
         Validators.required,
         Validators.minLength(20),
         Validators.maxLength(100),
-
       ]),
       timeOpen: new FormControl(restaurant?.timeOpen ?? 0, Validators.required),
       timeClose: new FormControl(
@@ -103,10 +105,7 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
         Validators.required,
       ),
       kitchen: new FormControl(restaurant?.kitchen ?? '', Validators.required),
-      typePlace: new FormControl(
-        restaurant?.typePlace ?? '',
-        Validators.required,
-      ),
+      typePlace: new FormControl(restaurant?.typePlace, Validators.required),
       imgSrc: new FormControl(restaurant?.imgSrc ?? '', Validators.required),
     });
   }
@@ -128,6 +127,7 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
   }
 
   getRestaurantById() {
+    console.log('this.restaurantID', this.restaurantID);
     this.restaurantService.getRestaurantByID(this.restaurantID).subscribe({
       next: (restaurant) => {
         this.generateForm(restaurant);

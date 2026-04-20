@@ -365,27 +365,30 @@
             "
             >*Введите название
           </span>
-          <span
-            class="error"
+           <span class="error"
             *ngIf="
               form.get('composition')?.hasError('minlength') &&
               form.get('composition')?.touched
-            "
-            >*Не менее
-            {{
+            ">*Еще немного информации...
+            <span style="color: black">
+              {{
+                form.get("composition")?.errors?.["minlength"]?.actualLength
+              }}</span
+            >/{{
               form.get("composition")?.errors?.["minlength"]?.requiredLength
-            }}х символов
-          </span>
+            }}</span
+          >
           <span
             class="error"
             *ngIf="
               form.get('composition')?.hasError('maxlength') &&
               form.get('composition')?.touched
             "
-            >*Слишком длинное название:
-            {{
+            >*Макс. количество символов:
+            <span style="color: black">{{
               form.get("composition")?.errors?.["maxlength"]?.actualLength
-            }}/{{
+            }}</span
+            >/{{
               form.get("composition")?.errors?.["maxlength"]?.requiredLength
             }}
           </span>

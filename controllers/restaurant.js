@@ -77,10 +77,8 @@ module.exports.update = async function (req, res) {
 module.exports.delete = async function (req, res) {
   try {
     const restaurant = await Restaurant.findOne({ _id: req.params.id });
-    console.log(restaurant);
 
     if (restaurant) {
-      console.log("sssssssssssssssssssssssssssssssss");
       const category = await Category.findOne({ restaurant: restaurant._id });
       await Restaurant.deleteOne({ _id: restaurant._id });
       if (category) {

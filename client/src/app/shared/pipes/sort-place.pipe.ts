@@ -1,5 +1,4 @@
 import {Pipe, PipeTransform} from "@angular/core";
-import {Kitchen} from "../interfaces";
 
 @Pipe({
   name: 'sortPlace',
@@ -9,6 +8,7 @@ export class SortPlacePipe implements PipeTransform {
   constructor() {
   }
   transform(typePlace: string): string {
+    console.log(typePlace)
     let place = ''
 
     switch (typePlace) {

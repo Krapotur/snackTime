@@ -4,21 +4,26 @@
     <p>"{{ title }}"?</p>
   </div>
 
-  <div class="btn-group-del">
-    <button
-      class="btn-cancel" extended="" mat-fab
-      (click)="cancel()"
+  <div class="warning" *ngIf="isRestaurant">
+    <p>Внимание!</p>
+    <span
+      >Удаление ресторана, приведет к уничтожению принадлежащих к ней категорий
+      и позиций</span
     >
+  </div>
+
+  <div class="btn-group-del">
+    <button class="btn-cancel" extended="" mat-fab (click)="cancel()">
       Нет
     </button>
     <button
       type="submit"
-      class="btn-save" extended="" mat-fab
+      class="btn-save"
+      extended=""
+      mat-fab
       (click)="delete()"
     >
       Да
     </button>
   </div>
 </div>
-
-

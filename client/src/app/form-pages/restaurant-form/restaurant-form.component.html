@@ -105,12 +105,13 @@
               form.get('description')?.touched
             "
             >*Еще немного информации...
-            {{ form.get("description")?.errors?.["minlength"]?.actualLength
-            }}<span style="color: black"
-              >/{{
-                form.get("description")?.errors?.["minlength"]?.requiredLength
+            <span style="color: black">
+              {{
+                form.get("description")?.errors?.["minlength"]?.actualLength
               }}</span
-            ></span
+            >/{{
+              form.get("description")?.errors?.["minlength"]?.requiredLength
+            }}</span
           >
 
           <span
@@ -120,13 +121,13 @@
               form.get('description')?.touched
             "
             >*Макс. количество символов:
-            {{ form.get("description")?.errors?.["maxlength"]?.actualLength
-            }}<span style="color: black"
-              >/{{
-                form.get("description")?.errors?.["maxlength"]?.requiredLength
-              }}</span
-            ></span
-          >
+            <span style="color: black">{{
+              form.get("description")?.errors?.["maxlength"]?.actualLength
+            }}</span
+            >/{{
+              form.get("description")?.errors?.["maxlength"]?.requiredLength
+            }}
+          </span>
         </div>
 
         <mat-form-field style="margin-top: 10px">
@@ -136,7 +137,7 @@
           >
           <mat-select formControlName="typePlace">
             <mat-select-trigger>
-              {{ form.get("typePlace").value }}
+              {{ form.get("typePlace").value | sortPlace}}
             </mat-select-trigger>
             <mat-option *ngFor="let place of sortPlaces" [value]="place"
               >{{ place }}

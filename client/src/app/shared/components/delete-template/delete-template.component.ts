@@ -5,11 +5,12 @@ import { SharedService } from '../../services/shared.service';
 import { Subscription } from 'rxjs';
 import { MaterialService } from '../../classes/material.service';
 import { Router } from '@angular/router';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-delete-template',
   standalone: true,
-  imports: [MatFabButton],
+  imports: [MatFabButton, NgIf],
   templateUrl: './delete-template.component.html',
   styleUrl: './delete-template.component.scss',
 })
@@ -19,12 +20,14 @@ export class DeleteTemplateComponent implements OnInit, OnDestroy {
 
   title = '';
   dSub: Subscription;
-  isDelete = false
+  isDelete = false;
 
   @Input() elemIn: Elem;
+  isRestaurant = false;
 
   ngOnInit() {
     this.title = this.elemIn.title;
+    this.isRestaurant = this.elemIn?.route === 'restaurants';
   }
 
   ngOnDestroy() {
@@ -32,7 +35,9 @@ export class DeleteTemplateComponent implements OnInit, OnDestroy {
   }
 
   cancel() {
-     this.sharedService.updateDataDel(false);
+    console.log('isDelete')
+
+    // this.sharedService.updateDataDel(false);
   }
 
   delete() {
