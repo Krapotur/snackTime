@@ -1,7 +1,11 @@
+const fs = require("fs/promises")
+const { existsSync } = require("fs")
+const { resolve } = require("path")
 const Restaurant = require("../models/Restaurant");
 const Category = require("../models/Category");
 const Position = require("../models/Position");
 const errorHandler = require("../utils/errorHandler");
+
 
 module.exports.getAll = async function (req, res) {
   try {
@@ -84,6 +88,11 @@ module.exports.delete = async function (req, res) {
       if (category) {
         await Position.deleteMany({ category: category._id });
         await Category.deleteOne({ _id: category._id });
+      }
+      const filePath = resolve(__dirname, `../${restaurant.imgSrc}`)
+      if (existsSync(filePath)) {
+        console.log('delete', filePath)
+        await fs.unlink(filePath)
       }
       res
         .status(200)

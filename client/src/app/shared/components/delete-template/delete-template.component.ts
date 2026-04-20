@@ -37,7 +37,7 @@ export class DeleteTemplateComponent implements OnInit, OnDestroy {
   cancel() {
     console.log('isDelete')
 
-    // this.sharedService.updateDataDel(false);
+    this.sharedService.updateDataDel(false);
   }
 
   delete() {

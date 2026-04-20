@@ -24,6 +24,7 @@
 
   <!--Template for Delete-->
   <app-delete-template *ngIf="isDelete" [elemIn]="elem"></app-delete-template>
+  
   <div [class]="isDelete ? 'blur' : ''">
     <form [formGroup]="form">
       <div class="container-form">
@@ -137,7 +138,7 @@
           >
           <mat-select formControlName="typePlace">
             <mat-select-trigger>
-              {{ form.get("typePlace").value | sortPlace}}
+              {{ form.get("typePlace").value}}
             </mat-select-trigger>
             <mat-option *ngFor="let place of sortPlaces" [value]="place"
               >{{ place }}
@@ -226,8 +227,8 @@
             <img
               (click)="inputImg.click()"
               [class.dn]="isDelete"
-              [class.img-true]="restaurant && restaurant.status"
-              [class.img-icon]="restaurant && !restaurant.status"
+              [class.img-true]="restaurant || uploadedImgLink()"
+              [class.img-icon]="!restaurant && !uploadedImgLink()"
               [src]="
                 restaurant?.imgSrc ??
                 uploadedImgLink() ??

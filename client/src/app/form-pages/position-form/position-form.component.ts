@@ -133,7 +133,7 @@ export class PositionFormComponent implements OnInit, OnDestroy {
         Validators.minLength(10),
         Validators.maxLength(250),
       ]),
-      imgSrc: new FormControl(position?.imgSrc ?? '', Validators.required),
+      imgSrc: new FormControl('', Validators.required),
     });
   }
 

@@ -1,4 +1,4 @@
-import { Component, computed, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -20,6 +20,7 @@ import { RestaurantService } from '../../shared/services/restaurant.service';
 import { FilterKitchenPipe } from '../../shared/pipes/filter-kitchen.pipe';
 import { DeleteTemplateComponent } from '../../shared/components/delete-template/delete-template.component';
 import { SortPlacePipe } from '../../shared/pipes/sort-place.pipe';
+import { SharedService } from '../../shared/services/shared.service';
 
 @Component({
   selector: 'app-restaurant-form',
@@ -35,7 +36,6 @@ import { SortPlacePipe } from '../../shared/pipes/sort-place.pipe';
     NgIf,
     NgClass,
     FilterKitchenPipe,
-    SortPlacePipe,
     DeleteTemplateComponent,
   ],
   templateUrl: './restaurant-form.component.html',
@@ -45,6 +45,7 @@ import { SortPlacePipe } from '../../shared/pipes/sort-place.pipe';
   ],
 })
 export class RestaurantFormComponent implements OnInit, OnDestroy {
+  private sharedService = inject(SharedService);
   form: FormGroup;
   kSub: Subscription;
   rSub: Subscription;
@@ -77,6 +78,7 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
       this.getRestaurantById();
     }
 
+    this.sharedService.sharedData$.subscribe((x)=>  this.isDelete = x);
     this.generateForm();
     this.getKitchens();
     this.getRestaurants();
@@ -106,7 +108,7 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
       ),
       kitchen: new FormControl(restaurant?.kitchen ?? '', Validators.required),
       typePlace: new FormControl(restaurant?.typePlace, Validators.required),
-      imgSrc: new FormControl(restaurant?.imgSrc ?? '', Validators.required),
+      imgSrc: new FormControl('', Validators.required),
     });
   }
 
