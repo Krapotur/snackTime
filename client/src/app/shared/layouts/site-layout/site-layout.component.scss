@@ -214,37 +214,3 @@ h3 {
     padding: 16px;
   }
 }
-
-@media (max-width: 860px) {
-  .container-main {
-    flex-direction: column;
-  }
-
-  .sidebar-left {
-    min-width: 100%;
-    max-width: 100%;
-    box-shadow: none;
-  }
-
-  .main-nav ul {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 4px;
-    padding: 10px;
-  }
-
-  .main-nav li {
-    margin: 0;
-  }
-
-  .main-nav a {
-    font-size: 11px;
-    padding: 8px 10px;
-  }
-
-  .container-right {
-    margin: 10px;
-    padding: 12px;
-    border-radius: 12px;
-  }
-}
