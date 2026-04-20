@@ -11,8 +11,8 @@
       <h5>
         Позиции <span>({{ positions.length }})</span>
       </h5>
-      <div class="search">
-        <div *ngIf="!isEmpty && !isLoading">
+      <div class="search" *ngIf="!isEmpty && !isLoading">
+        <div >
           <input
             matInput
             (keyup)="applyFilter($event)"
@@ -20,7 +20,7 @@
             maxlength="10"
           />
         </div>
-        <div class="icon-finder" *ngIf="!isEmpty && !isLoading">
+        <div class="icon-finder">
           <img src="assets/icons/search-finder.svg" alt="back" />
         </div>
       </div>
