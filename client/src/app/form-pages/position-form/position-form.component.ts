@@ -25,7 +25,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { SharedDelService } from '../../shared/services/shared-del.service';
+import { SharedService } from '../../shared/services/shared.service';
 
 @Component({
   selector: 'app-position-form',
@@ -50,7 +50,7 @@ import { SharedDelService } from '../../shared/services/shared-del.service';
 })
 export class PositionFormComponent implements OnInit, OnDestroy {
   private positionService = inject(PositionService);
-  private sharedDelService = inject(SharedDelService);
+  private sharedDelService = inject(SharedService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 

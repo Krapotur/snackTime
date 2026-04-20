@@ -1,12 +1,12 @@
-import {Component, inject, OnDestroy, OnInit} from '@angular/core';
-import {Router, RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
-import {NgIf} from "@angular/common";
-import {AuthService} from "../../services/auth.service";
-import {MatProgressBar} from "@angular/material/progress-bar";
-import {MaterialService} from "../../classes/material.service";
-import {GroupService} from "../../services/group.service";
-import {Subscription} from "rxjs";
-import {RestaurantService} from "../../services/restaurant.service";
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
+import { NgIf } from "@angular/common";
+import { AuthService } from "../../services/auth.service";
+import { MaterialService } from "../../classes/material.service";
+import { GroupService } from "../../services/group.service";
+import { Subscription } from "rxjs";
+import { RestaurantService } from "../../services/restaurant.service";
+import { SharedService } from '../../services/shared.service';
 
 @Component({
   selector: 'app-site-layout',
@@ -16,13 +16,13 @@ import {RestaurantService} from "../../services/restaurant.service";
     RouterLink,
     NgIf,
     RouterLinkActive,
-    MatProgressBar
   ],
   templateUrl: './site-layout.component.html',
   styleUrl: './site-layout.component.scss'
 })
 export class SiteLayoutComponent implements OnInit, OnDestroy {
   private authService = inject(AuthService)
+  private sharedService = inject(SharedService)
   private groupService = inject(GroupService)
   private restaurantService = inject(RestaurantService)
   private router = inject(Router)
@@ -46,12 +46,15 @@ export class SiteLayoutComponent implements OnInit, OnDestroy {
   getGroupById() {
     let profile = JSON.parse(localStorage.getItem('profile'))
     this.gSub = this.groupService.getGroupByID(profile.group).subscribe({
-      next: group => this.isAdmin =  group.alias === 'administrator',
+      next: group => { 
+        this.sharedService.updateDataGroup(group.alias)
+        this.isAdmin = group.alias === 'administrator'; 
+      },
       error: error => MaterialService.toast(error.error.error)
     })
   }
 
-  getRestaurantByUser(){
+  getRestaurantByUser() {
     let profile
     if (localStorage.getItem('profile')) {
       profile = JSON.parse(localStorage.getItem('profile'))
@@ -60,8 +63,8 @@ export class SiteLayoutComponent implements OnInit, OnDestroy {
     this.userName = profile['userName']
   }
 
-  getRestaurantById(id: string){
-    if (id){
+  getRestaurantById(id: string) {
+    if (id) {
       this.rSub = this.restaurantService.getRestaurantByID(id).subscribe({
         next: rest => this.restaurantTitle = rest.title,
         error: e => MaterialService.toast(e.error.message)

@@ -27,7 +27,7 @@ import { Elem, Kitchen } from '../../shared/interfaces';
 import { KitchenService } from '../../shared/services/kitchen.service';
 import { MaterialService } from '../../shared/classes/material.service';
 import { DeleteTemplateComponent } from '../../shared/components/delete-template/delete-template.component';
-import { SharedDelService } from '../../shared/services/shared-del.service';
+import { SharedService } from '../../shared/services/shared.service';
 
 @Component({
   selector: 'app-kitchen-form',
@@ -51,7 +51,7 @@ import { SharedDelService } from '../../shared/services/shared-del.service';
 })
 export class KitchenFormComponent implements OnInit, OnDestroy {
   private kitchenService = inject(KitchenService);
-  private sharedDelService = inject(SharedDelService);
+  private sharedDelService = inject(SharedService);
 
   private router = inject(Router);
   private route = inject(ActivatedRoute);

@@ -14,6 +14,7 @@ import { Subscription } from "rxjs";
 import { MaterialService } from "../../shared/classes/material.service";
 import { PositionService } from "../../shared/services/position.service";
 import { CategoryService } from "../../shared/services/category.service";
+import { SharedService } from '../../shared/services/shared.service';
 
 @Component({
   selector: 'app-positions-page',
@@ -35,6 +36,7 @@ import { CategoryService } from "../../shared/services/category.service";
 export class PositionsPageComponent implements OnInit, OnDestroy {
   private positionService = inject(PositionService)
   private categoryService = inject(CategoryService)
+  private sharedService = inject(SharedService)
   private router = inject(Router)
   private route = inject(ActivatedRoute)
 
@@ -69,9 +71,13 @@ export class PositionsPageComponent implements OnInit, OnDestroy {
 
     this.pSub = this.positionService.getPositionsByCategoryID(id).subscribe({
       next: positions => {
-        this.positions = positions.filter(position =>
-          position.restaurant === profile['rest']
-        )
+        if (this.sharedService.getCurrentGroupValue() === "administrator") {
+          this.positions = positions;
+        } else {
+          this.positions = positions.filter(position =>
+            position.restaurant === profile['rest']
+          )
+        }
 
         if (this.positions.length == 0) this.isEmpty = true
         this.isLoading = false

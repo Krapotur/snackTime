@@ -1,8 +1,7 @@
 import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatFabButton } from '@angular/material/button';
-import { NgIf } from '@angular/common';
 import { Elem } from '../../interfaces';
-import { SharedDelService } from '../../services/shared-del.service';
+import { SharedService } from '../../services/shared.service';
 import { Subscription } from 'rxjs';
 import { MaterialService } from '../../classes/material.service';
 import { Router } from '@angular/router';
@@ -15,7 +14,7 @@ import { Router } from '@angular/router';
   styleUrl: './delete-template.component.scss',
 })
 export class DeleteTemplateComponent implements OnInit, OnDestroy {
-  private sharedService = inject(SharedDelService);
+  private sharedService = inject(SharedService);
   private router = inject(Router);
 
   title = '';
@@ -33,7 +32,7 @@ export class DeleteTemplateComponent implements OnInit, OnDestroy {
   }
 
   cancel() {
-     this.sharedService.updateData(false);
+     this.sharedService.updateDataDel(false);
   }
 
   delete() {

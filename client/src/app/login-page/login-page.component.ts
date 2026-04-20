@@ -4,9 +4,9 @@ import {MatInputModule} from "@angular/material/input";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatButtonModule} from "@angular/material/button";
 import {MatTooltipModule} from "@angular/material/tooltip";
-import {NgClass, NgIf, NgOptimizedImage} from "@angular/common";
+import {NgClass, NgIf} from "@angular/common";
 import {MatIconModule} from "@angular/material/icon";
-import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {AuthService} from "../shared/services/auth.service";
 import {Subscription} from "rxjs";
 import {MaterialService} from "../shared/classes/material.service";
@@ -24,8 +24,6 @@ import {User} from "../shared/interfaces";
     ReactiveFormsModule,
     NgIf,
     MatIconModule,
-    RouterLink,
-    NgOptimizedImage,
     NgClass
   ],
   templateUrl: './login-page.component.html',
@@ -36,7 +34,6 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   private router = inject(Router)
   private route = inject(ActivatedRoute)
 
-  users: User[] = []
   form: FormGroup
   aSub: Subscription
   uSub: Subscription

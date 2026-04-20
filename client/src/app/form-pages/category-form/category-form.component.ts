@@ -28,7 +28,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { CategoryService } from '../../shared/services/category.service';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { SharedDelService } from '../../shared/services/shared-del.service';
+import { SharedService } from '../../shared/services/shared.service';
 
 @Component({
   selector: 'app-category-form',
@@ -53,7 +53,7 @@ import { SharedDelService } from '../../shared/services/shared-del.service';
 })
 export class CategoryFormComponent implements OnInit, OnDestroy {
   private categoryService = inject(CategoryService);
-  private sharedDelService = inject(SharedDelService);
+  private sharedDelService = inject(SharedService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
