@@ -1,37 +1,38 @@
 <div class="container-main">
   <div class="sidebar-left" role="banner">
     <div class="new_container">
-
       <div class="logo-container">
         <!--        <img src="../assets/images/logo.png" alt="logo">-->
-        <h1 class="title">
-          Snack Time
-        </h1>
+        <h1 class="title">Snack Time</h1>
       </div>
 
-      <hr>
+      <hr />
 
       <div class="user">
-        <p>{{userName}}</p>
-        <p class="group">"{{ restaurantTitle.length ? restaurantTitle : 'Administrator' }}"</p>
+        <p>{{ userName }}</p>
+        <p class="group">
+          "{{ restaurantTitle.length ? restaurantTitle : "Administrator" }}"
+        </p>
       </div>
 
-      <hr class="hr-bottom">
+      <hr class="hr-bottom" />
 
       <div class="nav-wrap">
         <nav class="main-nav" role="navigation">
           <ul class="list-hover-slide">
-            <li routerLinkActive="active"><a routerLink="/st/dashboard"
-                                             *ngIf="isAdmin"
-            >Главная</a></li>
-           
-            <li routerLinkActive="active"><a routerLink="/st/users"
-                                             *ngIf="isAdmin"
-            >Пользователи</a></li>
-            <li routerLinkActive="active"><a routerLink="/st/restaurants"
-                                             *ngIf="isAdmin"
-            >Рестораны</a></li>
-            <li routerLinkActive="active"><a routerLink="/st/assortment">Ассортимент</a></li>
+            <li routerLinkActive="active" *ngIf="isAdmin">
+              <a routerLink="/st/dashboard">Главная</a>
+            </li>
+
+            <li routerLinkActive="active" *ngIf="isAdmin">
+              <a routerLink="/st/users">Пользователи</a>
+            </li>
+            <li routerLinkActive="active" *ngIf="isAdmin">
+              <a routerLink="/st/restaurants">Рестораны</a>
+            </li>
+            <li routerLinkActive="active">
+              <a routerLink="/st/assortment">Ассортимент</a>
+            </li>
             <li (click)="logout()"><a>Выйти</a></li>
           </ul>
         </nav>
@@ -47,5 +48,4 @@
 
     <router-outlet></router-outlet>
   </div>
-
 </div>
