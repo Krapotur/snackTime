@@ -192,8 +192,8 @@
   justify-content: center;
   gap: 12px;
   width: 100%;
-  max-width: 340px;
-  padding: 14px 0 6px;
+  max-width: 385px;
+  padding: 14px 0 20px;
 }
 
 .btn-group button {
@@ -225,21 +225,21 @@
   --mdc-filled-text-field-container-color: #ffffff;
 }
 
-@media (max-width: 768px) {
-  .container-block .container-form {
-    padding: 20px 14px;
-  }
+// @media (max-width: 768px) {
+//   .container-block .container-form {
+//     padding: 20px 14px;
+//   }
 
-  .container-block h3 {
-    font-size: 18px;
-  }
+//   .container-block h3 {
+//     font-size: 18px;
+//   }
 
-  .btn-group {
-    flex-direction: column;
-    max-width: 320px;
-  }
+//   .btn-group {
+//     flex-direction: column;
+//     max-width: 390px;
+//   }
 
-  .btn-group button {
-    width: 100%;
-  }
-}
+//   .btn-group button {
+//     width: 100%;
+//   }
+// }
