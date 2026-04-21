@@ -19,8 +19,7 @@
 
 app-kitchens-page {
   display: block;
-  width: 360px;
-  min-width: 300px;
+  min-width: 360px;
   background: #fff;
   border: 1px solid #e8edf4;
   border-radius: 14px;
@@ -34,7 +33,6 @@ app-kitchens-page {
   }
 
   app-kitchens-page {
-    width: 100%;
     min-width: 0;
   }
 }

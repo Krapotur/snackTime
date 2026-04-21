@@ -1,5 +1,7 @@
 const User = require("../models/User");
+
 const errorHandler = require("../utils/errorHandler");
+const removeFile = require("../utils/removeFile");
 const bcrypt = require("bcryptjs");
 
 module.exports.getAll = async function (req, res) {
@@ -25,7 +27,11 @@ module.exports.getById = async function (req, res) {
 module.exports.delete = async function (req, res) {
   try {
     const user = await User.findOne({ _id: req.params.id });
-    await User.deleteOne({ _id: req.params.id });
+    if (user) {
+      removeFile.remove(user.imgSrc);
+
+      await User.deleteOne({ _id: req.params.id });
+    }
     res.status(200).json({
       message: `Пользователь "${user.lastName + " " + user.firstName}" удален`,
     });

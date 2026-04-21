@@ -2,7 +2,9 @@ const Category = require("../models/Category");
 const Position = require("../models/Position");
 const Group = require("../models/Group");
 const Restaurant = require("../models/Restaurant");
+
 const errorHandler = require("../utils/errorHandler");
+const removeFile = require("../utils/removeFile");
 
 module.exports.getAll = async function (req, res) {
   try {
@@ -132,8 +134,11 @@ module.exports.delete = async function (req, res) {
   try {
     const category = await Category.findOne({ _id: req.params.id });
     if (category) {
+      removeFile.remove(category.imgSrc);
+
       await Position.deleteMany({ category: category._id });
       await Category.deleteOne({ _id: category._id });
+
 
       res
         .status(200)

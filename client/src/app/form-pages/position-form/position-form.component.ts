@@ -107,7 +107,6 @@ export class PositionFormComponent implements OnInit, OnDestroy {
       ]),
       weight: new FormControl(position?.weight ?? null, [
         Validators.required,
-        Validators.min(20),
         Validators.max(2000),
       ]),
       caloric: new FormControl(position?.caloric ?? 0, [

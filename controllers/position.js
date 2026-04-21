@@ -1,5 +1,7 @@
 const Position = require("../models/Position");
 const Category = require("../models/Category");
+
+const removeFile = require("../utils/removeFile");
 const errorHandler = require("../utils/errorHandler");
 const bcrypt = require("bcryptjs");
 
@@ -30,7 +32,7 @@ module.exports.getById = async function (req, res) {
 };
 
 module.exports.create = async function (req, res) {
-  console.log(req.body)
+  console.log(req.body);
   const category = await Category.findOne({
     _id: req.body.category,
     isDrink: true,
@@ -57,7 +59,7 @@ module.exports.create = async function (req, res) {
 
     let date = new Date().toLocaleString("ru", options);
 
-    console.log('category', category)
+    console.log("category", category);
     const position = new Position({
       title: req.body.title,
       composition: req.body.composition,
@@ -140,7 +142,11 @@ module.exports.updateStatus = async function (req, res) {
 module.exports.delete = async function (req, res) {
   try {
     const position = await Position.findOne({ _id: req.params.id });
-    await Position.deleteOne({ _id: req.params.id });
+    if (position) {
+      removeFile.remove(position.imgSrc);
+
+      await Position.deleteOne({ _id: req.params.id });
+    }
     res.status(200).json({ message: `Позиция "${position.title}" удалена` });
   } catch (e) {
     errorHandler(res, e);

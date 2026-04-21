@@ -1,11 +1,9 @@
-const fs = require("fs/promises")
-const { existsSync } = require("fs")
-const { resolve } = require("path")
 const Restaurant = require("../models/Restaurant");
 const Category = require("../models/Category");
 const Position = require("../models/Position");
-const errorHandler = require("../utils/errorHandler");
 
+const errorHandler = require("../utils/errorHandler");
+const removeFile = require("../utils/removeFile");
 
 module.exports.getAll = async function (req, res) {
   try {
@@ -85,15 +83,16 @@ module.exports.delete = async function (req, res) {
     if (restaurant) {
       const category = await Category.findOne({ restaurant: restaurant._id });
       await Restaurant.deleteOne({ _id: restaurant._id });
+
       if (category) {
+        removeFile.remove(category.imgSrc);
+        
         await Position.deleteMany({ category: category._id });
         await Category.deleteOne({ _id: category._id });
       }
-      const filePath = resolve(__dirname, `../${restaurant.imgSrc}`)
-      if (existsSync(filePath)) {
-        console.log('delete', filePath)
-        await fs.unlink(filePath)
-      }
+
+      removeFile.remove(restaurant.imgSrc);
+
       res
         .status(200)
         .json({ message: `Ресторан "${restaurant.title}" удален` });

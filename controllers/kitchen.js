@@ -1,5 +1,7 @@
 const Kitchen = require("../models/Kitchen");
+
 const errorHandler = require("../utils/errorHandler");
+const removeFile = require("../utils/removeFile");
 
 module.exports.getAll = async function (req, res) {
   try {
@@ -87,7 +89,11 @@ module.exports.updateStatus = async function (req, res) {
 module.exports.delete = async function (req, res) {
   try {
     const kitchen = await Kitchen.findOne({ _id: req.params.id });
-    await Kitchen.deleteOne({ _id: req.params.id });
+    if (kitchen) {
+      removeFile.remove(kitchen.imgSrc);
+
+      await Kitchen.deleteOne({ _id: req.params.id });
+    }
     res.status(200).json({ message: `Кухня "${kitchen.title}" удалена` });
   } catch (e) {
     errorHandler(res, e);

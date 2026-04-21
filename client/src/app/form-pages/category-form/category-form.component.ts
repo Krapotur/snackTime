@@ -15,10 +15,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import {
-  NgClass,
-  NgIf,
-} from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Category, Elem } from '../../shared/interfaces';
@@ -61,7 +58,9 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
   isError = false;
   categoryID: string;
   image = signal<File | null>(null);
-  uploadedImgLink = computed(() => this.image() ? URL.createObjectURL(this.image()) : null)
+  uploadedImgLink = computed(() =>
+    this.image() ? URL.createObjectURL(this.image()) : null,
+  );
   cSub: Subscription;
   category: Category;
   categories: Category[] = [];
@@ -70,7 +69,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     if (this.route.snapshot.params['id']) {
-      this.categoryID = this.route.snapshot.params['id']
+      this.categoryID = this.route.snapshot.params['id'];
       this.getCategoryByID();
     }
     this.generateForm();
