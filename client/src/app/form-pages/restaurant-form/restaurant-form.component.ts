@@ -1,4 +1,11 @@
-import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  OnDestroy,
+  OnInit,
+  signal,
+} from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -36,6 +43,7 @@ import { SharedService } from '../../shared/services/shared.service';
     NgIf,
     NgClass,
     FilterKitchenPipe,
+    SortPlacePipe,
     DeleteTemplateComponent,
   ],
   templateUrl: './restaurant-form.component.html',
@@ -49,6 +57,7 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
   form: FormGroup;
   kSub: Subscription;
   rSub: Subscription;
+  sSub: Subscription;
   restaurantID: string;
   kitchens: Kitchen[] = [];
   restaurants: Restaurant[];
@@ -76,20 +85,26 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
 
     if (this.restaurantID) {
       this.getRestaurantById();
+    } else {
+      this.generateForm();
     }
 
-    this.sharedService.sharedData$.subscribe((x)=>  this.isDelete = x);
-    this.generateForm();
     this.getKitchens();
     this.getRestaurants();
+    this.sharedService.sharedData$.subscribe((x) => {
+      this.isDelete = x;
+      this.isDelete ? this.form.disable() : this.form.enable();
+    });
   }
 
   ngOnDestroy() {
     if (this.kSub) this.kSub.unsubscribe();
     if (this.rSub) this.rSub.unsubscribe();
+    if (this.sSub) this.sSub.unsubscribe();
   }
 
   generateForm(restaurant?: Restaurant) {
+    console.log('restaurant', restaurant);
     this.form = new FormGroup({
       title: new FormControl(restaurant?.title ?? '', [
         Validators.required,
@@ -129,7 +144,6 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
   }
 
   getRestaurantById() {
-    console.log('this.restaurantID', this.restaurantID);
     this.restaurantService.getRestaurantByID(this.restaurantID).subscribe({
       next: (restaurant) => {
         this.generateForm(restaurant);

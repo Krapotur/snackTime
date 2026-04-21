@@ -5,10 +5,9 @@ import {Pipe, PipeTransform} from "@angular/core";
   standalone: true
 })
 export class SortPlacePipe implements PipeTransform {
-  constructor() {
-  }
+
   transform(typePlace: string): string {
-    console.log(typePlace)
+    console.log('sort-place-pipe', typePlace)
     let place = ''
 
     switch (typePlace) {
