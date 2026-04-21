@@ -48,4 +48,55 @@
 
     <router-outlet></router-outlet>
   </div>
+  <div class="alert-dialog" *ngIf="!isLogout">
+    <div class="title">
+      <h2>Вы уверены?</h2>
+    </div>
+
+    <div class="btn-group-del">
+      <button
+        class="btn-cancel"
+        extended=""
+        mat-fab
+        (click)="isLogout = !isLogout"
+      >
+        Нет
+      </button>
+      <button
+        type="submit"
+        class="btn-save"
+        extended=""
+        mat-fab
+        (click)="submit()"
+      >
+        Да
+      </button>
+    </div>
+  </div>
 </div>
+
+<!-- <div class="alert-dialog" *ngIf="!isLogout">
+  <div class="title">
+    <h2>Вы уверены?</h2>
+  </div>
+
+  <div class="btn-group-del">
+    <button
+      class="btn-cancel"
+      extended=""
+      mat-fab
+      (click)="isLogout = !isLogout"
+    >
+      Нет
+    </button>
+    <button
+      type="submit"
+      class="btn-save"
+      extended=""
+      mat-fab
+      (click)="submit()"
+    >
+      Да
+    </button>
+  </div>
+</div> -->
