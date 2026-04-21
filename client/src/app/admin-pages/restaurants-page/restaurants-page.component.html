@@ -1,6 +1,6 @@
 <!--Table-->
 
-<div class="tables">
+<div class="tables" *ngIf="!isLoading">
   <div class="main">
     <div class="header">
       <h5>
@@ -15,7 +15,7 @@
             maxlength="10"
           />
         </div>
-        <div class="icon-finder" *ngIf="!isEmpty && !isLoading">
+        <div class="icon-finder" *ngIf="!isEmpty">
           <img src="assets/icons/search-finder.svg" alt="back" />
         </div>
       </div>
@@ -24,7 +24,7 @@
     <app-empty [page]="activeRoute" *ngIf="isEmpty"></app-empty>
 
     <div *ngIf="!isEmpty">
-      <div class="mat-elevation-z8" *ngIf="!isLoading">
+      <div class="mat-elevation-z8">
         <section class="table-section mat-elevation-z8" tabindex="0">
           <table mat-table [dataSource]="dataSource">
             <!-- Position Column -->

@@ -1,75 +1,97 @@
 <!--Table-->
-<div class="main" xmlns="http://www.w3.org/1999/html">
+<div class="main" xmlns="http://www.w3.org/1999/html" *ngIf="!isLoading">
   <div class="header">
-    <h5>Пользователи <span>({{ quantityUsers}})</span></h5>
+    <h5>
+      Пользователи <span>({{ quantityUsers }})</span>
+    </h5>
     <div class="search">
       <div *ngIf="!isEmpty && !isLoading">
-        <input matInput (keyup)="applyFilter($event)" placeholder="Что искать?" maxlength="10">
+        <input
+          matInput
+          (keyup)="applyFilter($event)"
+          placeholder="Что искать?"
+          maxlength="10"
+        />
       </div>
-      <div class="icon-finder" *ngIf="!isEmpty && !isLoading">
-        <img src="assets/icons/search-finder.svg" alt="back">
+      <div class="icon-finder" *ngIf="!isEmpty">
+        <img src="assets/icons/search-finder.svg" alt="back" />
       </div>
     </div>
   </div>
   <div *ngIf="!isEmpty">
-    <div class="mat-elevation-z8" *ngIf="!isLoading">
+    <div class="mat-elevation-z8">
       <section class="table-section mat-elevation-z8" tabindex="0">
         <table mat-table [dataSource]="dataSource">
           <!-- Position Column -->
           <ng-container matColumnDef="#">
-            <th mat-header-cell *matHeaderCellDef> #</th>
+            <th mat-header-cell *matHeaderCellDef>#</th>
             <td mat-cell *matCellDef="let user">{{ user.position }}</td>
           </ng-container>
 
           <!-- Name Column -->
           <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef> Пользователь</th>
-            <td mat-cell style="cursor: pointer" (click)="openPage(user['_id'])"
-                *matCellDef="let user"> {{ user['lastName'] + ' ' + user['firstName'] }}</td>
+            <th mat-header-cell *matHeaderCellDef>Пользователь</th>
+            <td
+              mat-cell
+              style="cursor: pointer"
+              (click)="openPage(user['_id'])"
+              *matCellDef="let user"
+            >
+              {{ user["lastName"] + " " + user["firstName"] }}
+            </td>
           </ng-container>
 
           <!-- Login Column -->
           <ng-container matColumnDef="login">
-            <th mat-header-cell *matHeaderCellDef> Логин</th>
+            <th mat-header-cell *matHeaderCellDef>Логин</th>
             <td mat-cell *matCellDef="let user">
-              {{ user['login'] }}
+              {{ user["login"] }}
             </td>
           </ng-container>
 
           <!-- Group Column -->
           <ng-container matColumnDef="group">
             <th mat-header-cell *matHeaderCellDef>Группа</th>
-            <td mat-cell *matCellDef="let user"> {{ user.group | filterGroup: groups}}</td>
+            <td mat-cell *matCellDef="let user">
+              {{ user.group | filterGroup: groups }}
+            </td>
           </ng-container>
 
           <!-- Restaurant Column -->
           <ng-container matColumnDef="restaurant">
             <th mat-header-cell *matHeaderCellDef>Заведение</th>
-            <td mat-cell *matCellDef="let user"> {{ user['restaurant'] | filterRestaurant: restaurants}}</td>
+            <td mat-cell *matCellDef="let user">
+              {{ user["restaurant"] | filterRestaurant: restaurants }}
+            </td>
           </ng-container>
 
           <!-- Phone Column -->
           <ng-container matColumnDef="phone">
-            <th mat-header-cell *matHeaderCellDef> Телефон</th>
-            <td mat-cell *matCellDef="let user"> {{ user['phone'] }}</td>
+            <th mat-header-cell *matHeaderCellDef>Телефон</th>
+            <td mat-cell *matCellDef="let user">{{ user["phone"] }}</td>
           </ng-container>
 
           <!-- Edit Column -->
           <ng-container matColumnDef="edit">
-            <th mat-header-cell *matHeaderCellDef> Действие</th>
+            <th mat-header-cell *matHeaderCellDef>Действие</th>
             <td mat-cell *matCellDef="let user">
-              <img src="assets/icons/edit.png" style="width: 35px; height: 35px" alt="edit"
-                   (click)="openPage(user['_id'])"
-              >
+              <img
+                src="assets/icons/edit.png"
+                style="width: 35px; height: 35px"
+                alt="edit"
+                (click)="openPage(user['_id'])"
+              />
             </td>
           </ng-container>
 
           <!-- Status Column -->
           <ng-container matColumnDef="status">
-            <th mat-header-cell *matHeaderCellDef> Статус</th>
+            <th mat-header-cell *matHeaderCellDef>Статус</th>
             <td mat-cell *matCellDef="let user">
-              <mat-slide-toggle [checked]="user.status" color="warn"
-                                (click)="changeStatus(user)"
+              <mat-slide-toggle
+                [checked]="user.status"
+                color="warn"
+                (click)="changeStatus(user)"
               ></mat-slide-toggle>
             </td>
           </ng-container>
@@ -80,13 +102,15 @@
           </tr>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table>
       </section>
     </div>
     <button
       *ngIf="!isLoading"
-      class="btn" extended="" mat-fab
+      class="btn"
+      extended=""
+      mat-fab
       [disabled]="isShowTemplate"
       routerLink="/st/form-user"
     >
@@ -100,4 +124,3 @@
 </div>
 
 <app-empty [page]="activeRoute" *ngIf="isEmpty"></app-empty>
-
