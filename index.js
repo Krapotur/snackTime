@@ -1,4 +1,17 @@
 const app = require('./app.js');
-const port = process.env.PORT || 5001;
+const { connectDb } = require('./config/connectDb');
 
-app.listen(port, () => console.log(`Server has been started ${port}`));
+const PORT = process.env.PORT || 5001;
+
+connectDb()
+    .then(() => {
+        app.listen(PORT, () => {
+            // eslint-disable-next-line no-console
+            console.log(`API listening on http://localhost:${PORT}`);
+        });
+    })
+    .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.error('Failed to start API', err);
+        process.exit(1);
+    });

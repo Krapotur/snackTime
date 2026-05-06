@@ -25,6 +25,8 @@ module.exports.login = async function (req, res) {
                     rest: candidate.restaurant,
                     user: candidate._id
                 }
+
+                console.log(userToken)
                 res.status(200).json(userToken)
 
             } else {

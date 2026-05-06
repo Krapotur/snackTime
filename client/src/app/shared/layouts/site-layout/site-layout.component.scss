@@ -239,17 +239,19 @@ h3 {
       margin: 0;
     }
   }
-  .btn-group-del {
+  .btn-group-exit {
     display: flex;
     justify-content: space-around;
     width: 220px;
     padding-bottom: 15px;
 
     button {
+      cursor: pointer;
       margin-top: 20px;
       height: 35px;
       padding: 0 10px;
       border-radius: 2px;
+      border: none;
       color: white;
       font-family: 'Lora', serif;
       width: 90px;
