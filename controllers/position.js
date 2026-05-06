@@ -32,7 +32,6 @@ module.exports.getById = async function (req, res) {
 };
 
 module.exports.create = async function (req, res) {
-  console.log(req.body);
   const category = await Category.findOne({
     _id: req.body.category,
     isDrink: true,
@@ -59,7 +58,6 @@ module.exports.create = async function (req, res) {
 
     let date = new Date().toLocaleString("ru", options);
 
-    console.log("category", category);
     const position = new Position({
       title: req.body.title,
       composition: req.body.composition,

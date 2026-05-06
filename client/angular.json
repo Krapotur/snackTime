@@ -60,10 +60,6 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-           "options": {
-            "host": "10.101.11.14",
-            "port": 4201
-          },
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
