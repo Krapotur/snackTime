@@ -40,7 +40,7 @@
     </div>
   </div>
 
-  <div class="container-right">
+  <div [class.container-right]="!isLogout" [class.hidden]="isLogout">
     <!--      <div class="loader" *ngIf="isErrorHttpStatus">-->
     <!--        <p>Идет соединение с сервером... Попробуйте обновить страницу</p>-->
     <!--        <mat-progress-bar mode="indeterminate"></mat-progress-bar>-->
@@ -54,49 +54,12 @@
     </div>
 
     <div class="btn-group-exit">
-      <button
-        class="btn-cancel"
-        extended=""
-        mat-fab
-        (click)="isLogout = !isLogout"
-      >
+      <button class="btn-cancel" extended="" mat-fab (click)="isLogout = !isLogout">
         Нет
       </button>
-      <button
-        type="submit"
-        class="btn-save"
-        extended=""
-        mat-fab
-        (click)="submit()"
-      >
+      <button type="submit" class="btn-save" extended="" mat-fab (click)="submit()">
         Да
       </button>
     </div>
   </div>
 </div>
-
-<!-- <div class="alert-dialog" *ngIf="!isLogout">
-  <div class="title">
-    <h2>Вы уверены?</h2>
-  </div>
-
-  <div class="btn-group-del">
-    <button
-      class="btn-cancel"
-      extended=""
-      mat-fab
-      (click)="isLogout = !isLogout"
-    >
-      Нет
-    </button>
-    <button
-      type="submit"
-      class="btn-save"
-      extended=""
-      mat-fab
-      (click)="submit()"
-    >
-      Да
-    </button>
-  </div>
-</div> -->

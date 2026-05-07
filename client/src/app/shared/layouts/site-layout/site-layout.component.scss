@@ -9,6 +9,10 @@ $panel-bg: #f5f7fb;
 $panel-card: #ffffff;
 $muted: #8e919c;
 
+.hidden{
+  display: none;
+}
+
 // HEADER STYLES
 .logo-container {
   display: flex;
@@ -88,7 +92,7 @@ h3 {
     text-decoration: none;
     padding: 0.95em 1em;
     color: #dfe3ef;
-    font: 600 12px $lora;
+    font: 12px $lora;
     letter-spacing: 0.4px;
 
     text: {
