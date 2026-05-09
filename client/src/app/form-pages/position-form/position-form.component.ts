@@ -98,7 +98,7 @@ export class PositionFormComponent implements OnInit, OnDestroy {
       title: new FormControl(position?.title ?? null, [
         Validators.required,
         Validators.minLength(3),
-        Validators.maxLength(30),
+        Validators.maxLength(65),
       ]),
       price: new FormControl(position?.price ?? null, [
         Validators.required,
@@ -132,7 +132,7 @@ export class PositionFormComponent implements OnInit, OnDestroy {
         Validators.minLength(10),
         Validators.maxLength(250),
       ]),
-      imgSrc: new FormControl(position?.imgSrc ?? '', Validators.required),
+      imgSrc: new FormControl(position?.imgSrc, Validators.required),
     });
   }
 
@@ -150,7 +150,8 @@ export class PositionFormComponent implements OnInit, OnDestroy {
   }
 
   getPositionById() {
-    this.positionService.getPositionByID(this.positionID).subscribe({
+    console.log(this.positionID)
+   this.pSub = this.positionService.getPositionByID(this.positionID).subscribe({
       next: (position) => {
         this.elem = {
           id: position._id,
@@ -184,6 +185,7 @@ export class PositionFormComponent implements OnInit, OnDestroy {
     fd.append('restaurant', user['rest']);
 
     if (this.positionID) {
+      console.log('this.positionID',this.positionID)
       this.pSub = this.positionService
         .update(fd, null, this.positionID)
         .subscribe({

@@ -97,6 +97,7 @@ module.exports.create = async function (req, res) {
 };
 
 module.exports.update = async function (req, res) {
+  console.log(req.body)
   let updated = {};
 
   if (req.body.status || !req.body.status) updated.status = req.body.status;
