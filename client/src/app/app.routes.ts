@@ -14,6 +14,8 @@ import { KitchenFormComponent } from './form-pages/kitchen-form/kitchen-form.com
 import { PositionFormComponent } from './form-pages/position-form/position-form.component';
 import { AssortmentComponent } from './admin-pages/assortment/assortment.component';
 import { PositionsPageComponent } from './admin-pages/positions-page/positions-page.component';
+import { PromosPageComponent } from './admin-pages/promos-page/promos-page.component';
+import { PromoFormComponent } from './form-pages/promo-form/promo-form.component';
 
 export const routes: Routes = [
   {
@@ -34,6 +36,7 @@ export const routes: Routes = [
       { path: 'overview', component: OverviewPageComponent },
       { path: 'users', component: UsersPageComponent },
       { path: 'restaurants', component: RestaurantsPageComponent },
+      { path: 'promos', component: PromosPageComponent },
       { path: 'positions', component: PositionsPageComponent },
       { path: 'assortment', component: AssortmentComponent },
       { path: 'form-user', component: UserFormComponent },
@@ -46,6 +49,8 @@ export const routes: Routes = [
       { path: 'form-category/:id', component: CategoryFormComponent },
       { path: 'form-position', component: PositionFormComponent },
       { path: 'form-position/:id', component: PositionFormComponent },
+      { path: 'form-promo', component: PromoFormComponent },
+      { path: 'form-promo/:id', component: PromoFormComponent },
     ],
   },
 ];

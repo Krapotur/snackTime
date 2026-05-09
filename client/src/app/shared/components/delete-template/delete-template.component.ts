@@ -44,9 +44,9 @@ export class DeleteTemplateComponent implements OnInit, OnDestroy {
     this.dSub = this.sharedService.delete(this.elemIn).subscribe({
       next: (message) => {
         MaterialService.toast(message.message);
-        void this.router.navigate(['st/assortment']);
+        void this.router.navigate([`st/${this.elemIn.route}`]);
       },
-      error: (error) => MaterialService.toast(error.error.message()),
+      error: (error) => MaterialService.toast(error.error.message),
     });
   }
 }

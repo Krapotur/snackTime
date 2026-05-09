@@ -92,7 +92,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
         Validators.maxLength(20),
       ]),
       isDrink: new FormControl(category ? category.isDrink : false),
-      imgSrc: new FormControl('', Validators.required),
+      imgSrc: new FormControl(category?.imgSrc ?? '', Validators.required),
     });
   }
 

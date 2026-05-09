@@ -50,6 +50,10 @@ const positionSchema = new Schema({
         type: Number,
         default: 100
     },
+    quantityInCart: {
+        type: Number,
+        default: 0
+    },
     createdAt:{
         type: String
     },

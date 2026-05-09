@@ -1,0 +1,108 @@
+<div class="tables" *ngIf="!isLoading">
+  <div class="main">
+    <div class="header">
+      <h5>
+        Реклама <span>({{ quantityPromo }})</span>
+      </h5>
+      <div class="search">
+        <div *ngIf="!isEmpty && !isLoading">
+          <input
+            matInput
+            (keyup)="applyFilter($event)"
+            placeholder="Что искать?"
+            maxlength="20"
+          />
+        </div>
+        <div class="icon-finder" *ngIf="!isEmpty">
+          <img src="assets/icons/search-finder.svg" alt="search" />
+        </div>
+      </div>
+    </div>
+
+    <app-empty [page]="activeRoute" *ngIf="isEmpty"></app-empty>
+
+    <div *ngIf="!isEmpty">
+      <div class="mat-elevation-z8">
+        <section class="table-section mat-elevation-z8" tabindex="0">
+          <table mat-table [dataSource]="dataSource">
+            <ng-container matColumnDef="#">
+              <th mat-header-cell *matHeaderCellDef>#</th>
+              <td mat-cell *matCellDef="let promo">{{ promo.position }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="title">
+              <th mat-header-cell *matHeaderCellDef>Название</th>
+              <td
+                mat-cell
+                style="cursor: pointer"
+                (click)="openPage(promo['_id'])"
+                *matCellDef="let promo"
+              >
+                {{ promo.title }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="description">
+              <th mat-header-cell *matHeaderCellDef>Описание</th>
+              <td mat-cell *matCellDef="let promo">
+                {{ promo.description }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="link">
+              <th mat-header-cell *matHeaderCellDef>Ссылка</th>
+              <td mat-cell *matCellDef="let promo">
+                {{ promo.link }}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="edit">
+              <th mat-header-cell *matHeaderCellDef>Действие</th>
+              <td mat-cell *matCellDef="let promo">
+                <img
+                  src="assets/icons/edit.png"
+                  style="width: 35px; height: 35px"
+                  alt="edit"
+                  (click)="openPage(promo['_id'])"
+                />
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef>Статус</th>
+              <td mat-cell *matCellDef="let promo">
+                <mat-slide-toggle
+                  [checked]="promo.status"
+                  color="warn"
+                  (click)="changeStatus(promo)"
+                ></mat-slide-toggle>
+              </td>
+            </ng-container>
+
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="4">Такой рекламы нет...</td>
+            </tr>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </section>
+      </div>
+
+      <button
+        *ngIf="!isLoading"
+        class="btn"
+        extended=""
+        mat-fab
+        [disabled]="isShowTemplate"
+        routerLink="/st/form-promo"
+      >
+        Добавить
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="center">
+  <app-loader *ngIf="isLoading"></app-loader>
+</div>

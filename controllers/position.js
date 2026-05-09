@@ -22,6 +22,15 @@ module.exports.getPositionsByCategoryId = async function (req, res) {
   }
 };
 
+module.exports.getPositionsByRestaurantId = async function (req, res) {
+  try {
+    const positions = await Position.find({ restaurant: req.params.id });
+    res.status(200).json(positions);
+  } catch (e) {
+    errorHandler(res, e);
+  }
+};
+
 module.exports.getById = async function (req, res) {
   try {
     const position = await Position.findById({ _id: req.params.id });

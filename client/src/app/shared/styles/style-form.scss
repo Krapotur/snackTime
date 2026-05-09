@@ -7,8 +7,13 @@
 }
 
 .row {
+  width: 100%;
   margin-bottom: 0;
   padding: 0;
+
+  .col.s6{
+    width: 100%;
+  }
 }
 
 .invalid {
@@ -201,7 +206,6 @@
   border-radius: 10px;
   color: white;
   font-family: 'Lora', serif;
-  font-weight: 600;
   box-shadow: 0 8px 16px rgba(31, 49, 85, 0.14);
 }
 

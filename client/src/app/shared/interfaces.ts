@@ -84,6 +84,17 @@ export interface Position {
   restaurant: string
 }
 
+export interface Promo {
+  _id?: string,
+  position?: number,
+  status?: boolean,
+  title: string,
+  description: string,
+  imgSrc?: string,
+  link: string,
+  restaurant: string
+}
+
 export interface Elem {
   id: string
   title: string,

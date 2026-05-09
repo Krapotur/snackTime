@@ -21,6 +21,7 @@ const kitchenRoutes = require('./routes/kitchen');
 const orderRoutes = require('./routes/order');
 const positionRoutes = require('./routes/position');
 const restaurantRoutes = require('./routes/restaurant');
+const promoRoutes = require('./routes/promo');
 
 const keys = require('./config/keys');
 
@@ -50,6 +51,7 @@ app.use('/api/kitchens', kitchenRoutes);
 app.use('/api/order', orderRoutes);
 app.use('/api/positions', positionRoutes);
 app.use('/api/restaurants', restaurantRoutes);
+app.use('/api/promos', promoRoutes);
 
 app.use((err, _req, res, _next) => {
   if (err instanceof multer.MulterError) {

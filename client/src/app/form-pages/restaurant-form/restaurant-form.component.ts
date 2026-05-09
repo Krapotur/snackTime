@@ -123,7 +123,7 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
       ),
       kitchen: new FormControl(restaurant?.kitchen ?? '', Validators.required),
       typePlace: new FormControl(restaurant?.typePlace, Validators.required),
-      imgSrc: new FormControl('', Validators.required),
+      imgSrc: new FormControl(restaurant?.imgSrc ?? '', Validators.required),
     });
   }
 
