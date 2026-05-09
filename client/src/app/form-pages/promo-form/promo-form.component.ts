@@ -86,13 +86,9 @@ export class PromoFormComponent implements OnInit, OnDestroy {
         Validators.maxLength(20),
       ]),
       description: new FormControl(promo?.description ?? '', [
-        Validators.required,
-        Validators.minLength(10),
         Validators.maxLength(200),
       ]),
       link: new FormControl(promo?.link ?? '', [
-        Validators.required,
-        Validators.minLength(5),
         Validators.maxLength(255),
       ]),
       imgSrc: new FormControl(promo?.imgSrc ?? '', Validators.required),

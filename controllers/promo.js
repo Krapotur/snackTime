@@ -38,44 +38,81 @@ module.exports.getById = async function (req, res) {
 };
 
 module.exports.create = async function (req, res) {
-  const candidate = await Promo.findOne({
-    title: req.body.title,
-    restaurant: req.body.restaurant,
-  });
 
-  if (candidate) {
-    res.status(409).json({
-      message: "Такая реклама уже есть",
-    });
-  } else {
-    const promo = new Promo({
-      status: req.body.status,
+  console.log(req.body)
+
+  try {
+    const {
+      title,
+      description,
+      link,
+      restaurant,
+    } = req.body || {};
+
+    const missing = [
+      ['title', title],
+      ['description', description],
+      ['link', link],
+      ['restaurant', restaurant],
+    ].filter(([, v]) => v === undefined || v === null);
+
+    if (missing.length) return res.status(400).json({ message: `Missing: ${missing.map(([k]) => k).join(', ')}` });
+
+    const candidate = await Promo.findOne({
       title: req.body.title,
-      description: req.body.description,
-      imgSrc: req.file ? req.file.path : "",
-      link: req.body.link,
       restaurant: req.body.restaurant,
     });
 
-    try {
+    if (candidate) {
+      res.status(409).json({
+        message: "Такая реклама уже есть",
+      });
+    } else {
+      const promo = new Promo({
+        title: req.body.title,
+        description: req.body.description ?? '',
+        imgSrc: req.file ? req.file.path : "",
+        link: req.body.link ?? '',
+        restaurant: req.body.restaurant,
+      });
+
       await promo.save();
       res.status(201).json({
         message: `Реклама "${req.body.title}" успешно добавлена!`,
       });
-    } catch (e) {
-      errorHandler(res, e);
     }
+  } catch (e) {
+    console.log(e)
+    errorHandler(res, e);
   }
 };
 
 module.exports.update = async function (req, res) {
-  const updated = {
-    ...req.body,
-  };
-
-  if (req.file) updated.imgSrc = req.file.path;
-
   try {
+    console.log(req.body)
+
+    const {
+      title,
+      description,
+      link,
+      restaurant,
+    } = req.body || {};
+
+    const missing = [
+      ['title', title],
+      ['description', description],
+      ['link', link],
+      ['restaurant', restaurant],
+    ].filter(([, v]) => v === undefined || v === null);
+
+    if (missing.length) return res.status(400).json({ message: `Missing: ${missing.map(([k]) => k).join(', ')}` });
+
+    const updated = {
+      ...req.body,
+    };
+
+    if (req.file) updated.imgSrc = req.file.path;
+
     await Promo.findByIdAndUpdate(
       { _id: req.params.id },
       { $set: updated },
