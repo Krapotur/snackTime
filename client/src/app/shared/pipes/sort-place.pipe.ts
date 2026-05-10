@@ -7,7 +7,6 @@ import {Pipe, PipeTransform} from "@angular/core";
 export class SortPlacePipe implements PipeTransform {
 
   transform(typePlace: string): string {
-    console.log('sort-place-pipe', typePlace)
     let place = ''
 
     switch (typePlace) {
@@ -16,6 +15,9 @@ export class SortPlacePipe implements PipeTransform {
         break;
       case 'сafe':
         place = 'Кафе';
+        break;
+      case 'other':
+        place = 'Другое';
         break;
       default:
         place = ''

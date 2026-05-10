@@ -27,7 +27,7 @@ export class DeleteTemplateComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.title = this.elemIn.title;
-    this.isRestaurant = this.elemIn?.route === 'restaurants';
+    this.isRestaurant = this.elemIn?.formRoute === 'restaurants';
   }
 
   ngOnDestroy() {

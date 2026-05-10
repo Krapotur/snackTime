@@ -36,7 +36,9 @@ export class SiteLayoutComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getGroupById();
-    this.getRestaurantByUser();
+    if (this.isAdmin) {
+      this.getRestaurantByUser();
+    }
   }
 
   ngOnDestroy() {
@@ -46,6 +48,7 @@ export class SiteLayoutComponent implements OnInit, OnDestroy {
 
   getGroupById() {
     let profile = JSON.parse(localStorage.getItem('profile'));
+    this.userName = profile['userName'];
     this.gSub = this.groupService.getGroupByID(profile.group).subscribe({
       next: (group) => {
         this.sharedService.updateDataGroup(group.alias);
@@ -61,7 +64,6 @@ export class SiteLayoutComponent implements OnInit, OnDestroy {
       profile = JSON.parse(localStorage.getItem('profile'));
     }
     this.getRestaurantById(profile['rest']);
-    this.userName = profile['userName'];
   }
 
   getRestaurantById(id: string) {

@@ -92,7 +92,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
         Validators.maxLength(20),
       ]),
       isDrink: new FormControl(category ? category.isDrink : false),
-      imgSrc: new FormControl(category?.imgSrc ?? '', Validators.required),
+      imgSrc: new FormControl(this.uploadedImgLink() ?? '', Validators.required),
     });
   }
 
@@ -108,30 +108,31 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
   }
 
   getCategoryByID() {
-    this.categoryService.getCategoryByID(this.categoryID).subscribe({
-      next: (category) => {
-        this.elem = {
-          id: category._id,
-          title: category.title,
-          route: 'assortment',
-          formRoute: 'categories',
-        };
-        this.category = category;
-        this.generateForm(category);
-      },
-      error: (error) => MaterialService.toast(error.error.error),
-    });
+      this.cSub = this.categoryService.getCategoryByID(this.categoryID).subscribe({
+        next: (category) => {
+          this.elem = {
+            id: category._id,
+            title: category.title,
+            route: 'assortment',
+            formRoute: 'categories',
+          };
+          this.category = category;
+          this.generateForm(category);
+        },
+        error: (error) => MaterialService.toast(error.error.error),
+      });
   }
 
   onSubmit() {
     const fd = new FormData();
 
-    if (this.image) {
+    if (this.image()) {
       fd.append('image', this.image(), this.image.name);
     }
     fd.append('title', this.form.get('title').value);
 
     if (this.categoryID) {
+      console.log('this.categoryID', this.categoryID)
       this.cSub = this.categoryService
         .update(fd, null, this.categoryID)
         .subscribe({

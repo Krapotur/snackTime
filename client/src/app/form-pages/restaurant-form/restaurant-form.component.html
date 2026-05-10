@@ -138,7 +138,7 @@
           >
           <mat-select formControlName="typePlace">
             <mat-select-trigger>
-                {{ form.get("typePlace").value | sortPlace}}
+                {{ form.get("typePlace").value }}
             </mat-select-trigger>
             <mat-option *ngFor="let place of sortPlaces" [value]="place"
               >{{ place }}

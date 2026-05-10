@@ -104,7 +104,7 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
   }
 
   generateForm(restaurant?: Restaurant) {
-    console.log('restaurant', restaurant);
+    console.log('restaurant', restaurant)
     this.form = new FormGroup({
       title: new FormControl(restaurant?.title ?? '', [
         Validators.required,
@@ -123,7 +123,7 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
       ),
       kitchen: new FormControl(restaurant?.kitchen ?? '', Validators.required),
       typePlace: new FormControl(restaurant?.typePlace, Validators.required),
-      imgSrc: new FormControl(restaurant?.imgSrc ?? '', Validators.required),
+      imgSrc: new FormControl(this.uploadedImgLink() ?? '', Validators.required),
     });
   }
 
