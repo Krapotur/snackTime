@@ -64,6 +64,7 @@ module.exports.create = async function (req, res) {
       minute: "numeric",
       timeZone: "Europe/Moscow",
     };
+    console.log(req.file);
 
     let date = new Date().toLocaleString("ru", options);
 
@@ -97,7 +98,7 @@ module.exports.create = async function (req, res) {
 };
 
 module.exports.update = async function (req, res) {
-  console.log(req.body)
+  console.log(req.body);
   let updated = {};
 
   if (req.body.status || !req.body.status) updated.status = req.body.status;
@@ -151,7 +152,9 @@ module.exports.delete = async function (req, res) {
   try {
     const position = await Position.findOne({ _id: req.params.id });
     if (position) {
-      removeFile.remove(position.imgSrc);
+      if (position.imgSrc.length) {
+        removeFile.remove(position.imgSrc);
+      }
 
       await Position.deleteOne({ _id: req.params.id });
     }

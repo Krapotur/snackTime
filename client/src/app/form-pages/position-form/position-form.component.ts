@@ -54,16 +54,41 @@ export class PositionFormComponent implements OnInit, OnDestroy {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
-  form: FormGroup;
+  form: FormGroup = new FormGroup({
+    title: new FormControl(null, [
+      Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(65),
+    ]),
+    price: new FormControl(null, [
+      Validators.required,
+      Validators.min(10),
+      Validators.max(5000),
+    ]),
+    weight: new FormControl(null, [Validators.required, Validators.max(2000)]),
+    caloric: new FormControl(0, [Validators.min(0), Validators.max(1000)]),
+    proteins: new FormControl(0, [Validators.min(0), Validators.max(300)]),
+    fats: new FormControl(0, [Validators.min(0), Validators.max(300)]),
+    carbs: new FormControl(0, [Validators.min(0), Validators.max(300)]),
+    isPopular: new FormControl(false),
+    discount: new FormControl(0),
+    composition: new FormControl('', [
+      Validators.required,
+      Validators.minLength(10),
+      Validators.maxLength(250),
+    ]),
+    image: new FormControl(
+      null,
+      this.route.snapshot.params['id'] ? [] : Validators.required,
+    ),
+  });
+
   isDelete = false;
   isError = false;
   positionID: string = '';
   categoryID: string = '';
-  uploadedImgLink = computed(() =>
-    this.form.get('image').value
-      ? URL.createObjectURL(this.form.get('image').value)
-      : null,
-  );
+  uploadedImgFile = signal<File | null>(null);
+  uploadedImgLink = signal(null);
   imageUrl: string | null = null;
   pSub: Subscription;
   cSub: Subscription;
@@ -75,8 +100,6 @@ export class PositionFormComponent implements OnInit, OnDestroy {
     if (this.route.snapshot.params['id']) {
       this.positionID = this.route.snapshot.params['id'];
       this.getPositionById();
-    } else {
-      this.generateForm();
     }
 
     this.route.queryParams.subscribe((params) => {
@@ -85,7 +108,7 @@ export class PositionFormComponent implements OnInit, OnDestroy {
 
     this.sharedDelService.sharedData$.subscribe((value) => {
       this.isDelete = value;
-      this.isDelete ? this.form?.disable() : this.form?.enable();
+      this.isDelete ? this.form.disable() : this.form.enable();
     });
   }
 
@@ -94,51 +117,10 @@ export class PositionFormComponent implements OnInit, OnDestroy {
     if (this.cSub) this.cSub.unsubscribe();
   }
 
-  generateForm(position?: Position) {
-    this.form = new FormGroup({
-      title: new FormControl(position?.title ?? null, [
-        Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(65),
-      ]),
-      price: new FormControl(position?.price ?? null, [
-        Validators.required,
-        Validators.min(10),
-        Validators.max(5000),
-      ]),
-      weight: new FormControl(position?.weight ?? null, [
-        Validators.required,
-        Validators.max(2000),
-      ]),
-      caloric: new FormControl(position?.caloric ?? 0, [
-        Validators.min(0),
-        Validators.max(1000),
-      ]),
-      proteins: new FormControl(position?.proteins ?? 0, [
-        Validators.min(0),
-        Validators.max(300),
-      ]),
-      fats: new FormControl(position ? position.fats : 0, [
-        Validators.min(0),
-        Validators.max(300),
-      ]),
-      carbs: new FormControl(position ? position.carbs : 0, [
-        Validators.min(0),
-        Validators.max(300),
-      ]),
-      isPopular: new FormControl(position ? position.isPopular : false),
-      discount: new FormControl(position ? position.discount : 0),
-      composition: new FormControl(position ? position.composition : '', [
-        Validators.required,
-        Validators.minLength(10),
-        Validators.maxLength(250),
-      ]),
-      image: new FormControl(null, Validators.required),
-    });
-  }
-
   uploadImg($event: any) {
-    this.form.get('image').setValue($event.target.files[0] as File);
+    this.uploadedImgFile.set($event.target.files[0]);
+    this.uploadedImgLink.set(URL.createObjectURL($event.target.files[0]));
+    // this.form.get('image').setValue($event.target.files[0] as File);
   }
 
   getPositionsByCategory() {
@@ -163,7 +145,7 @@ export class PositionFormComponent implements OnInit, OnDestroy {
             formRoute: 'positions',
           };
           this.position = position;
-          this.generateForm(this.position);
+          this.form.patchValue(this.position);
         },
         error: (error) => MaterialService.toast(error.error.error),
       });
@@ -174,11 +156,12 @@ export class PositionFormComponent implements OnInit, OnDestroy {
     const fd = new FormData();
 
     // if (this.image) fd.append('image', this.image(), this.image().name);
-    fd.append(
-      'image',
-      this.form.get('image').value,
-      this.form.get('image').value.name,
-    );
+    if (this.uploadedImgFile()) {
+      console.log('asd', this.uploadedImgFile());
+
+      fd.append('image', this.uploadedImgFile());
+    }
+
     fd.append('title', this.form.get('title').value);
     fd.append('price', this.form.get('price').value);
     fd.append('composition', this.form.get('composition').value);
