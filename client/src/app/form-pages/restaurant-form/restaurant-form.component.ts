@@ -116,13 +116,13 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
         Validators.minLength(20),
         Validators.maxLength(100),
       ]),
-      timeOpen: new FormControl(restaurant?.timeOpen ?? 0, Validators.required),
+      timeOpen: new FormControl(restaurant?.timeOpen ?? 10, Validators.required),
       timeClose: new FormControl(
-        restaurant?.timeClose ?? 0,
+        restaurant?.timeClose ?? 20,
         Validators.required,
       ),
       kitchen: new FormControl(restaurant?.kitchen ?? '', Validators.required),
-      typePlace: new FormControl(restaurant?.typePlace, Validators.required),
+      typePlace: new FormControl(restaurant?.typePlace ?? 'asdsd', Validators.required),
       imgSrc: new FormControl(this.uploadedImgLink() ?? '', Validators.required),
     });
   }

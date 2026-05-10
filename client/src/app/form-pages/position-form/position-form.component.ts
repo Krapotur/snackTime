@@ -59,9 +59,10 @@ export class PositionFormComponent implements OnInit, OnDestroy {
   isError = false;
   positionID: string = '';
   categoryID: string = '';
-  image = signal<File | null>(null);
   uploadedImgLink = computed(() =>
-    this.image() ? URL.createObjectURL(this.image()) : null,
+    this.form.get('image').value
+      ? URL.createObjectURL(this.form.get('image').value)
+      : null,
   );
   imageUrl: string | null = null;
   pSub: Subscription;
@@ -74,17 +75,17 @@ export class PositionFormComponent implements OnInit, OnDestroy {
     if (this.route.snapshot.params['id']) {
       this.positionID = this.route.snapshot.params['id'];
       this.getPositionById();
+    } else {
+      this.generateForm();
     }
 
     this.route.queryParams.subscribe((params) => {
       if (params['category']) this.categoryID = params['category'];
     });
 
-    this.generateForm();
-
     this.sharedDelService.sharedData$.subscribe((value) => {
       this.isDelete = value;
-      this.isDelete ? this.form.disable() : this.form.enable();
+      this.isDelete ? this.form?.disable() : this.form?.enable();
     });
   }
 
@@ -132,12 +133,12 @@ export class PositionFormComponent implements OnInit, OnDestroy {
         Validators.minLength(10),
         Validators.maxLength(250),
       ]),
-      imgSrc: new FormControl(position?.imgSrc, Validators.required),
+      image: new FormControl(null, Validators.required),
     });
   }
 
   uploadImg($event: any) {
-    this.image.set($event.target.files[0] as File);
+    this.form.get('image').setValue($event.target.files[0] as File);
   }
 
   getPositionsByCategory() {
@@ -150,27 +151,34 @@ export class PositionFormComponent implements OnInit, OnDestroy {
   }
 
   getPositionById() {
-    console.log(this.positionID)
-   this.pSub = this.positionService.getPositionByID(this.positionID).subscribe({
-      next: (position) => {
-        this.elem = {
-          id: position._id,
-          title: position.title,
-          route: 'positions',
-          formRoute: 'positions',
-        };
-        this.position = position;
-        this.generateForm(this.position);
-      },
-      error: (error) => MaterialService.toast(error.error.error),
-    });
+    console.log(this.positionID);
+    this.pSub = this.positionService
+      .getPositionByID(this.positionID)
+      .subscribe({
+        next: (position) => {
+          this.elem = {
+            id: position._id,
+            title: position.title,
+            route: 'positions',
+            formRoute: 'positions',
+          };
+          this.position = position;
+          this.generateForm(this.position);
+        },
+        error: (error) => MaterialService.toast(error.error.error),
+      });
   }
 
   onSubmit() {
     let user = JSON.parse(localStorage.getItem('profile'));
     const fd = new FormData();
 
-    if (this.image) fd.append('image', this.image(), this.image.name);
+    // if (this.image) fd.append('image', this.image(), this.image().name);
+    fd.append(
+      'image',
+      this.form.get('image').value,
+      this.form.get('image').value.name,
+    );
     fd.append('title', this.form.get('title').value);
     fd.append('price', this.form.get('price').value);
     fd.append('composition', this.form.get('composition').value);
@@ -185,7 +193,7 @@ export class PositionFormComponent implements OnInit, OnDestroy {
     fd.append('restaurant', user['rest']);
 
     if (this.positionID) {
-      console.log('this.positionID',this.positionID)
+      console.log('this.positionID', this.positionID);
       this.pSub = this.positionService
         .update(fd, null, this.positionID)
         .subscribe({

@@ -8,6 +8,20 @@
   align-items: center;
   margin-bottom: 8px;
 
+  
+  h5 {
+    font: 500 26px 'Lora', serif;
+    padding: 0;
+    margin-bottom: 0;
+    color: #232635;
+  }
+
+  h5 span {
+    color: #9ba3b5;
+    font-size: 20px;
+    padding-left: 4px;
+  }
+
   .btn-edit {
     border: 1px solid #d9deea;
     background-color: #fff;

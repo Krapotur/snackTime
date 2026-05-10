@@ -16,12 +16,12 @@ const restaurantSchema = new Schema({
     default: "",
   },
   timeOpen: {
-    type: String,
-    default: "",
+   type: Number,
+    default: 10,
   },
   timeClose: {
-    type: String,
-    default: "",
+    type: Number,
+    default: 25,
   },
   typePlace: {
     type: String,
