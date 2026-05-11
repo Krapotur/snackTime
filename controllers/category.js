@@ -162,9 +162,11 @@ module.exports.updateStatus = async function (req, res) {
 module.exports.delete = async function (req, res) {
   try {
     const category = await Category.findOne({ _id: req.params.id });
-    if (category) {
-      removeFile.remove(category.imgSrc);
 
+    if (category) {
+      if (category.imgSrc.length) {
+        removeFile.remove(category.imgSrc);
+      }
       await Position.deleteMany({ category: category._id });
       await Category.deleteOne({ _id: category._id });
 
