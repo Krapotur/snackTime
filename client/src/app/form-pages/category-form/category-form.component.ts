@@ -132,7 +132,6 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
     fd.append('title', this.form.get('title').value);
 
     if (this.categoryID) {
-      console.log('this.categoryID', this.categoryID)
       this.cSub = this.categoryService
         .update(fd, null, this.categoryID)
         .subscribe({

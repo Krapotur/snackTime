@@ -85,8 +85,8 @@ export class PositionFormComponent implements OnInit, OnDestroy {
 
   isDelete = false;
   isError = false;
-  positionID: string = '';
-  categoryID: string = '';
+  positionID: string | null = null;
+  categoryID: string | null = null;
   uploadedImgFile = signal<File | null>(null);
   uploadedImgLink = signal(null);
   imageUrl: string | null = null;
@@ -120,20 +120,22 @@ export class PositionFormComponent implements OnInit, OnDestroy {
   uploadImg($event: any) {
     this.uploadedImgFile.set($event.target.files[0]);
     this.uploadedImgLink.set(URL.createObjectURL($event.target.files[0]));
-    // this.form.get('image').setValue($event.target.files[0] as File);
   }
 
-  getPositionsByCategory() {
+  getPositionsByCategory(id?: string) {
+    console.log(id)
     this.pSub = this.positionService
-      .getPositionsByCategoryID(this.categoryID)
+      .getPositionsByCategoryID(id ?? this.categoryID)
       .subscribe({
-        next: (positions) => (this.positions = positions),
+        next: (positions) => {
+          this.positions = positions;
+          console.log(positions)
+        },
         error: (error) => MaterialService.toast(error.error.message),
       });
   }
 
   getPositionById() {
-    console.log(this.positionID);
     this.pSub = this.positionService
       .getPositionByID(this.positionID)
       .subscribe({
@@ -155,10 +157,7 @@ export class PositionFormComponent implements OnInit, OnDestroy {
     let user = JSON.parse(localStorage.getItem('profile'));
     const fd = new FormData();
 
-    // if (this.image) fd.append('image', this.image(), this.image().name);
     if (this.uploadedImgFile()) {
-      console.log('asd', this.uploadedImgFile());
-
       fd.append('image', this.uploadedImgFile());
     }
 
@@ -172,11 +171,10 @@ export class PositionFormComponent implements OnInit, OnDestroy {
     fd.append('caloric', this.form.get('caloric').value);
     fd.append('isPopular', this.form.get('isPopular').value ?? false);
     fd.append('discount', this.form.get('discount').value ?? 0);
-    fd.append('category', this.categoryID);
+    fd.append('category', this.categoryID ?? this.position.category ?? '');
     fd.append('restaurant', user['rest']);
 
     if (this.positionID) {
-      console.log('this.positionID', this.positionID);
       this.pSub = this.positionService
         .update(fd, null, this.positionID)
         .subscribe({
@@ -226,8 +224,9 @@ export class PositionFormComponent implements OnInit, OnDestroy {
   }
 
   checkTitlePosition() {
-    this.getPositionsByCategory();
     const title = this.form.get('title').value;
+    this.getPositionsByCategory(this.position.category);
+    console.log(this.positions);
     if (title.length > 5) {
       this.isError = this.positions.some(
         (position) => title.toLowerCase() == position.title.toLowerCase(),

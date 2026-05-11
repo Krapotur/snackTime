@@ -39,8 +39,6 @@ module.exports.getById = async function (req, res) {
 
 module.exports.create = async function (req, res) {
 
-  console.log(req.body)
-
   try {
     const {
       title,
@@ -89,8 +87,6 @@ module.exports.create = async function (req, res) {
 
 module.exports.update = async function (req, res) {
   try {
-    console.log(req.body)
-
     const {
       title,
       description,

@@ -80,6 +80,7 @@ module.exports.create = async function (req, res) {
 };
 
 module.exports.getById = async function (req, res) {
+  console.log("req.params", req.params);
   try {
     const category = await Category.findById({ _id: req.params.id });
     res.status(200).json(category);
@@ -89,13 +90,25 @@ module.exports.getById = async function (req, res) {
 };
 
 module.exports.update = async function (req, res) {
-  let updated = {
-    ...req.body,
-  };
-
-  if (req.file) updated.imgSrc = req.file.path;
-
+  console.log(req.body)
   try {
+    const { title } = req.body || {};
+
+    const missing = [
+      ["title", title],
+    ].filter(([, v]) => v === undefined || v === null);
+
+    if (missing.length)
+      return res
+        .status(400)
+        .json({ message: `Missing: ${missing.map(([k]) => k).join(", ")}` });
+
+    let updated = {
+      ...req.body,
+    };
+
+    if (req.file) updated.imgSrc = req.file.path;
+
     await Category.findByIdAndUpdate(
       { _id: req.params.id },
       { $set: updated },
@@ -138,7 +151,6 @@ module.exports.delete = async function (req, res) {
 
       await Position.deleteMany({ category: category._id });
       await Category.deleteOne({ _id: category._id });
-
 
       res
         .status(200)
