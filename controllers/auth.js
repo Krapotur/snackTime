@@ -26,7 +26,6 @@ module.exports.login = async function (req, res) {
                     user: candidate._id
                 }
 
-                console.log(userToken)
                 res.status(200).json(userToken)
 
             } else {

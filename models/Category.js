@@ -6,6 +6,10 @@ const categorySchema = new Schema({
     type: Boolean,
     default: false
   },
+  isDrink: {
+    type: Boolean,
+    default: false
+  },
   title: {
     type: String,
     required: true

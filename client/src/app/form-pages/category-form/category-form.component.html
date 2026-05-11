@@ -79,18 +79,19 @@
               id="category-image"
               type="file"
               class="dn"
-              formControlName="imgSrc"
+              formControlName="image"
               #inputImg
               (change)="uploadImg($event)"
             />
             <img
               (click)="inputImg.click()"
               [class.dn]="isDelete"
-              [class.img-true]="category || uploadedImgLink()"
-              [class.img-icon]="!category && !uploadedImgLink()"
+              [ngClass]="
+                category?.imgSrc || uploadedImgLink() ? 'img-true' : 'img-icon'
+              "
               [src]="
-                category?.imgSrc ??
-                uploadedImgLink() ??
+                uploadedImgLink() ||
+                category?.imgSrc ||
                 '../assets/icons/add-photo.png'
               "
               alt="image"

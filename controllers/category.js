@@ -57,25 +57,41 @@ module.exports.getCategoriesByRestaurantId = async function (req, res) {
 };
 
 module.exports.create = async function (req, res) {
-  const candidate = await Category.findOne({ title: req.body.title });
+  try {
+    const { title, isDrink } = req.body || {};
 
-  if (candidate) {
-    res.status(409).json({
-      message: "Такая категория уже есть",
-    });
-  } else {
-    const category = new Category({
+    const missing = [
+      ["title", title],
+      ["isDrink", isDrink],
+    ].filter(([, v]) => v === undefined || v === null);
+
+    if (missing.length)
+      return res
+        .status(400)
+        .json({ message: `Missing: ${missing.map(([k]) => k).join(", ")}` });
+
+    const candidate = await Category.findOne({
       title: req.body.title,
-      imgSrc: req.file ? req.file.path : "",
       restaurant: req.body.restaurant,
     });
 
-    try {
+    if (candidate) {
+      res.status(409).json({
+        message: "Такая категория уже есть",
+      });
+    } else {
+      const category = new Category({
+        title: req.body.title,
+        isDrink: req.body.isDrink ?? false,
+        imgSrc: req.file ? req.file.path : "",
+        restaurant: req.body.restaurant,
+      });
+
       await category.save();
       res.status(201).json({ message: "Категория успешно создана" });
-    } catch (e) {
-      errorHandler(res, e);
     }
+  } catch (e) {
+    errorHandler(res, e);
   }
 };
 
@@ -90,12 +106,12 @@ module.exports.getById = async function (req, res) {
 };
 
 module.exports.update = async function (req, res) {
-  console.log(req.body)
   try {
-    const { title } = req.body || {};
+    const { title, isDrink } = req.body || {};
 
     const missing = [
       ["title", title],
+      ["isDrink", isDrink],
     ].filter(([, v]) => v === undefined || v === null);
 
     if (missing.length)

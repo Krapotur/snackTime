@@ -123,13 +123,11 @@ export class PositionFormComponent implements OnInit, OnDestroy {
   }
 
   getPositionsByCategory(id?: string) {
-    console.log(id)
     this.pSub = this.positionService
       .getPositionsByCategoryID(id ?? this.categoryID)
       .subscribe({
         next: (positions) => {
           this.positions = positions;
-          console.log(positions)
         },
         error: (error) => MaterialService.toast(error.error.message),
       });

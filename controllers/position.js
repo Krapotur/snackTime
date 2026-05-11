@@ -107,7 +107,7 @@ module.exports.create = async function (req, res) {
         title: req.body.title,
         composition: req.body.composition,
         price: req.body.price,
-        isDrink: category != null && category.get?.("isDrink"),
+        isDrink: exitingCategory?.isDrink ?? false,
         isPopular: req.body.isPopular,
         weight: req.body.weight,
         discount: req.body.discount,

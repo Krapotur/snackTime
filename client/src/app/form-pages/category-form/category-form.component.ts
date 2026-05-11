@@ -54,13 +54,24 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
-  form: FormGroup;
+  form: FormGroup = new FormGroup({
+    title: new FormControl(null, [
+      Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(20),
+    ]),
+    isDrink: new FormControl(false),
+    image: new FormControl(
+      null,
+      this.route.snapshot.params['id'] ? [] : Validators.required,
+    ),
+  });
+
   isError = false;
   categoryID: string;
-  image = signal<File | null>(null);
-  uploadedImgLink = computed(() =>
-    this.image() ? URL.createObjectURL(this.image()) : null,
-  );
+  uploadedImgFile = signal<File | null>(null);
+  uploadedImgLink = signal(null);
+  imageUrl: string | null = null;
   cSub: Subscription;
   category: Category;
   categories: Category[] = [];
@@ -72,7 +83,6 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
       this.categoryID = this.route.snapshot.params['id'];
       this.getCategoryByID();
     }
-    this.generateForm();
 
     this.sharedDelService.sharedData$.subscribe((value) => {
       this.isDelete = value;
@@ -84,20 +94,9 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
     if (this.cSub) this.cSub.unsubscribe();
   }
 
-  generateForm(category?: Category) {
-    this.form = new FormGroup({
-      title: new FormControl(category ? category.title : '', [
-        Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(20),
-      ]),
-      isDrink: new FormControl(category ? category.isDrink : false),
-      imgSrc: new FormControl(this.uploadedImgLink() ?? '', Validators.required),
-    });
-  }
-
   uploadImg($event: any) {
-    this.image.set($event.target.files[0] as File);
+    this.uploadedImgFile.set($event.target.files[0]);
+    this.uploadedImgLink.set(URL.createObjectURL($event.target.files[0]));
   }
 
   getCategories() {
@@ -108,7 +107,9 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
   }
 
   getCategoryByID() {
-      this.cSub = this.categoryService.getCategoryByID(this.categoryID).subscribe({
+    this.cSub = this.categoryService
+      .getCategoryByID(this.categoryID)
+      .subscribe({
         next: (category) => {
           this.elem = {
             id: category._id,
@@ -117,19 +118,22 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
             formRoute: 'categories',
           };
           this.category = category;
-          this.generateForm(category);
+          this.form.patchValue(this.category);
         },
         error: (error) => MaterialService.toast(error.error.error),
       });
   }
 
   onSubmit() {
+    let user = JSON.parse(localStorage.getItem('profile'));
     const fd = new FormData();
 
-    if (this.image()) {
-      fd.append('image', this.image(), this.image.name);
+    if (this.uploadedImgFile()) {
+      fd.append('image', this.uploadedImgFile());
     }
+
     fd.append('title', this.form.get('title').value);
+    fd.append('isDrink', this.form.get('isDrink').value);
 
     if (this.categoryID) {
       this.cSub = this.categoryService
@@ -142,7 +146,6 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
           error: (error) => MaterialService.toast(error.error.message),
         });
     } else {
-      let user = JSON.parse(localStorage.getItem('profile'));
       fd.append('restaurant', user['rest']);
       this.cSub = this.categoryService.create(fd).subscribe({
         next: (message) => {
