@@ -71,9 +71,9 @@ export class CategoriesPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.rSub) this.rSub.unsubscribe();
-    if (this.cSub) this.cSub.unsubscribe();
-    if (this.gSub) this.gSub.unsubscribe();
+    this.rSub?.unsubscribe();
+    this.cSub?.unsubscribe();
+    this.gSub?.unsubscribe();
   }
 
   getCategories() {

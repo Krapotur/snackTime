@@ -136,7 +136,6 @@ export class PositionFormComponent implements OnInit, OnDestroy {
   getPositionById(id: string) {
     this.pSub = this.positionService.getPositionByID(id).subscribe({
       next: (position) => {
-        console.log('position', position)
         this.elem = {
           id: position._id,
           title: position.title,

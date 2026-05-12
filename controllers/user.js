@@ -119,7 +119,7 @@ module.exports.updateStatus = async function (req, res) {
         { new: true },
       );
       res.status(200).json({
-        message: `Изменения внесены`,
+        message: `Пользователь ${updated.status ? "активен" : "неактивен"}`,
       });
     }
   } catch (e) {

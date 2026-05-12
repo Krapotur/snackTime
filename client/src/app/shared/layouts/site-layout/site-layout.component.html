@@ -8,11 +8,20 @@
 
       <hr />
 
+      <div style="margin: 10px auto 0; width: 90%">
+        <img
+          [class.dn]="isAdmin || restaurant == null"
+          class="img-true"
+          [src]="restaurant?.imgSrc"
+          alt="image"
+        />
+      </div>
+
       <div class="user">
-        <p>{{ userName }}</p>
-        <p class="group">
-          "{{ restaurantTitle.length ? restaurantTitle : "Administrator" }}"
-        </p>
+        @if(restaurant) {
+          <p class="group">"{{ restaurant?.title }}"</p>
+        }
+        <p>{{ userName ?? "" }}</p>
       </div>
 
       <hr class="hr-bottom" />
@@ -57,10 +66,21 @@
     </div>
 
     <div class="btn-group-exit">
-      <button class="btn-cancel" extended="" mat-fab (click)="isLogout = !isLogout">
+      <button
+        class="btn-cancel"
+        extended=""
+        mat-fab
+        (click)="isLogout = !isLogout"
+      >
         Нет
       </button>
-      <button type="submit" class="btn-save" extended="" mat-fab (click)="submit()">
+      <button
+        type="submit"
+        class="btn-save"
+        extended=""
+        mat-fab
+        (click)="submit()"
+      >
         Да
       </button>
     </div>

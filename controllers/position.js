@@ -207,25 +207,25 @@ module.exports.update = async function (req, res) {
 };
 
 module.exports.updateStatus = async function (req, res) {
-  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-    return res.status(400).json({ error: "Missing position ID" });
-  } else {
-    let updated = {};
+  try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ error: "Missing position ID" });
+    } else {
+      let updated = {};
 
-    if (req.body.status || !req.body.status) updated.status = req.body.status;
+      if (req.body.status || !req.body.status) updated.status = req.body.status;
 
-    try {
       await Position.findByIdAndUpdate(
         { _id: req.params.id },
         { $set: updated },
         { new: true },
       );
       res.status(200).json({
-        message: `Изменения внесены`,
+        message: `Позиция ${updated.status ? "активна" : "неактивна"}`,
       });
-    } catch (e) {
-      errorHandler(res, e);
     }
+  } catch (e) {
+    errorHandler(res, e);
   }
 };
 

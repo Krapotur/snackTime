@@ -12,6 +12,7 @@ import { GroupService } from '../../services/group.service';
 import { Subscription } from 'rxjs';
 import { RestaurantService } from '../../services/restaurant.service';
 import { SharedService } from '../../services/shared.service';
+import { Restaurant } from '../../interfaces';
 
 @Component({
   selector: 'app-site-layout',
@@ -31,19 +32,17 @@ export class SiteLayoutComponent implements OnInit, OnDestroy {
   isLogout = false;
   gSub: Subscription;
   rSub: Subscription;
-  userName = '';
-  restaurantTitle = '';
+  userName: string | null = null;
+  restaurant: Restaurant | null = null;
 
   ngOnInit() {
     this.getGroupById();
-    if (this.isAdmin) {
-      this.getRestaurantByUser();
-    }
+    this.getRestaurantById();
   }
 
   ngOnDestroy() {
-    if (this.gSub) this.gSub.unsubscribe();
-    if (this.rSub) this.rSub.unsubscribe();
+    this.gSub?.unsubscribe();
+    this.rSub?.unsubscribe();
   }
 
   getGroupById() {
@@ -58,21 +57,16 @@ export class SiteLayoutComponent implements OnInit, OnDestroy {
     });
   }
 
-  getRestaurantByUser() {
-    let profile;
-    if (localStorage.getItem('profile')) {
-      profile = JSON.parse(localStorage.getItem('profile'));
-    }
-    this.getRestaurantById(profile['rest']);
-  }
-
-  getRestaurantById(id: string) {
-    if (id) {
-      this.rSub = this.restaurantService.getRestaurantByID(id).subscribe({
-        next: (rest) => (this.restaurantTitle = rest.title),
+  getRestaurantById() {
+    let restaurantID = this.sharedService.getRestaurantID();
+    this.rSub = this.restaurantService
+      .getRestaurantByID(restaurantID)
+      .subscribe({
+        next: (r) => {
+          this.restaurant = r;
+        },
         error: (e) => MaterialService.toast(e.error.message),
       });
-    }
   }
 
   logout() {

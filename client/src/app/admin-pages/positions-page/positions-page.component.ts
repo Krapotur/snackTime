@@ -1,19 +1,19 @@
-import { Component, inject, OnDestroy, OnInit, } from '@angular/core';
-import { MatTableDataSource, MatTableModule } from "@angular/material/table";
-import { MatPaginatorModule } from "@angular/material/paginator";
-import { MatButtonModule } from "@angular/material/button";
-import { NgIf } from "@angular/common";
-import { MatInputModule } from "@angular/material/input";
-import { MatSelectModule } from "@angular/material/select";
-import { ReactiveFormsModule } from "@angular/forms";
-import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { MatSlideToggleModule } from "@angular/material/slide-toggle";
-import { EmptyComponent } from "../../shared/components/empty/empty.component";
-import { Category, CategoryRoute, Position } from "../../shared/interfaces";
-import { Subscription } from "rxjs";
-import { MaterialService } from "../../shared/classes/material.service";
-import { PositionService } from "../../shared/services/position.service";
-import { CategoryService } from "../../shared/services/category.service";
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatButtonModule } from '@angular/material/button';
+import { NgIf } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { EmptyComponent } from '../../shared/components/empty/empty.component';
+import { Category, CategoryRoute, Position } from '../../shared/interfaces';
+import { Subscription } from 'rxjs';
+import { MaterialService } from '../../shared/classes/material.service';
+import { PositionService } from '../../shared/services/position.service';
+import { CategoryService } from '../../shared/services/category.service';
 import { SharedService } from '../../shared/services/shared.service';
 
 @Component({
@@ -31,79 +31,93 @@ import { SharedService } from '../../shared/services/shared.service';
     EmptyComponent,
   ],
   templateUrl: './positions-page.component.html',
-  styleUrls: ['../../shared/styles/style-table.scss', './positions-page.component.scss']
+  styleUrls: [
+    '../../shared/styles/style-table.scss',
+    './positions-page.component.scss',
+  ],
 })
 export class PositionsPageComponent implements OnInit, OnDestroy {
-  private positionService = inject(PositionService)
-  private categoryService = inject(CategoryService)
-  private sharedService = inject(SharedService)
-  private router = inject(Router)
-  private route = inject(ActivatedRoute)
+  private positionService = inject(PositionService);
+  private categoryService = inject(CategoryService);
+  private sharedService = inject(SharedService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
-  category: Category
-  categoryTitle: string
-  position: Position
-  positions: Position[] = []
-  isLoading = false
+  category: Category;
+  categoryTitle: string;
+  position: Position;
+  positions: Position[] = [];
+  isLoading = false;
   isShowTemplate = false;
-  isEmpty: boolean
-  activeRoute: CategoryRoute
+  isEmpty: boolean;
+  activeRoute: CategoryRoute;
   dataSource: MatTableDataSource<Position>;
-  displayedColumns: string[] = ['#', 'title', 'price', 'discount', 'weight', 'proteins', 'fats', 'carbs', 'caloric', 'edit', 'status'];
-  rSub: Subscription
-  cSub: Subscription
-  pSub: Subscription
+  displayedColumns: string[] = [
+    '#',
+    'title',
+    'price',
+    'discount',
+    'weight',
+    'proteins',
+    'fats',
+    'carbs',
+    'caloric',
+    'edit',
+    'status',
+  ];
+  rSub: Subscription;
+  cSub: Subscription;
+  pSub: Subscription;
 
   ngOnInit() {
-    this.getCategoryById()
+    this.getCategoryById();
   }
 
   ngOnDestroy() {
-    if (this.rSub) this.rSub.unsubscribe()
-    if (this.pSub) this.pSub.unsubscribe()
-    if (this.cSub) this.cSub.unsubscribe()
+    if (this.rSub) this.rSub.unsubscribe();
+    if (this.pSub) this.pSub.unsubscribe();
+    if (this.cSub) this.cSub.unsubscribe();
   }
 
   getPositionsCategoryByID(id: string) {
-    this.isLoading = true
-    let positionNum = 1
-    let profile = JSON.parse(localStorage.getItem('profile'))
+    this.isLoading = true;
+    let positionNum = 1;
+    let profile = JSON.parse(localStorage.getItem('profile'));
 
     this.pSub = this.positionService.getPositionsByCategoryID(id).subscribe({
-      next: positions => {
-        if (this.sharedService.getCurrentGroupValue() === "administrator") {
+      next: (positions) => {
+        if (this.sharedService.getCurrentGroupValue() === 'administrator') {
           this.positions = positions;
         } else {
-          this.positions = positions.filter(position =>
-            position.restaurant === profile['rest']
-          )
+          this.positions = positions.filter(
+            (position) => position.restaurant === profile['rest'],
+          );
         }
 
-        if (this.positions.length == 0) this.isEmpty = true
-        this.isLoading = false
+        if (this.positions.length == 0) this.isEmpty = true;
+        this.isLoading = false;
 
-        positions.map(position => position.positionNum = positionNum++)
-        this.dataSource = new MatTableDataSource<Position>(this.positions)
+        positions.map((position) => (position.positionNum = positionNum++));
+        this.dataSource = new MatTableDataSource<Position>(this.positions);
       },
-      error: error => {
+      error: (error) => {
         if (error.status === 401) {
-          MaterialService.toast('Для получения данных, требуется авторизация!')
+          MaterialService.toast('Для получения данных, требуется авторизация!');
         } else {
-          MaterialService.toast(error.error.message)
+          MaterialService.toast(error.error.message);
         }
-
-      }
-    })
+      },
+    });
   }
   openPage(id?: string) {
     if (id) {
-      void this.router.navigate([`st/form-position/${id}`])
+      void this.router.navigate([`st/form-position/${id}`]);
     } else {
       void this.router.navigate(['st/form-position'], {
         queryParams: {
-          category: this.category._id
-        }
-      })
+          category: this.category._id,
+        },
+      });
     }
   }
 
@@ -111,30 +125,37 @@ export class PositionsPageComponent implements OnInit, OnDestroy {
     let newPosition: Position = {
       ...position,
       status: !position.status,
-    }
+    };
 
-    this.positionService.updateStatus(null, newPosition, newPosition._id).subscribe({
-      next: message => MaterialService.toast(message.message),
-      error:
-        error => MaterialService.toast(error.error.error)
-    })
+    this.positionService
+      .updateStatus(null, newPosition, newPosition._id)
+      .subscribe({
+        next: (message) => {
+          MaterialService.toast(message.message);
+          this.getPositionsCategoryByID(newPosition.category)
+        },
+
+        error: (error) => MaterialService.toast(error.error.error),
+      });
   }
 
   getCategoryById() {
-    this.route.queryParams.subscribe(params => {
-      this.cSub = this.categoryService.getCategoryByID(params['category']).subscribe({
-        next: category => {
-          this.category = category
-          this.categoryTitle = category.title
-          this.activeRoute = {
-            id: category._id,
-            route: 'form-position'
-          }
-          this.getPositionsCategoryByID(params['category'])
-        },
-        error: error => MaterialService.toast(error.error.error)
-      })
-    })
+    this.route.queryParams.subscribe((params) => {
+      this.cSub = this.categoryService
+        .getCategoryByID(params['category'])
+        .subscribe({
+          next: (category) => {
+            this.category = category;
+            this.categoryTitle = category.title;
+            this.activeRoute = {
+              id: category._id,
+              route: 'form-position',
+            };
+            this.getPositionsCategoryByID(params['category']);
+          },
+          error: (error) => MaterialService.toast(error.error.error),
+        });
+    });
   }
 
   applyFilter(event: Event) {
@@ -147,6 +168,6 @@ export class PositionsPageComponent implements OnInit, OnDestroy {
   }
 
   openCategoriesPage() {
-    void this.router.navigate(['st/assortment'])
+    void this.router.navigate(['st/assortment']);
   }
 }

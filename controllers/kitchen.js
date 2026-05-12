@@ -91,7 +91,7 @@ module.exports.updateStatus = async function (req, res) {
       );
 
       res.status(200).json({
-        message: "Изменения внесены",
+       message: `Кухня ${updated.status ? "активна" : "неактивна"}`,
       });
     }
   } catch (e) {
