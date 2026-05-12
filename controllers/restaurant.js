@@ -46,7 +46,6 @@ module.exports.create = async function (req, res) {
         timeClose: req.body.timeClose,
         kitchen: req.body.kitchen,
         imgSrc: req.file ? req.file.path : "",
-        typePlace: req.body.typePlace,
       });
 
       await restaurant.save();

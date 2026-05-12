@@ -16,16 +16,12 @@ const restaurantSchema = new Schema({
     default: "",
   },
   timeOpen: {
-   type: Number,
+    type: Number,
     default: 10,
   },
   timeClose: {
     type: Number,
     default: 25,
-  },
-  typePlace: {
-    type: String,
-    default: "other",
   },
   imgSrc: {
     type: String,

@@ -24,7 +24,7 @@
 
   <!--Template for Delete-->
   <app-delete-template *ngIf="isDelete" [elemIn]="elem"></app-delete-template>
-  
+
   <div [class]="isDelete ? 'blur' : ''">
     <form [formGroup]="form">
       <div class="container-form">
@@ -131,36 +131,6 @@
           </span>
         </div>
 
-        <mat-form-field style="margin-top: 10px">
-          <mat-label
-            >Тип заведения
-            <span *ngIf="!sortPlaces.length">(список пуст)</span></mat-label
-          >
-          <mat-select formControlName="typePlace">
-            <mat-select-trigger>
-                {{ form.get("typePlace").value }}
-            </mat-select-trigger>
-            <mat-option *ngFor="let place of sortPlaces" [value]="place"
-              >{{ place }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label
-            >Кухня
-            <span *ngIf="!kitchens.length">(список пуст)</span></mat-label
-          >
-          <mat-select formControlName="kitchen">
-            <mat-select-trigger>
-              {{ form.get("kitchen").value | filterKitchen: kitchens }}
-            </mat-select-trigger>
-            <mat-option *ngFor="let kitchen of kitchens" [value]="kitchen._id"
-              >{{ kitchen.title }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-
         <div class="time-block">
           <p>Среднее время подачи блюда(мин.)</p>
           <div class="time-inputs">
@@ -213,6 +183,21 @@
           </span>
         </div>
 
+        <mat-form-field style="margin-top: 10px">
+          <mat-label
+            >Кухня
+            <span *ngIf="!kitchens.length">(список пуст)</span></mat-label
+          >
+          <mat-select formControlName="kitchen">
+            <mat-select-trigger>
+              {{ form.get("kitchen").value | filterKitchen: kitchens }}
+            </mat-select-trigger>
+            <mat-option *ngFor="let kitchen of kitchens" [value]="kitchen._id"
+              >{{ kitchen.title }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
         <div class="img-block">
           <label for="restaurant-image">Выберите изображение </label>
           <div class="img-group">
@@ -220,18 +205,19 @@
               id="restaurant-image"
               type="file"
               class="dn"
-              formControlName="imgSrc"
+              formControlName="image"
               #inputImg
               (change)="uploadImg($event)"
             />
             <img
               (click)="inputImg.click()"
               [class.dn]="isDelete"
-              [class.img-true]="restaurant || uploadedImgLink()"
-              [class.img-icon]="!restaurant && !uploadedImgLink()"
+              [ngClass]="
+                restaurant?.imgSrc || uploadedImgLink() ? 'img-true' : 'img-icon'
+              "
               [src]="
-                restaurant?.imgSrc ??
-                uploadedImgLink() ??
+                uploadedImgLink() ||
+                restaurant?.imgSrc ||
                 '../assets/icons/add-photo.png'
               "
               alt="image"

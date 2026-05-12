@@ -53,44 +53,56 @@ import { SharedService } from '../../shared/services/shared.service';
   ],
 })
 export class RestaurantFormComponent implements OnInit, OnDestroy {
+  private route = inject(ActivatedRoute);
   private sharedService = inject(SharedService);
-  form: FormGroup;
+  private kitchenService = inject(KitchenService);
+  private restaurantService = inject(RestaurantService);
+  private router = inject(Router);
+
+  form: FormGroup = new FormGroup({
+    title: new FormControl(null, [
+      Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(16),
+    ]),
+    description: new FormControl(null, [
+      Validators.required,
+      Validators.minLength(20),
+      Validators.maxLength(100),
+    ]),
+    timeOpen: new FormControl(0, Validators.required),
+    timeClose: new FormControl(0, Validators.required),
+    kitchen: new FormControl(null, Validators.required),
+    image: new FormControl(
+      null,
+      this.route.snapshot.params['id'] ? [] : Validators.required,
+    ),
+  });
   kSub: Subscription;
   rSub: Subscription;
-  sSub: Subscription;
   restaurantID: string;
   kitchens: Kitchen[] = [];
   restaurants: Restaurant[];
   restaurant: Restaurant;
   elem: Elem;
-  image = signal<File | null>(null);
-  uploadedImgLink = computed(() =>
-    this.image() ? URL.createObjectURL(this.image()) : null,
-  );
+  uploadedImgFile = signal<File | null>(null);
+  uploadedImgLink = signal(null);
+  imageUrl: string | null = null;
   isError = false;
   isDelete = false;
   sortPlaces = ['Ресторан', 'Кафе', 'Выпечка', 'Другое'];
 
   hours = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
 
-  constructor(
-    private kitchenService: KitchenService,
-    private restaurantService: RestaurantService,
-    private router: Router,
-    private route: ActivatedRoute,
-  ) {}
-
   ngOnInit() {
-    this.restaurantID = this.route.snapshot.params['id'] ?? '';
-
-    if (this.restaurantID) {
+    if (this.route.snapshot.params['id']) {
+      this.restaurantID = this.route.snapshot.params['id'];
       this.getRestaurantById();
-    } else {
-      this.generateForm();
     }
 
     this.getKitchens();
     this.getRestaurants();
+
     this.sharedService.sharedData$.subscribe((x) => {
       this.isDelete = x;
       this.isDelete ? this.form.disable() : this.form.enable();
@@ -98,33 +110,13 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.kSub) this.kSub.unsubscribe();
-    if (this.rSub) this.rSub.unsubscribe();
-    if (this.sSub) this.sSub.unsubscribe();
+    this.kSub?.unsubscribe();
+    this.rSub?.unsubscribe();
   }
 
-  generateForm(restaurant?: Restaurant) {
-    console.log('restaurant', restaurant)
-    this.form = new FormGroup({
-      title: new FormControl(restaurant?.title ?? '', [
-        Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(16),
-      ]),
-      description: new FormControl(restaurant?.description ?? '', [
-        Validators.required,
-        Validators.minLength(20),
-        Validators.maxLength(100),
-      ]),
-      timeOpen: new FormControl(restaurant?.timeOpen ?? 10, Validators.required),
-      timeClose: new FormControl(
-        restaurant?.timeClose ?? 20,
-        Validators.required,
-      ),
-      kitchen: new FormControl(restaurant?.kitchen ?? '', Validators.required),
-      typePlace: new FormControl(restaurant?.typePlace ?? 'asdsd', Validators.required),
-      imgSrc: new FormControl(this.uploadedImgLink() ?? '', Validators.required),
-    });
+  uploadImg($event: any) {
+    this.uploadedImgFile.set($event.target.files[0]);
+    this.uploadedImgLink.set(URL.createObjectURL($event.target.files[0]));
   }
 
   getKitchens() {
@@ -146,7 +138,6 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
   getRestaurantById() {
     this.restaurantService.getRestaurantByID(this.restaurantID).subscribe({
       next: (restaurant) => {
-        this.generateForm(restaurant);
         this.elem = {
           id: restaurant._id,
           title: restaurant.title,
@@ -154,26 +145,24 @@ export class RestaurantFormComponent implements OnInit, OnDestroy {
           formRoute: 'restaurants',
         };
         this.restaurant = restaurant;
+        this.form.patchValue(restaurant);
       },
       error: (error) => MaterialService.toast(error.error.error),
     });
   }
 
-  uploadImg($event: any) {
-    this.image.set($event.target.files[0] as File);
-  }
-
   onSubmit() {
     const fd = new FormData();
 
-    if (this.image) fd.append('image', this.image(), this.image.name);
+    if (this.uploadedImgFile()) {
+      fd.append('image', this.uploadedImgFile());
+    }
 
-    fd.append('title', this.form.get('title').value);
-    fd.append('description', this.form.get('description').value);
-    fd.append('kitchen', this.form.get('kitchen').value);
-    fd.append('timeOpen', this.form.get('timeOpen').value);
-    fd.append('timeClose', this.form.get('timeClose').value);
-    fd.append('typePlace', this.getTypePlace(this.form.get('typePlace').value));
+    fd.append('title', this.form.get('title').value ?? '');
+    fd.append('description', this.form.get('description').value ?? '');
+    fd.append('kitchen', this.form.get('kitchen').value ?? '');
+    fd.append('timeOpen', this.form.get('timeOpen').value ?? 5);
+    fd.append('timeClose', this.form.get('timeClose').value ?? 10);
 
     if (this.restaurantID) {
       this.rSub = this.restaurantService
