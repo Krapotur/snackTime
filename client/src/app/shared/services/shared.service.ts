@@ -15,7 +15,6 @@ export class SharedService {
   sharedDataGroup$ = this.sharedDataGroup.asObservable();
 
   updateDataDel(isDelete: boolean) {
-    console.log('isDelete',isDelete)
     this.sharedDataDel.next(isDelete);
   }
 
@@ -35,5 +34,12 @@ export class SharedService {
     return this.http.delete<{ message: string }>(
       `/api/${elem.formRoute}/${elem.id}`,
     );
+  }
+
+  getRestaurantID(){
+    let restaurantID;
+     let profile = JSON.parse(localStorage.getItem('profile'));
+    restaurantID = profile['rest'];
+    return restaurantID;
   }
 }

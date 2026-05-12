@@ -35,7 +35,10 @@ import { SharedService } from '../../shared/services/shared.service';
     DeleteTemplateComponent,
   ],
   templateUrl: './promo-form.component.html',
-  styleUrls: ['./promo-form.component.scss', '../../shared/styles/style-form.scss'],
+  styleUrls: [
+    './promo-form.component.scss',
+    '../../shared/styles/style-form.scss',
+  ],
 })
 export class PromoFormComponent implements OnInit, OnDestroy {
   private sharedService = inject(SharedService);
@@ -43,27 +46,36 @@ export class PromoFormComponent implements OnInit, OnDestroy {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
-  form: FormGroup;
+  form: FormGroup = new FormGroup({
+    title: new FormControl(null, [
+      Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(20),
+    ]),
+    description: new FormControl(null, [Validators.maxLength(200)]),
+    link: new FormControl(null),
+    image: new FormControl(
+      null,
+      this.route.snapshot.params['id'] ? [] : Validators.required,
+    ),
+  });
   pSub: Subscription;
   sSub: Subscription;
   promoID: string;
   promos: Promo[];
   promo: Promo;
   elem: Elem;
-  image = signal<File | null>(null);
-  uploadedImgLink = computed(() =>
-    this.image() ? URL.createObjectURL(this.image()) : null,
-  );
+  uploadedImgFile = signal<File | null>(null);
+  uploadedImgLink = signal(null);
+  imageUrl: string | null = null;
   isError = false;
   isDelete = false;
 
   ngOnInit() {
-    this.promoID = this.route.snapshot.params['id'] ?? '';
 
-    if (this.promoID) {
-      this.getPromoById();
-    } else {
-      this.generateForm();
+    if (this.route.snapshot.params['id']) {
+      this.promoID = this.route.snapshot.params['id'];
+      this.getPromoById(this.promoID);
     }
 
     this.getPromos();
@@ -74,41 +86,27 @@ export class PromoFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.pSub) this.pSub.unsubscribe();
-    if (this.sSub) this.sSub.unsubscribe();
+    this.pSub?.unsubscribe();
+    this.sSub?.unsubscribe();
   }
 
-  generateForm(promo?: Promo) {
-    this.form = new FormGroup({
-      title: new FormControl(promo?.title ?? '', [
-        Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(20),
-      ]),
-      description: new FormControl(promo?.description ?? '', [
-        Validators.maxLength(200),
-      ]),
-      link: new FormControl(promo?.link ?? '', [
-        Validators.maxLength(255),
-      ]),
-      imgSrc: new FormControl(promo?.imgSrc ?? '', Validators.required),
-    });
+  uploadImg($event: any) {
+    this.uploadedImgFile.set($event.target.files[0]);
+    this.uploadedImgLink.set(URL.createObjectURL($event.target.files[0]));
   }
 
   getPromos() {
-    const profile = JSON.parse(localStorage.getItem('profile') || '{}');
-    const restaurantID = profile?.rest || '';
-
+    let restaurantID = this.sharedService.getRestaurantID();
+    console.log(restaurantID)
     this.pSub = this.promoService.getPromos(restaurantID).subscribe({
       next: (promos) => (this.promos = promos),
       error: (error) => MaterialService.toast(error.error.message),
     });
   }
 
-  getPromoById() {
-    this.promoService.getPromoByID(this.promoID).subscribe({
+  getPromoById(id: string) {
+    this.promoService.getPromoByID(id).subscribe({
       next: (promo) => {
-        this.generateForm(promo);
         this.elem = {
           id: promo._id,
           title: promo.title,
@@ -116,26 +114,23 @@ export class PromoFormComponent implements OnInit, OnDestroy {
           formRoute: 'promos',
         };
         this.promo = promo;
+        this.form.patchValue(this.promo);
       },
       error: (error) => MaterialService.toast(error.error.error),
     });
   }
 
-  uploadImg($event: any) {
-    this.image.set($event.target.files[0] as File);
-  }
-
   onSubmit() {
-    const profile = JSON.parse(localStorage.getItem('profile') || '{}');
     const fd = new FormData();
-    const imageFile = this.image();
-
-    if (imageFile) fd.append('image', imageFile, imageFile.name);
+    
+    if (this.uploadedImgFile()) {
+      fd.append('image', this.uploadedImgFile());
+    }
 
     fd.append('title', this.form.get('title').value);
-    fd.append('description', this.form.get('description').value);
-    fd.append('link', this.form.get('link').value);
-    fd.append('restaurant', profile?.rest || '');
+    fd.append('description', this.form.get('description').value ?? '');
+    fd.append('link', this.form.get('link').value ?? '');
+    fd.append('restaurant', this.sharedService.getRestaurantID());
 
     if (this.promoID) {
       this.pSub = this.promoService.update(fd, null, this.promoID).subscribe({

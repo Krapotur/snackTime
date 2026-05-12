@@ -1,53 +1,52 @@
+const mongoose = require("mongoose");
 const Group = require("../models/Group");
 const errorHandler = require("../utils/errorHandler");
 
 module.exports.getAll = function (req, res) {
-    try {
-        Group.find().then(
-            groups => {
-                res.status(200).json(groups)
-            }
-        )
-    } catch (e) {
-        errorHandler(res, e)
-    }
-}
+  try {
+    Group.find().then((groups) => {
+      res.status(200).json(groups);
+    });
+  } catch (e) {
+    errorHandler(res, e);
+  }
+};
 
 module.exports.getById = async function (req, res) {
-    try {
-        const group = await Group.findById({_id: req.params.id})
-        res.status(200).json(group)
-    } catch (e) {
-        errorHandler(res, e)
+  try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ error: "Missing group ID" });
+    } else {
+      const group = await Group.findById({ _id: req.params.id });
+      res.status(200).json(group);
     }
-}
+  } catch (e) {
+    errorHandler(res, e);
+  }
+};
 
 module.exports.create = async function (req, res) {
-    const candidate = await Group.findOne({title: req.body.title})
+  const candidate = await Group.findOne({ title: req.body.title });
 
-    if (candidate) {
-        res.status(409).json({
-            message: "Такая группа уже есть"
-        })
-    } else {
-        const group = new Group({
-            title: req.body.title,
-            alias: req.body.alias
-        })
+  if (candidate) {
+    res.status(409).json({
+      message: "Такая группа уже есть",
+    });
+  } else {
+    const group = new Group({
+      title: req.body.title,
+      alias: req.body.alias,
+    });
 
-        try {
-            await group.save()
-            res.status(201).json(group)
-        } catch (e) {
-            errorHandler(res, e)
-        }
+    try {
+      await group.save();
+      res.status(201).json(group);
+    } catch (e) {
+      errorHandler(res, e);
     }
-}
+  }
+};
 
-module.exports.update = function (req, res) {
+module.exports.update = function (req, res) {};
 
-}
-
-module.exports.delete = function (req, res) {
-
-}
+module.exports.delete = function (req, res) {};

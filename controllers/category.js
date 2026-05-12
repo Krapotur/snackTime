@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const Category = require("../models/Category");
 const Position = require("../models/Position");
 const Group = require("../models/Group");
@@ -48,9 +49,13 @@ module.exports.getAll = async function (req, res) {
 
 module.exports.getCategoriesByRestaurantId = async function (req, res) {
   try {
-    await Category.find({ restaurant: req.params.id }).then((categories) =>
-      res.status(200).json(categories),
-    );
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ error: "Missing restaurant ID" });
+    } else {
+      await Category.find({ restaurant: req.params.id }).then((categories) =>
+        res.status(200).json(categories),
+      );
+    }
   } catch (e) {
     errorHandler(res, e);
   }
@@ -96,10 +101,13 @@ module.exports.create = async function (req, res) {
 };
 
 module.exports.getById = async function (req, res) {
-  console.log("req.params", req.params);
   try {
-    const category = await Category.findById({ _id: req.params.id });
-    res.status(200).json(category);
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ error: "Missing category ID" });
+    } else {
+      const category = await Category.findById({ _id: req.params.id });
+      res.status(200).json(category);
+    }
   } catch (e) {
     errorHandler(res, e);
   }
@@ -107,53 +115,61 @@ module.exports.getById = async function (req, res) {
 
 module.exports.update = async function (req, res) {
   try {
-    const { title, isDrink } = req.body || {};
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ error: "Missing category ID" });
+    } else {
+      const { title, isDrink } = req.body || {};
 
-    const missing = [
-      ["title", title],
-      ["isDrink", isDrink],
-    ].filter(([, v]) => v === undefined || v === null);
+      const missing = [
+        ["title", title],
+        ["isDrink", isDrink],
+      ].filter(([, v]) => v === undefined || v === null);
 
-    if (missing.length)
-      return res
-        .status(400)
-        .json({ message: `Missing: ${missing.map(([k]) => k).join(", ")}` });
+      if (missing.length)
+        return res
+          .status(400)
+          .json({ message: `Missing: ${missing.map(([k]) => k).join(", ")}` });
 
-    let updated = {
-      ...req.body,
-    };
+      let updated = {
+        ...req.body,
+      };
 
-    if (req.file) updated.imgSrc = req.file.path;
+      if (req.file) updated.imgSrc = req.file.path;
 
-    await Category.findByIdAndUpdate(
-      { _id: req.params.id },
-      { $set: updated },
-      { new: true },
-    );
+      await Category.findByIdAndUpdate(
+        { _id: req.params.id },
+        { $set: updated },
+        { new: true },
+      );
 
-    res.status(200).json({
-      message: "Изменения внесены",
-    });
+      res.status(200).json({
+        message: "Изменения внесены",
+      });
+    }
   } catch (e) {
     errorHandler(res, e);
   }
 };
 
 module.exports.updateStatus = async function (req, res) {
-  let updated = {};
-
-  if (req.body.status || !req.body.status) updated.status = req.body.status;
-
   try {
-    await Category.findByIdAndUpdate(
-      { _id: req.params.id },
-      { $set: updated },
-      { new: true },
-    );
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ error: "Missing category ID" });
+    } else {
+      let updated = {};
 
-    res.status(200).json({
-      message: "Изменения внесены",
-    });
+      if (req.body.status || !req.body.status) updated.status = req.body.status;
+
+      await Category.findByIdAndUpdate(
+        { _id: req.params.id },
+        { $set: updated },
+        { new: true },
+      );
+
+      res.status(200).json({
+        message: "Изменения внесены",
+      });
+    }
   } catch (e) {
     errorHandler(res, e);
   }
@@ -161,18 +177,22 @@ module.exports.updateStatus = async function (req, res) {
 
 module.exports.delete = async function (req, res) {
   try {
-    const category = await Category.findOne({ _id: req.params.id });
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ error: "Missing category ID" });
+    } else {
+      const category = await Category.findOne({ _id: req.params.id });
 
-    if (category) {
-      if (category.imgSrc.length) {
-        removeFile.remove(category.imgSrc);
+      if (category) {
+        if (category.imgSrc.length) {
+          removeFile.remove(category.imgSrc);
+        }
+        await Position.deleteMany({ category: category._id });
+        await Category.deleteOne({ _id: category._id });
+
+        res
+          .status(200)
+          .json({ message: `Категория "${category.title}" удалена` });
       }
-      await Position.deleteMany({ category: category._id });
-      await Category.deleteOne({ _id: category._id });
-
-      res
-        .status(200)
-        .json({ message: `Категория "${category.title}" удалена` });
     }
   } catch (e) {
     errorHandler(res, e);

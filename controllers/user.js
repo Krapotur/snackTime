@@ -1,5 +1,5 @@
+const mongoose = require("mongoose");
 const User = require("../models/User");
-
 const errorHandler = require("../utils/errorHandler");
 const removeFile = require("../utils/removeFile");
 const bcrypt = require("bcryptjs");
@@ -16,25 +16,13 @@ module.exports.getAll = async function (req, res) {
 
 module.exports.getById = async function (req, res) {
   try {
-    const user = await User.findById({ _id: req.params.id });
-    user.password = null;
-    res.status(200).json(user);
-  } catch (e) {
-    errorHandler(res, e);
-  }
-};
-
-module.exports.delete = async function (req, res) {
-  try {
-    const user = await User.findOne({ _id: req.params.id });
-    if (user) {
-      removeFile.remove(user.imgSrc);
-
-      await User.deleteOne({ _id: req.params.id });
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ error: "Missing user ID" });
+    } else {
+      const user = await User.findById({ _id: req.params.id });
+      user.password = null;
+      res.status(200).json(user);
     }
-    res.status(200).json({
-      message: `Пользователь "${user.lastName + " " + user.firstName}" удален`,
-    });
   } catch (e) {
     errorHandler(res, e);
   }
@@ -83,49 +71,78 @@ module.exports.create = async function (req, res) {
 };
 
 module.exports.update = async function (req, res) {
-  const candidate = await User.findOne({ _id: req.params.id });
-  let updated = {};
-
-  if (req.body.status || !req.body.status) updated.status = req.body.status;
-  if (req.body.lastName) updated.lastName = req.body.lastName;
-  if (req.body.firstName) updated.firstName = req.body.firstName;
-  if (req.body.phone) updated.phone = req.body.phone;
-  if (req.body.restaurant) updated.restaurant = req.body.restaurant;
-  if (req.body.login) updated.login = req.body.login.toLowerCase();
-  if (req.body.password && req.body.password.length > 3) {
-    const salt = bcrypt.genSaltSync(10);
-    updated.password = bcrypt.hashSync(req.body.password, salt);
-  }
-  if (req.file) updated.imgSrc = req.file.path;
-
   try {
-    await User.findByIdAndUpdate(
-      { _id: req.params.id },
-      { $set: updated },
-      { new: true },
-    );
-    res.status(200).json({
-      message: `Изменения внесены`,
-    });
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ error: "Missing user ID" });
+    } else {
+      const candidate = await User.findOne({ _id: req.params.id });
+      let updated = {};
+
+      if (req.body.status || !req.body.status) updated.status = req.body.status;
+      if (req.body.lastName) updated.lastName = req.body.lastName;
+      if (req.body.firstName) updated.firstName = req.body.firstName;
+      if (req.body.phone) updated.phone = req.body.phone;
+      if (req.body.restaurant) updated.restaurant = req.body.restaurant;
+      if (req.body.login) updated.login = req.body.login.toLowerCase();
+      if (req.body.password && req.body.password.length > 3) {
+        const salt = bcrypt.genSaltSync(10);
+        updated.password = bcrypt.hashSync(req.body.password, salt);
+      }
+      if (req.file) updated.imgSrc = req.file.path;
+
+      await User.findByIdAndUpdate(
+        { _id: req.params.id },
+        { $set: updated },
+        { new: true },
+      );
+      res.status(200).json({
+        message: `Изменения внесены`,
+      });
+    }
   } catch (e) {
     errorHandler(res, e);
   }
 };
 
 module.exports.updateStatus = async function (req, res) {
-  let updated = {};
-
-  if (req.body.status || !req.body.status) updated.status = req.body.status;
-
   try {
-    await User.findByIdAndUpdate(
-      { _id: req.params.id },
-      { $set: updated },
-      { new: true },
-    );
-    res.status(200).json({
-      message: `Изменения внесены`,
-    });
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ error: "Missing user ID" });
+    } else {
+      let updated = {};
+
+      if (req.body.status || !req.body.status) updated.status = req.body.status;
+
+      await User.findByIdAndUpdate(
+        { _id: req.params.id },
+        { $set: updated },
+        { new: true },
+      );
+      res.status(200).json({
+        message: `Изменения внесены`,
+      });
+    }
+  } catch (e) {
+    errorHandler(res, e);
+  }
+};
+
+module.exports.delete = async function (req, res) {
+  try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ error: "Missing user ID" });
+    } else {
+      const user = await User.findOne({ _id: req.params.id });
+      if (user) {
+        if (user.imgSrc.length) {
+          removeFile.remove(user.imgSrc);
+        }
+        await User.deleteOne({ _id: req.params.id });
+      }
+      res.status(200).json({
+        message: `Пользователь "${user.lastName + " " + user.firstName}" удален`,
+      });
+    }
   } catch (e) {
     errorHandler(res, e);
   }

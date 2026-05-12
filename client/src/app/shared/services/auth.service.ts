@@ -1,54 +1,58 @@
-import {inject, Injectable} from "@angular/core";
-import {AuthToken, Login} from "../interfaces";
-import {HttpClient} from "@angular/common/http";
-import {Observable, tap} from "rxjs";
+import { inject, Injectable } from '@angular/core';
+import { AuthToken, Login } from '../interfaces';
+import { HttpClient } from '@angular/common/http';
+import { Observable, tap } from 'rxjs';
+import { SharedService } from './shared.service';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root',
 })
-
 export class AuthService {
-  private http = inject(HttpClient)
+  private http = inject(HttpClient);
+  private sharedService = inject(SharedService);
 
-  private token = null
-  private status = null
+  private token = null;
+  private status = null;
 
   login(login: Login): Observable<AuthToken> {
-    return this.http.post<AuthToken>('api/auth/login', login)
-      .pipe(
-        tap((authToken) => {
-          this.setToken(authToken.token)
-          localStorage.setItem('auth-token', authToken.token)
-          localStorage.setItem('profile', JSON.stringify({
+    return this.http.post<AuthToken>('api/auth/login', login).pipe(
+      tap((authToken) => {
+        this.setToken(authToken.token);
+        localStorage.setItem('auth-token', authToken.token);
+        localStorage.setItem(
+          'profile',
+          JSON.stringify({
             userName: authToken.userName,
             group: authToken.group,
             rest: authToken.rest,
-            userID: authToken.user
-          }))
-        }))
+            userID: authToken.user,
+          }),
+        );
+      }),
+    );
   }
 
   setToken(token: string) {
-    this.token = token
+    this.token = token;
   }
 
   getToken(): string {
-    return this.token
+    return this.token;
   }
 
   isAuthenticated(): boolean {
     if (localStorage.getItem('auth-token')) {
-      this.setToken(localStorage.getItem('auth-token'))
+      this.setToken(localStorage.getItem('auth-token'));
     }
-    return !!this.token
+    return !!this.token;
   }
 
   logout() {
-    this.setToken(null)
-    localStorage.clear()
+    this.setToken(null);
+    localStorage.clear();
   }
 
   setStatus(status: number) {
-    this.status = status
+    this.status = status;
   }
 }

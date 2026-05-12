@@ -85,8 +85,7 @@
               type="text"
               formControlName="link"
               [ngClass]="{
-                invalid:
-                  form.get('link')?.invalid && form.get('link')?.touched,
+                invalid: form.get('link')?.invalid && form.get('link')?.touched,
               }"
             />
           </div>
@@ -99,16 +98,21 @@
               id="promo-image"
               type="file"
               class="dn"
-              formControlName="imgSrc"
+              formControlName="image"
               #inputImg
               (change)="uploadImg($event)"
             />
             <img
               (click)="inputImg.click()"
               [class.dn]="isDelete"
-              [class.img-true]="promo || uploadedImgLink()"
-              [class.img-icon]="!promo && !uploadedImgLink()"
-              [src]="promo?.imgSrc ?? uploadedImgLink() ?? '../assets/icons/add-photo.png'"
+              [ngClass]="
+                promo?.imgSrc || uploadedImgLink() ? 'img-true' : 'img-icon'
+              "
+              [src]="
+                uploadedImgLink() ||
+                promo?.imgSrc ||
+                '../assets/icons/add-photo.png'
+              "
               alt="image"
             />
           </div>

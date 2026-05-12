@@ -16,7 +16,7 @@ import {
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { NgClass, NgIf } from '@angular/common';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Category, Elem } from '../../shared/interfaces';
 import { MaterialService } from '../../shared/classes/material.service';
@@ -68,7 +68,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
   });
 
   isError = false;
-  categoryID: string;
+  categoryID: string | null = null;
   uploadedImgFile = signal<File | null>(null);
   uploadedImgLink = signal(null);
   imageUrl: string | null = null;
@@ -91,7 +91,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.cSub) this.cSub.unsubscribe();
+    this.cSub?.unsubscribe();
   }
 
   uploadImg($event: any) {

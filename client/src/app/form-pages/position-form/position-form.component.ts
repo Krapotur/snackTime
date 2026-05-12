@@ -99,7 +99,7 @@ export class PositionFormComponent implements OnInit, OnDestroy {
   ngOnInit() {
     if (this.route.snapshot.params['id']) {
       this.positionID = this.route.snapshot.params['id'];
-      this.getPositionById();
+      this.getPositionById(this.route.snapshot.params['id']);
     }
 
     this.route.queryParams.subscribe((params) => {
@@ -133,22 +133,23 @@ export class PositionFormComponent implements OnInit, OnDestroy {
       });
   }
 
-  getPositionById() {
-    this.pSub = this.positionService
-      .getPositionByID(this.positionID)
-      .subscribe({
-        next: (position) => {
-          this.elem = {
-            id: position._id,
-            title: position.title,
-            route: 'positions',
-            formRoute: 'positions',
-          };
-          this.position = position;
-          this.form.patchValue(this.position);
-        },
-        error: (error) => MaterialService.toast(error.error.error),
-      });
+  getPositionById(id: string) {
+    console.log('id', id);
+
+    this.pSub = this.positionService.getPositionByID(id).subscribe({
+      next: (position) => {
+        console.log('position', position)
+        this.elem = {
+          id: position._id,
+          title: position.title,
+          route: 'positions',
+          formRoute: 'positions',
+        };
+        this.position = position;
+        this.form.patchValue(position);
+      },
+      error: (error) => MaterialService.toast(error.error.error),
+    });
   }
 
   onSubmit() {
