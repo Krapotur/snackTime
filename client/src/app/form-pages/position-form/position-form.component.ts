@@ -113,8 +113,8 @@ export class PositionFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.pSub) this.pSub.unsubscribe();
-    if (this.cSub) this.cSub.unsubscribe();
+   this.pSub?.unsubscribe();
+   this.cSub?.unsubscribe();
   }
 
   uploadImg($event: any) {
@@ -134,8 +134,6 @@ export class PositionFormComponent implements OnInit, OnDestroy {
   }
 
   getPositionById(id: string) {
-    console.log('id', id);
-
     this.pSub = this.positionService.getPositionByID(id).subscribe({
       next: (position) => {
         console.log('position', position)
@@ -153,7 +151,6 @@ export class PositionFormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    let user = JSON.parse(localStorage.getItem('profile'));
     const fd = new FormData();
 
     if (this.uploadedImgFile()) {
@@ -171,7 +168,7 @@ export class PositionFormComponent implements OnInit, OnDestroy {
     fd.append('isPopular', this.form.get('isPopular').value ?? false);
     fd.append('discount', this.form.get('discount').value ?? 0);
     fd.append('category', this.categoryID ?? this.position.category ?? '');
-    fd.append('restaurant', user['rest']);
+    fd.append('restaurant', this.sharedDelService.getRestaurantID());
 
     if (this.positionID) {
       this.pSub = this.positionService
@@ -225,7 +222,7 @@ export class PositionFormComponent implements OnInit, OnDestroy {
   checkTitlePosition() {
     const title = this.form.get('title').value;
     this.getPositionsByCategory(this.position.category);
-    console.log(this.positions);
+
     if (title.length > 5) {
       this.isError = this.positions.some(
         (position) => title.toLowerCase() == position.title.toLowerCase(),

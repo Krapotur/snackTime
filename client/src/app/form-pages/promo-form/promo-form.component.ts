@@ -97,7 +97,6 @@ export class PromoFormComponent implements OnInit, OnDestroy {
 
   getPromos() {
     let restaurantID = this.sharedService.getRestaurantID();
-    console.log(restaurantID)
     this.pSub = this.promoService.getPromos(restaurantID).subscribe({
       next: (promos) => (this.promos = promos),
       error: (error) => MaterialService.toast(error.error.message),

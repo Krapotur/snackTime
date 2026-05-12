@@ -125,7 +125,6 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    let user = JSON.parse(localStorage.getItem('profile'));
     const fd = new FormData();
 
     if (this.uploadedImgFile()) {
@@ -146,7 +145,7 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
           error: (error) => MaterialService.toast(error.error.message),
         });
     } else {
-      fd.append('restaurant', user['rest']);
+      fd.append('restaurant', this.sharedDelService.getRestaurantID());
       this.cSub = this.categoryService.create(fd).subscribe({
         next: (message) => {
           MaterialService.toast(message.message);

@@ -66,8 +66,8 @@ export class RestaurantsPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.rSub) this.rSub.unsubscribe()
-    if (this.kSub) this.kSub.unsubscribe()
+   this.rSub?.unsubscribe()
+   this.kSub?.unsubscribe()
   }
 
   getRestaurants() {

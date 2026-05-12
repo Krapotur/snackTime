@@ -9,10 +9,7 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import {
-  NgClass,
-  NgIf,
-} from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import {
   FormControl,
   FormGroup,
@@ -56,15 +53,23 @@ export class KitchenFormComponent implements OnInit, OnDestroy {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
-  form: FormGroup;
+  form: FormGroup = new FormGroup({
+    title: new FormControl(null, [
+      Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(16),
+    ]),
+    image: new FormControl(
+      null,
+      this.route.snapshot.params['id'] ? [] : Validators.required,
+    ),
+  });
   isDelete = false;
   isError = false;
   kitchenID: string = '';
-  image = signal<File | null>(null);
-  uploadedImgLink = computed(() =>
-    this.image() ? URL.createObjectURL(this.image()) : null,
-  );
-  cSub: Subscription;
+  uploadedImgFile = signal<File | null>(null);
+  uploadedImgLink = signal(null);
+  imageUrl: string | null = null;
   kSub: Subscription;
   kitchen: Kitchen;
   kitchens: Kitchen[] = [];
@@ -77,7 +82,6 @@ export class KitchenFormComponent implements OnInit, OnDestroy {
     }
 
     this.getKitchens();
-    this.generateForm();
 
     this.sharedDelService.sharedData$.subscribe((value) => {
       this.isDelete = value;
@@ -86,22 +90,12 @@ export class KitchenFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.kSub) this.kSub.unsubscribe();
-  }
-
-  generateForm(kitchen?: Kitchen) {
-    this.form = new FormGroup({
-      title: new FormControl(kitchen ? kitchen.title : '', [
-        Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(16),
-      ]),
-      imgSrc: new FormControl(kitchen?.imgSrc ?? '', Validators.required),
-    });
+    this.kSub?.unsubscribe();
   }
 
   uploadImg($event: any) {
-    this.image.set($event.target.files[0] as File);
+    this.uploadedImgFile.set($event.target.files[0]);
+    this.uploadedImgLink.set(URL.createObjectURL($event.target.files[0]));
   }
 
   getKitchens() {
@@ -112,7 +106,7 @@ export class KitchenFormComponent implements OnInit, OnDestroy {
   }
 
   getKitchenById() {
-    this.kitchenService.getKitchenByID(this.kitchenID).subscribe({
+   this.kSub = this.kitchenService.getKitchenByID(this.kitchenID).subscribe({
       next: (kitchen) => {
         this.elem = {
           id: kitchen._id,
@@ -121,7 +115,7 @@ export class KitchenFormComponent implements OnInit, OnDestroy {
           formRoute: 'kitchens',
         };
         this.kitchen = kitchen;
-        this.generateForm(this.kitchen);
+        this.form.patchValue(this.kitchen);
       },
       error: (error) => MaterialService.toast(error.error.error),
     });
@@ -130,8 +124,11 @@ export class KitchenFormComponent implements OnInit, OnDestroy {
   onSubmit() {
     const fd = new FormData();
 
-    if (this.image) fd.append('image', this.image(), this.image.name);
-    fd.append('title', this.form.get('title').value);
+    if (this.uploadedImgFile()) {
+      fd.append('image', this.uploadedImgFile());
+    }
+
+    fd.append('title', this.form.get('title').value ?? '');
 
     if (this.kitchenID) {
       setTimeout(() => {
