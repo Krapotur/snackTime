@@ -18,6 +18,7 @@
   "author": "Gazi Abdullaev",
   "license": "ISC",
   "dependencies": {
+    "@ngx-builders/pwa-offline": "^13.0.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "concurrently": "^8.2.2",

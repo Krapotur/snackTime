@@ -31,7 +31,7 @@ export const routes: Routes = [
     component: SiteLayoutComponent,
     canActivate: [isAuthGuard],
     children: [
-      { path: '', redirectTo: '/st/users', pathMatch: 'full' },
+      { path: '', redirectTo: '/st/dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardPageComponent },
       { path: 'overview', component: OverviewPageComponent },
       { path: 'users', component: UsersPageComponent },

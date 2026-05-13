@@ -1,10 +1,32 @@
 @import "../node_modules/materialize-css/dist/css/materialize.css";
-@import url('https://fonts.googleapis.com/css2?family=Lora&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lora&family=Nunito+Sans:opsz,wght@6..12,300&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lora&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lora&family=Nunito+Sans:opsz,wght@6..12,300&display=swap");
 
-$lora: 'Source Sans Pro', Lora, Arial, sans-serif;
+$lora: "Source Sans Pro", Lora, Arial, sans-serif;
+.loader {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
-html, body {
+  .custom-loader {
+    width: 50%;
+    height: 10px;
+    background: linear-gradient(90deg, #f8793969, #f87839) left -50px top 0/50px
+      20px no-repeat #e4e4ed;
+    animation: ct2 1s infinite linear;
+  }
+}
+
+@keyframes ct2 {
+  100% {
+    background-position: right -50px top 0;
+  }
+}
+
+html,
+body {
   height: 100%;
 }
 
@@ -24,7 +46,7 @@ body {
 .error {
   color: red;
   font-size: 13px;
-  font-family: 'Lora', serif;
+  font-family: "Lora", serif;
   padding: 0 0 5px 10px;
 }
 
@@ -32,5 +54,3 @@ nav {
   background-color: transparent;
   height: 0;
 }
-
-

@@ -129,11 +129,6 @@ h3 {
     top: 14px;
     padding-bottom: 16px;
   }
-
-  //img {
-  //  width: 150px;
-  //  padding-top: 10px
-  //}
 }
 
 // HOVER SLIDE EFFECT
@@ -225,30 +220,17 @@ h3 {
   flex-direction: column;
   align-items: center;
   padding: 20px 63px;
-  background-color: white;
-  border: 1px solid grey;
-  z-index: 1000;
+  box-shadow: 0px 8px 32px 0px rgba(0, 0, 0, 0.15);
+  background-color: rgba(255, 255, 255, 1);
+  border-radius:20px;
 
-  .title {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    height: 40px;
-
-    h2 {
-      font-size: 17px;
-      font-family: "Lora", serif;
-      margin: 0;
-    }
-
-    p {
-      font-size: 17px;
-      color: #f87839;
-      font-weight: bold;
-      padding-left: 5px;
-      margin: 0;
-    }
+  h2 {
+    font-size: 20px;
+    font-family: "Lora", serif;
+    margin: 0;
+    color: #232731;
   }
+
   .btn-group-exit {
     display: flex;
     justify-content: space-around;
@@ -257,22 +239,15 @@ h3 {
 
     button {
       cursor: pointer;
+      background-color: #232731;
       margin-top: 20px;
       height: 35px;
       padding: 0 10px;
       border-radius: 2px;
       border: none;
-      color: white;
+      color: #dfe3ef;
       font-family: "Lora", serif;
       width: 90px;
-    }
-
-    .btn-cancel {
-      background-color: slategrey;
-    }
-
-    .btn-save {
-      background-color: darkred;
     }
   }
 }

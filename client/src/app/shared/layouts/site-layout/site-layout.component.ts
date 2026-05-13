@@ -28,6 +28,7 @@ export class SiteLayoutComponent implements OnInit, OnDestroy {
   private restaurantService = inject(RestaurantService);
   private router = inject(Router);
 
+  isLoading = false;
   isAdmin: boolean;
   isLogout = false;
   gSub: Subscription;
@@ -46,24 +47,28 @@ export class SiteLayoutComponent implements OnInit, OnDestroy {
   }
 
   getGroupById() {
+    this.isLoading = true;
     let profile = JSON.parse(localStorage.getItem('profile'));
     this.userName = profile['userName'];
     this.gSub = this.groupService.getGroupByID(profile.group).subscribe({
       next: (group) => {
         this.sharedService.updateDataGroup(group.alias);
         this.isAdmin = group.alias === 'administrator';
+        this.isLoading = false
       },
       error: (error) => MaterialService.toast(error.error.error),
     });
   }
 
   getRestaurantById() {
+     this.isLoading = true;
     let restaurantID = this.sharedService.getRestaurantID();
     this.rSub = this.restaurantService
       .getRestaurantByID(restaurantID)
       .subscribe({
         next: (r) => {
           this.restaurant = r;
+           this.isLoading = false;
         },
         error: (e) => MaterialService.toast(e.error.message),
       });

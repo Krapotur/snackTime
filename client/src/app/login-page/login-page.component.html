@@ -1,52 +1,69 @@
+<!-- @if (isOnline) {
+  <p>Идет соединение с сервером... Попробуйте обновить страницу</p>
+} -->
+
 <div class="login_page" xmlns="http://www.w3.org/1999/html">
   <div class="form_container">
     <div class="login_form">
-      <form
-        [formGroup]="form"
-        (ngSubmit)="onSubmit()"
-      >
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <h2 style="font-size: 19px">Авторизация</h2>
 
         <div class="input-block">
           <div class="row">
             <div class="input-field col s6">
-              <input class="" id="login" type="text" formControlName="login"
-                     [ngClass]="{'invalid' : login.invalid && login['touched']}"
-              >
+              <input
+                class=""
+                id="login"
+                type="text"
+                formControlName="login"
+                [ngClass]="{ invalid: login.invalid && login['touched'] }"
+              />
               <label class="active" for="login">Логин</label>
             </div>
           </div>
           <span *ngIf="login.invalid && login['touched']">
-            <span class="error" *ngIf="login.hasError('required')"> *Введите логин</span>
+            <span class="error" *ngIf="login.hasError('required')">
+              *Введите логин</span
+            >
           </span>
 
           <div class="row">
             <div class="input-field col s6">
-              <input id="password" type="password" formControlName="password"
-                     [ngClass]="{'invalid' : password.invalid && password['touched']}"
-              >
+              <input
+                id="password"
+                type="password"
+                formControlName="password"
+                [ngClass]="{
+                  invalid: password.invalid && password['touched'],
+                }"
+              />
               <label class="active" for="password">Пароль</label>
             </div>
           </div>
           <span *ngIf="password.invalid && password['touched']">
-              <span class="error" *ngIf="password.hasError('required')">
-                *Введите пароль
-              </span>
-              <span class="error" *ngIf="password.hasError('minlength')">
-                *Не менее 6 символов
-              </span>
+            <span class="error" *ngIf="password.hasError('required')">
+              *Введите пароль
+            </span>
+            <span class="error" *ngIf="password.hasError('minlength')">
+              *Не менее 6 символов
+            </span>
           </span>
           <button
-            class="btn" extended="" mat-fab
+            class="btn"
+            extended=""
+            mat-fab
             type="submit"
             [disabled]="form.invalid || form.disabled"
           >
             Войти
           </button>
         </div>
+        @if (isLoading) {
+          <div class="loader">
+            <div class="custom-loader"></div>
+          </div>
+        }
       </form>
     </div>
   </div>
 </div>
-
-
