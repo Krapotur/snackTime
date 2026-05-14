@@ -1,5 +1,6 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import {
+  ActivatedRoute,
   Router,
   RouterLink,
   RouterLinkActive,
@@ -22,11 +23,12 @@ import { Restaurant } from '../../interfaces';
   styleUrl: './site-layout.component.scss',
 })
 export class SiteLayoutComponent implements OnInit, OnDestroy {
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
   private authService = inject(AuthService);
   private sharedService = inject(SharedService);
   private groupService = inject(GroupService);
   private restaurantService = inject(RestaurantService);
-  private router = inject(Router);
 
   isLoading = false;
   isAdmin: boolean;
@@ -54,21 +56,25 @@ export class SiteLayoutComponent implements OnInit, OnDestroy {
       next: (group) => {
         this.sharedService.updateDataGroup(group.alias);
         this.isAdmin = group.alias === 'administrator';
-        this.isLoading = false
+        if (this.isAdmin) {
+          this.router.navigate(['..'], { relativeTo: this.route });
+          this.router.navigate([`/st/dashboard`]);
+        }
+        this.isLoading = false;
       },
       error: (error) => MaterialService.toast(error.error.error),
     });
   }
 
   getRestaurantById() {
-     this.isLoading = true;
+    this.isLoading = true;
     let restaurantID = this.sharedService.getRestaurantID();
     this.rSub = this.restaurantService
       .getRestaurantByID(restaurantID)
       .subscribe({
         next: (r) => {
           this.restaurant = r;
-           this.isLoading = false;
+          this.isLoading = false;
         },
         error: (e) => MaterialService.toast(e.error.message),
       });

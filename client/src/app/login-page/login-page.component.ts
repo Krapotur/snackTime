@@ -14,7 +14,7 @@ import { NgClass, NgIf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../shared/services/auth.service';
-import {  Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { MaterialService } from '../shared/classes/material.service';
 
 @Component({
@@ -34,7 +34,6 @@ import { MaterialService } from '../shared/classes/material.service';
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.scss',
 })
-
 export class LoginPageComponent implements OnInit, OnDestroy {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
@@ -79,11 +78,8 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     this.isLoading = true;
-    // if (!this.isLoading) {
-    //   this.form.disable();
-    // }
     this.aSub = this.authService.login(this.form.value).subscribe({
-      next: () => void this.router.navigate(['/st/assortment']),
+      next: () => void this.router.navigate([`/st/assortment`]),
       error: (error) => {
         MaterialService.toast(error.error.message);
         this.form.enable();

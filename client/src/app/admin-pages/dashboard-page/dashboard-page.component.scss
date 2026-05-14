@@ -14,20 +14,21 @@ h3, h5 {
 
   .card {
     cursor: pointer;
-    padding: 5px 10px;
+    padding: 15px 10px 5px;
     border-radius: 15px;
     box-shadow: 0px 8px 32px 0px rgba(0, 0, 0, 0.15);
-    min-height: 100px;
-    max-width: 140px;
+    height: 160px;
+    width: 130px;
 
     .img {
       display: flex;
       align-self: center;
+      justify-content: center;
       width: 100%;
 
       img {
-        height: 100px;
-        filter: grayscale(100%) contrast(1.2);
+        height: 50px;
+        filter: grayscale(100%) contrast(1.8);
       }
     }
 
