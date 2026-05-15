@@ -61,6 +61,19 @@ module.exports.getCategoriesByRestaurantId = async function (req, res) {
   }
 };
 
+module.exports.getQuantity = async function (req, res) {
+  console.log("asda");
+
+  try {
+    console.log("asda");
+    const categories = await Category.find();
+    console.log(categories);
+    return res.status(200).json({ quantity: categories.length });
+  } catch (e) {
+    errorHandler(res, e);
+  }
+};
+
 module.exports.create = async function (req, res) {
   try {
     const { title, isDrink } = req.body || {};
@@ -167,7 +180,7 @@ module.exports.updateStatus = async function (req, res) {
       );
 
       res.status(200).json({
-        message: `Категория ${updated.status ? 'активна' : 'неактивна'}`,
+        message: `Категория ${updated.status ? "активна" : "неактивна"}`,
       });
     }
   } catch (e) {

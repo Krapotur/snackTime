@@ -88,7 +88,7 @@
   <div class="category-cards">
     <div class="category-card" *ngFor="let category of categories" (click)="openPositions(category['_id'])">
       <div class="img-block">
-        <img [src]="category.imgSrc" alt="" />
+        <img [src]="category.imgSrc" [alt]="category.title" />
       </div>
       <p>{{ category.title }}</p>
     </div>

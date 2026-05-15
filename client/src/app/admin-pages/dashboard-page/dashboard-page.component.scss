@@ -1,6 +1,7 @@
-h3, h5 {
+h3,
+h5 {
   font:
-    500 26px "Lora",
+    500 30px "Lora",
     serif;
 }
 
@@ -14,11 +15,14 @@ h3, h5 {
 
   .card {
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 200px;
+    width: 150px;
     padding: 15px 10px 5px;
     border-radius: 15px;
     box-shadow: 0px 8px 32px 0px rgba(0, 0, 0, 0.15);
-    height: 160px;
-    width: 130px;
 
     .img {
       display: flex;
@@ -30,6 +34,10 @@ h3, h5 {
         height: 50px;
         filter: grayscale(100%) contrast(1.8);
       }
+    }
+
+    hr {
+      width: 45%;
     }
 
     .col {
@@ -45,10 +53,14 @@ h3, h5 {
       }
 
       span {
-    
         font-size: 20px;
         font-weight: bold;
       }
     }
+  }
+
+  .card:hover {
+    box-shadow: 0 10px 22px rgba(32, 63, 109, 0.14);
+    transform: translateY(-2px);
   }
 }

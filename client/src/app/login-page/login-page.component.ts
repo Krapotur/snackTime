@@ -16,6 +16,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../shared/services/auth.service';
 import { Subscription } from 'rxjs';
 import { MaterialService } from '../shared/classes/material.service';
+import { GroupService } from '../shared/services/group.service';
+import { SharedService } from '../shared/services/shared.service';
 
 @Component({
   selector: 'app-login-page',
@@ -38,11 +40,12 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private authService = inject(AuthService);
-
+ 
   isOnline = false;
   isLoading = false;
   form: FormGroup;
   aSub: Subscription;
+  gSub: Subscription;
   uSub: Subscription;
 
   ngOnInit() {
@@ -65,6 +68,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.aSub?.unsubscribe();
+    this.gSub?.unsubscribe();
     this.uSub?.unsubscribe();
   }
 

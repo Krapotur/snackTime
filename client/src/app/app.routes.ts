@@ -16,6 +16,7 @@ import { AssortmentComponent } from './admin-pages/assortment/assortment.compone
 import { PositionsPageComponent } from './admin-pages/positions-page/positions-page.component';
 import { PromosPageComponent } from './admin-pages/promos-page/promos-page.component';
 import { PromoFormComponent } from './form-pages/promo-form/promo-form.component';
+import { isAdminGuard } from './shared/classes/checkRole.guard';
 
 export const routes: Routes = [
   {

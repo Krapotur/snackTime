@@ -7,14 +7,14 @@ import {
 } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { inject, Injectable } from '@angular/core';
-import { AuthService } from '../services/auth.service';
+import { SharedService } from '../services/shared.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthGuard {
-  private auth = inject(AuthService);
+export class CheckRole {
   private router = inject(Router);
+  private sharedService = inject(SharedService);
 
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -24,8 +24,9 @@ export class AuthGuard {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
+    console.log(this.sharedService.getCurrentGroupValue());
 
-    if (this.auth.isAuthenticated()) {
+    if (this.sharedService.getCurrentGroupValue() == 'administrator') {
       return of(true);
     } else {
       this.router
@@ -40,7 +41,7 @@ export class AuthGuard {
   }
 }
 
-export const isAuthGuard: CanActivateFn = (
+export const isAdminGuard: CanActivateFn = (
   route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot,
 ):
@@ -48,5 +49,5 @@ export const isAuthGuard: CanActivateFn = (
   | Promise<boolean | UrlTree>
   | boolean
   | UrlTree => {
-  return inject(AuthGuard).canActivate(route, state);
+  return inject(CheckRole).canActivate(route, state);
 };

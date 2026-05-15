@@ -18,6 +18,10 @@ export class CategoryService {
       params: params
     });
   }
+  
+  getSumCategories(): Observable<number> {
+    return this.http.get<number>(`/api/categories/summ`);
+  }
 
   getCategoriesByRestaurantID(id: string): Observable<Category[]> {
     return this.http.get<Category[]>(`/api/categories/restaurant/${id}`);
